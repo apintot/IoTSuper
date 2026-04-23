@@ -1,0 +1,6 @@
+@IoTSuper_API_HostAddress = http://localhost:5188
+
+GET {{IoTSuper_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
