@@ -1,6 +1,7 @@
 using IoTSuper_API.Data;
-using IoTSuper_API.Helpers;
 using IoTSuper_API.Security;
+using IoTSuper_API.Services;
+using IoTSuper_API.Services.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using AutenticacionBasica = IoTSuper_API.Security.AutenticacionBasica;
@@ -13,6 +14,17 @@ builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.Configure<AutenticacionBasica>(builder.Configuration.GetSection(AutenticacionBasica.SectionName));
+
+builder.Services.AddSingleton<Crypto>(sp =>
+{
+    IConfiguration config = sp.GetRequiredService<IConfiguration>();
+    IConfiguration section = config.GetSection(Crypto.SectionName);
+    string clave = section.GetValue<string>("claveEncriptacion") ?? string.Empty;
+    string vector = section.GetValue<string>("vectorEncriptacion") ?? string.Empty;
+    return new Crypto(vector, clave);
+});
+
+builder.Services.AddScoped<IContrasenaService, ContrasenaService>();
 
 builder.Services.AddAuthorization();
 
