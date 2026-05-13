@@ -1,0 +1,76 @@
+﻿<Window x:Class="IoTSuper_DesktopApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IoTSuper_DesktopApp"
+        mc:Ignorable="d"
+        Title="MainWindow" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" WindowState="Maximized">
+    <Grid Background="{StaticResource scbFondo}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Style="{StaticResource stlMenuLateral}" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="175"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="175"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <TextBlock Style="{StaticResource stlCuerpo}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource scbFondo}" Text="Bienvenido de nuevo, " TextWrapping="Wrap"/>
+                <Border Style="{StaticResource stlLineaDecorativa}"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Tag="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,0">
+                        <Border Style="{StaticResource stlBoton}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
+                                <Image Source="{StaticResource IInicio}" Width="25" Margin="0,0,10,0"/>
+                                <TextBlock Text="Inicio" Style="{StaticResource stlSubtitulo}" Foreground="{StaticResource scbFondo}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Tag="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,35,0,0">
+                        <Border Style="{StaticResource stlBoton}" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
+                                <Image Source="{StaticResource ICentro}" Width="25" Margin="0,0,10,0"/>
+                                <TextBlock Text="Centros" Style="{StaticResource stlSubtitulo}" Foreground="{StaticResource scbFondo}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Tag="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,35,0,0">
+                        <Border Style="{StaticResource stlBoton}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
+                                <Image Source="{StaticResource IIncidencia}" Width="25" Margin="0,0,10,0"/>
+                                <TextBlock Text="Incidencias" Style="{StaticResource stlSubtitulo}" Foreground="{StaticResource scbFondo}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Tag="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,35,0,0">
+                        <Border Style="{StaticResource stlBoton}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
+                                <Image Source="{StaticResource INuevo}" Width="25" Margin="0,0,10,0"/>
+                                <TextBlock Text="Crear centro" Style="{StaticResource stlSubtitulo}" Foreground="{StaticResource scbFondo}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Border VerticalAlignment="Top"  Style="{StaticResource stlLineaDecorativa}"/>
+                
+            </Grid>
+
+        </Grid>
+
+        <ContentControl Content="{Binding VistaActual}" Grid.Column="1"/>
+    </Grid>
+</Window>

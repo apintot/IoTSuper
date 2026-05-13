@@ -21,7 +21,7 @@ namespace IoTSuper_API.DTO.Cliente
         public string Login { get; set; }
 
         [Required]
-        [StringLength(255, MinimumLength = 12)]
+        [StringLength(30000, MinimumLength = 12)]
         public string Contrasena { get; set; } = string.Empty;
     }
 }

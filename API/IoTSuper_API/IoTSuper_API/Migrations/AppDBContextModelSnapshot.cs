@@ -22,6 +22,68 @@ namespace IoTSuper_API.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("IoTSuper_API.Models.Centro", b =>
+                {
+                    b.Property<int>("IdCentro")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_centro");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdCentro"));
+
+                    b.Property<string>("Cif")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("cif");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("Habilitado")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("habilitado");
+
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("int")
+                        .HasColumnName("id_cliente");
+
+                    b.Property<int>("IdLocalizacion")
+                        .HasColumnType("int")
+                        .HasColumnName("id_localizacion");
+
+                    b.Property<int>("IdTipologia")
+                        .HasColumnType("int")
+                        .HasColumnName("id_tipologia");
+
+                    b.Property<string>("Imagen")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("imagen");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("nombre");
+
+                    b.Property<string>("RazonSocial")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("razon_social");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("IdCentro");
+
+                    b.ToTable("Centros");
+                });
+
             modelBuilder.Entity("IoTSuper_API.Models.Cliente", b =>
                 {
                     b.Property<int>("IdCliente")
@@ -86,6 +148,105 @@ namespace IoTSuper_API.Migrations
                     b.HasKey("IdCliente");
 
                     b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("IoTSuper_API.Models.Localizacion", b =>
+                {
+                    b.Property<int>("IdLocalizacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_localizacion");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdLocalizacion"));
+
+                    b.Property<string>("CodigoPostal")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("codigo_postal");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("direccion");
+
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("pais");
+
+                    b.Property<string>("provincia")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("Provincia");
+
+                    b.HasKey("IdLocalizacion");
+
+                    b.ToTable("Localizaciones");
+                });
+
+            modelBuilder.Entity("IoTSuper_API.Models.Seccion", b =>
+                {
+                    b.Property<int>("IdSeccion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_seccion");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdSeccion"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("Habilitado")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("habilitado");
+
+                    b.Property<int>("IdCentro")
+                        .HasColumnType("int")
+                        .HasColumnName("id_centro");
+
+                    b.Property<string>("Imagen")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("imagen");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("nombre");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("update_at");
+
+                    b.HasKey("IdSeccion");
+
+                    b.ToTable("Secciones");
+                });
+
+            modelBuilder.Entity("IoTSuper_API.Models.Tipologia", b =>
+                {
+                    b.Property<int>("IdTipologia")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_tipologia");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdTipologia"));
+
+                    b.Property<string>("TipoTienda")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("tipo_tienda");
+
+                    b.HasKey("IdTipologia");
+
+                    b.ToTable("Tipologias");
                 });
 #pragma warning restore 612, 618
         }

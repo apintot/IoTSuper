@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="IoTSuper_DesktopApp.Vistas.Administrador.AdminInicio"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controladores="clr-namespace:IoTSuper_DesktopApp.Controles"
+             xmlns:local="clr-namespace:IoTSuper_DesktopApp.Vistas.Administrador"
+             mc:Ignorable="d">
+    <Border CornerRadius="40" Background="White" Margin="80" BorderBrush="Gray" BorderThickness="5">
+        <Grid Margin="30" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="72"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
+                <controladores:Campo x:Name="camBuscador" Icono="{StaticResource ILupa}" Placeholder="Buscar..." Width="400" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Button Style="{StaticResource stlBotonPrincipal}" HorizontalAlignment="Center" Margin="150,0,0,0"  Width="150" Click="CrearClienteView_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Crear cliente" Foreground="White"/>
+                        <TextBlock Text="+" Margin="10,0,0,0" Foreground="White"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <DataGrid x:Name="dgClientes" BorderBrush="LightGray"
+                Grid.Row="1"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                HeadersVisibility="Column"
+                GridLinesVisibility="None"
+                RowHeight="45"
+                BorderThickness="1"
+                Background="Transparent"
+                AlternatingRowBackground="LightGray"
+                RowBackground="White"
+                IsHitTestVisible="True"
+                     IsManipulationEnabled="False"
+                AlternationCount="2">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="IdCliente" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding IdCliente}"
+                                Width="*"/>
+
+                    <DataGridTextColumn Header="Nombre" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Nombre}"
+                                Width="*"/>
+
+                    <DataGridTextColumn Header="Apellido" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Apellido}"
+                                Width="*"/>
+
+                    <DataGridTextColumn Header="Empresa" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Empresa}"
+                                Width="*"/>
+
+                    <DataGridTemplateColumn Header="Acciones" Width="120" HeaderStyle="{StaticResource stlTablaHeader}" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+
+                                    <Border Background="{StaticResource scbAdvertenciaStock}" Height="30" Width="30" CornerRadius="5" Margin="0,0,5,0">
+                                        <Image Source="{StaticResource IEdita}"
+                                            Width="15"
+                                            Cursor="Hand"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                            MouseLeftButtonUp="EditarCliente_Click"/>
+                                    </Border>
+
+                                    <Border Background="{StaticResource scbError}" Height="30" Width="30" CornerRadius="5">
+                                        <Image Source="{StaticResource IElimina}"
+                                           Width="18"
+                                           Cursor="Hand"
+                                           MouseLeftButtonUp="EliminarCliente_ClickAsync"/>
+                                    </Border>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Background="Transparent" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Image Source="{StaticResource IIzquierda}" Height="30" HorizontalAlignment="Left" MouseLeftButtonDown="Left_MouseLeftButtonDown"/>
+                <TextBlock x:Name="txbQuePagina" Style="{StaticResource stlCuerpo}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Image Source="{StaticResource IDerecha}" Height="30" HorizontalAlignment="Right" MouseLeftButtonDown="Right_MouseLeftButtonDown"/>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</UserControl>

@@ -25,6 +25,8 @@ builder.Services.AddSingleton<Crypto>(sp =>
 });
 
 builder.Services.AddScoped<IContrasenaService, ContrasenaService>();
+builder.Services.AddScoped<ICentroService, CentroService>();
+builder.Services.AddScoped<ISeccionService, SeccionService>();
 
 builder.Services.AddAuthorization();
 
@@ -42,7 +44,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

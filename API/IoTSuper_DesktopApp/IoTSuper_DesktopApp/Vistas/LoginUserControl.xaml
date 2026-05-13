@@ -1,0 +1,54 @@
+﻿<Window x:Class="IoTSuper_DesktopApp.Modelos.LoginUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IoTSuper_DesktopApp.Modelos"
+             xmlns:controladores="clr-namespace:IoTSuper_DesktopApp.Controles"
+             mc:Ignorable="d" Width="350" Height="500" Background="Transparent"
+             WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Title="Login">
+
+    <Grid Background="Transparent">
+        <Border Background="{StaticResource scbTarjeta}" CornerRadius="15">
+            <Grid>
+                <Grid x:Name="grdLogin" Visibility="Visible">
+                    <Image Source="{StaticResource IIoT}" Height="50" VerticalAlignment="Top" Margin="0,25,0,0"/>
+
+                    <TextBlock Text="Bienvenido a IoTSuper!" Style="{StaticResource stlSubtitulo}" Margin="0,95,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+                    <TextBlock Text="Usuario" Style="{StaticResource stlCuerpo}" Margin="75,170,50,310"/>
+                    <controladores:Campo x:Name="camUser" Icono="{StaticResource IUser}" Placeholder="Usuario" Width="200" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,198,0,0"/>
+
+                    <TextBlock Text="Contraseña" Style="{StaticResource stlCuerpo}" Margin="80,257,50,223"/>
+                    <controladores:Campo x:Name="camPass" Icono="{StaticResource ICandado}" Placeholder="Contraseña" Margin="0,283,0,0" Width="200" EsContrasena="True" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+                    <TextBlock x:Name="txbError" TextWrapping="Wrap" Text="Error: contrasena no es correcta" Foreground="Red" Visibility="Collapsed" FontWeight="DemiBold" Margin="0,330,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="200"/>
+
+                    <Button Style="{StaticResource stlBotonPrincipal}" HorizontalAlignment="Center" Margin="0,385,0,70" Width="250" Click="Login_ClickAsync">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Iniciar Sesión" Foreground="White"/>
+                            <TextBlock Text="➜" Margin="10,0,0,0" Foreground="White"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <Grid x:Name="grdTOTP" Visibility="Collapsed">
+                    <Image Source="{StaticResource IIoT}" Height="50" VerticalAlignment="Top" Margin="0,25,0,0"/>
+                    <TextBlock Text="Introduzca el código TOTP" Style="{StaticResource stlSubtitulo}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,90,0,0"/>
+                    <TextBlock Text="Instale alguna App para guardar codigos topt como google authenticator" Style="{StaticResource stlCuerpo}" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,115,0,0" Width="260"/>
+
+                    <Image x:Name="imgQR" Source="{StaticResource IQR}" Height="150" VerticalAlignment="Center"/>
+
+                    <TextBlock Text="TOPT" Style="{StaticResource stlCuerpo}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="78,347,0,0"/>
+                    <controladores:Campo x:Name="camTOPT" Icono="{StaticResource IScanner}" Placeholder="Codigo" Width="200" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,369,0,0" />
+
+                    <Button Style="{StaticResource stlBotonPrincipal}" HorizontalAlignment="Center" Margin="0,438,0,17" Width="250" Click="TOPT_ClickAsync">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Comprobar TOPT" Foreground="White"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

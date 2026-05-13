@@ -1,6 +1,7 @@
 ﻿using IoTSuper_API.Data;
 using IoTSuper_API.DTO.Cliente;
 using IoTSuper_API.Models;
+using IoTSuper_API.Security;
 using IoTSuper_API.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace IoTSuper_API.Controllers
     {
         private readonly AppDBContext _context;
         private readonly IContrasenaService _contrasenaService;
-        public ClientesController(AppDBContext context, IContrasenaService contrasenaService)
+        private readonly Crypto _crypto;
+        public ClientesController(AppDBContext context, IContrasenaService contrasenaService, Crypto crypto)
         {
             _context = context;
             _contrasenaService = contrasenaService;
+            _crypto = crypto;
         }
 
         [HttpGet]
@@ -27,13 +30,20 @@ namespace IoTSuper_API.Controllers
         {
             List<Cliente> clientes = await _context.Clientes.Where(c => c.Habilitado && !c.EsAdmin).ToListAsync();
 
+            if(clientes == null || clientes.Count == 0)
+            {
+                return NotFound();
+            }
+
             List<ClienteResponse> clientesResponse = clientes.Select(c => new ClienteResponse
             {
                 IdCliente = c.IdCliente,
                 Nombre = c.Nombre,
                 Apellido = c.Apellido,
                 Empresa = c.Empresa,
-                Login = c.Login,
+                EsAdmin = c.EsAdmin,
+                Habilitado = c.Habilitado,
+                Login = c.Login
             }).ToList();
 
             return Ok(clientesResponse);
@@ -54,8 +64,11 @@ namespace IoTSuper_API.Controllers
                 IdCliente = cliente.IdCliente,
                 Nombre = cliente.Nombre,
                 Apellido = cliente.Apellido,
+                Habilitado = cliente.Habilitado,
+                EsAdmin = cliente.EsAdmin,
                 Empresa = cliente.Empresa,
                 Login = cliente.Login,
+                UltimoAcceso = (DateTime)cliente.UltimoAcceso
             };
 
             return Ok(clienteResponse);
@@ -76,7 +89,7 @@ namespace IoTSuper_API.Controllers
 
             if (string.IsNullOrWhiteSpace(cliente.Nombre)) { return BadRequest(new { mensaje = "El nombre es obligatorio." }); }
 
-            if (!_contrasenaService.EsContrasenaSegura(cliente.Contrasena))
+            if (!_contrasenaService.EsContrasenaSegura(_crypto.Desencriptar(cliente.Contrasena)))
             {
                 return BadRequest(new
                 {
@@ -92,7 +105,7 @@ namespace IoTSuper_API.Controllers
                 EsAdmin = false,
                 Empresa = cliente.Empresa,
                 Login = cliente.Login,
-                Contrasena = _contrasenaService.hashContrasena(cliente.Contrasena)
+                Contrasena = _contrasenaService.hashContrasena(_crypto.Desencriptar(cliente.Contrasena))
             };
 
             try
@@ -115,7 +128,7 @@ namespace IoTSuper_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> actualizarCliente(int id, [FromBody] NuevoClienteRequest cliente)
+        public async Task<ActionResult> actualizarCliente(int id, [FromBody] ActualizarClienteRequest cliente)
         {
             if (!ModelState.IsValid)
             {
@@ -133,6 +146,21 @@ namespace IoTSuper_API.Controllers
             clienteExistente.Apellido = cliente.Apellido;
             clienteExistente.Empresa = cliente.Empresa;
             clienteExistente.Login = cliente.Login;
+
+            string contrasena = _crypto.Desencriptar(cliente.Contrasena);
+
+            if (!string.IsNullOrWhiteSpace(contrasena))
+            {
+                if (!_contrasenaService.EsContrasenaSegura(contrasena))
+                {
+                    return BadRequest(new
+                    {
+                        mensaje = "La contraseña debe tener al menos 12 caracteres e incluir mayúsculas, minúsculas, números y caracteres especiales."
+                    });
+                }
+
+                clienteExistente.Contrasena = _contrasenaService.hashContrasena(contrasena);
+            }
 
             try
             {

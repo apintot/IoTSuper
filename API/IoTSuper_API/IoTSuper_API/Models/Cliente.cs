@@ -10,14 +10,14 @@ namespace IoTSuper_API.Models
         public int IdCliente { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(100, MinimumLength = 5)]
         [Column("nombre")]
-        public string Nombre { get; set; } = string.Empty;
+        public string Nombre { get; set; }
 
         [Required]
-        [MaxLength(150)]
+        [StringLength(150, MinimumLength = 5)]
         [Column("apellido")]
-        public string Apellido { get; set; } = string.Empty;
+        public string Apellido { get; set; }
 
         [Required]
         [Column("habilitado")]
@@ -27,21 +27,21 @@ namespace IoTSuper_API.Models
         [Column("esAdmin")]
         public bool EsAdmin { get; set; } = false;
 
-        [MaxLength(150)]
+        [StringLength(150, MinimumLength = 5)]
         [Column("empresa")]
-        public string Empresa { get; set; } = string.Empty;
+        public string Empresa { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(100, MinimumLength = 5)]
         [Column("login")]
-        public string Login { get; set; } = string.Empty;
+        public string Login { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [StringLength(255, MinimumLength = 5)]
         [Column("contraseña")]
-        public string Contrasena { get; set; } = string.Empty;
+        public string Contrasena { get; set; }
 
-        [MaxLength(255)]
+        [StringLength(255, MinimumLength = 5)]
         [Column("totp")]
         public string Totp { get; set; } = string.Empty;
 

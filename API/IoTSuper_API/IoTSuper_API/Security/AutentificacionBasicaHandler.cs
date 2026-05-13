@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 
 namespace IoTSuper_API.Security
@@ -35,10 +36,10 @@ namespace IoTSuper_API.Security
 
                 if (username == _autenticacionBasica.AutentificacionBasicaUsuario && password == _autenticacionBasica.AutentificacionBasicaContrasena)
                 {
-                    var claims = new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, username) };
-                    var identity = new System.Security.Claims.ClaimsIdentity(claims, Scheme.Name);
-                    var principal = new System.Security.Claims.ClaimsPrincipal(identity);
-                    var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                    Claim[] claims = new Claim[] { new Claim(ClaimTypes.Name, username) };
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, Scheme.Name);
+                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                    AuthenticationTicket ticket = new AuthenticationTicket(principal, Scheme.Name);
                     return Task.FromResult(AuthenticateResult.Success(ticket));
                 }
                 else

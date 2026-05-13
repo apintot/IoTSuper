@@ -11,5 +11,12 @@ namespace IoTSuper_API.Data
         }
 
         public DbSet<Cliente> Clientes { get; set; }
+
+        public DbSet<Localizacion> Localizaciones { get; set; }
+        public DbSet<Tipologia> Tipologias { get; set; }
+
+        public DbSet<Centro> Centros { get; set; }
+
+        public DbSet<Seccion> Secciones { get; set; }
     }
 }

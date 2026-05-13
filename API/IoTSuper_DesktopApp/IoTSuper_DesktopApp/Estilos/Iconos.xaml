@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="IIoT" UriSource="pack://application:,,,/Estilos/Iconos/iot.png"/>
+    <BitmapImage x:Key="IUser" UriSource="pack://application:,,,/Estilos/Iconos/user.png"/>
+    <BitmapImage x:Key="ICandado" UriSource="pack://application:,,,/Estilos/Iconos/candado.png"/>
+    <BitmapImage x:Key="IQR" UriSource="pack://application:,,,/Estilos/Iconos/qr.png"/>
+    <BitmapImage x:Key="IScanner" UriSource="pack://application:,,,/Estilos/Iconos/scanner.png"/>
+    <BitmapImage x:Key="IExit" UriSource="pack://application:,,,/Estilos/Iconos/exit.png"/>
+    <BitmapImage x:Key="IInicio" UriSource="pack://application:,,,/Estilos/Iconos/inicio.png"/>
+    <BitmapImage x:Key="IIncidencia" UriSource="pack://application:,,,/Estilos/Iconos/incidencias.png"/>
+    <BitmapImage x:Key="INuevo" UriSource="pack://application:,,,/Estilos/Iconos/nuevo.png"/>
+    <BitmapImage x:Key="ICentro" UriSource="pack://application:,,,/Estilos/Iconos/centros.png"/>
+    <BitmapImage x:Key="ILupa" UriSource="pack://application:,,,/Estilos/Iconos/lupa.png"/>
+    <BitmapImage x:Key="IEdita" UriSource="pack://application:,,,/Estilos/Iconos/edit.png"/>
+    <BitmapImage x:Key="IElimina" UriSource="pack://application:,,,/Estilos/Iconos/trash.png"/>
+    <BitmapImage x:Key="IDerecha" UriSource="pack://application:,,,/Estilos/Iconos/right.png"/>
+    <BitmapImage x:Key="IIzquierda" UriSource="pack://application:,,,/Estilos/Iconos/left.png"/>
+
+    <!--Todas las imagenes de aqui seran high quality.-->
+    <Style TargetType="Image">
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+</ResourceDictionary>

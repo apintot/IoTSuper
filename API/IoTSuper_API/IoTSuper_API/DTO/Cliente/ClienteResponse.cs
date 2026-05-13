@@ -7,7 +7,9 @@
         public string Apellido { get; set; } = string.Empty;
         public bool Habilitado { get; set; }
         public string Empresa { get; set; } = string.Empty;
+        public bool EsAdmin { get; set; }
         public string Login { get; set; } = string.Empty;
+        public string Contrasena { get; set; } = string.Empty;
         public DateTime UltimoAcceso { get; set; }
     }
 }

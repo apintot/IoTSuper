@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="FontManrope"> pack://application:,,,/Assets/Fonts/#Manrope </FontFamily>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontManrope}"/>
+        <Setter Property="Foreground" Value="{StaticResource scbTexto}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+                <!-- Título grande -->
+    <Style x:Key="stlTitulo" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+                <!-- Subtítulo -->
+    <Style x:Key="stlSubtitulo" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+                <!-- Texto normal -->
+    <Style x:Key="stlCuerpo" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+
+                <!-- Texto pequeño / ayuda -->
+    <Style x:Key="stlTextillo" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+                <!-- Texto campos -->
+    <Style x:Key="stlCampo" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource scbTextoCampo}"/>
+    </Style>
+
+    <Style x:Key="stlCampoBox" TargetType="TextBox">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="{StaticResource scbTextoCampo}"/>
+    </Style>
+
+</ResourceDictionary>
