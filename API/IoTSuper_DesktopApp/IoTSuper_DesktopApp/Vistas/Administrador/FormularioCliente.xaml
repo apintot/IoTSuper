@@ -6,7 +6,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:IoTSuper_DesktopApp.Vistas.Administrador"
              mc:Ignorable="d">
-    <Border CornerRadius="40" Background="White" Margin="80" BorderBrush="Gray" BorderThickness="5">
+    <Border CornerRadius="40" Background="White" Margin="80">
+        <Border.Effect>
+            <DropShadowEffect Color="{StaticResource scbSombra}" BlurRadius="10" ShadowDepth="2" Opacity="1"/>
+        </Border.Effect>
         <Grid Margin="50" Background="White">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <TextBlock Text="Administrador > Clientes > " Style="{StaticResource stlSubtitulo}"/>
@@ -34,7 +37,7 @@
 
                 <TextBlock Text="Contraseña del cliente" Style="{StaticResource stlSubtitulo}" Margin="0,20,220,0" HorizontalAlignment="Center"/>
                 <controladores:Campo x:Name="camContrasena" Icono="{StaticResource ILupa}" Placeholder="Ej: sDfod$#whbO21376..." Width="400" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBlock x:Name="txbErrorContrasena" Style="{StaticResource stlTextillo}" Foreground="Red"  HorizontalAlignment="Center" Visibility="Collapsed" TextWrapping="Wrap" Margin="100,0,0,0"/>
+                <TextBlock x:Name="txbErrorContrasena" Style="{StaticResource stlTextillo}" Foreground="Red"  HorizontalAlignment="Center" Visibility="Collapsed" TextWrapping="Wrap" Margin="0,0,0,0"/>
                 
                 
                 <Button x:Name="btnCrearCliente" Style="{StaticResource stlBotonPrincipal}" HorizontalAlignment="Center" Margin="0,50,0,0" Width="250" Click="CrearCliente_ClickAsync">

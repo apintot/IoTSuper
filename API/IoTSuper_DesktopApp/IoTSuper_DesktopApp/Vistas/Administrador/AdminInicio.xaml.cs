@@ -26,7 +26,7 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
     /// </summary>
     public partial class AdminInicio : UserControl
     {
-        private List<Cliente> TodosLosUsuarios = new();
+        private List<Modelos.Cliente> TodosLosUsuarios = new();
 
         private ICollectionView VistaClientes;
 
@@ -44,7 +44,7 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
         {
             this.Loaded -= AdminInicio_Loaded;
 
-            TodosLosUsuarios = await ClienteService.ObtenerClientes() ?? new List<Cliente>();
+            TodosLosUsuarios = await ClienteService.ObtenerClientes() ?? new List<Modelos.Cliente>();
 
             NumeroDePagina = (int)Math.Ceiling((double)TodosLosUsuarios.Count / NumeroDeElementosPorPagina);
             if (NumeroDePagina == 0) NumeroDePagina = 1;
@@ -65,7 +65,7 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
 
         private bool filtrarClientes(object obj)
         {     
-            if (obj is not Cliente cliente) { return false; }
+            if (obj is not Modelos.Cliente cliente) { return false; }
 
             string filtro = camBuscador.Texto.ToLower();
 
@@ -76,7 +76,7 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
 
         private void EditarCliente_Click(object sender, MouseButtonEventArgs e)
         {
-            if (((FrameworkElement)sender).DataContext is Cliente cliente)
+            if (((FrameworkElement)sender).DataContext is Modelos.Cliente cliente)
             {
                 Navegacion.IrA(new FormularioCliente(cliente));
             }
@@ -84,7 +84,7 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
 
         private async void EliminarCliente_ClickAsync(object sender, MouseButtonEventArgs e)
         {
-            if (((FrameworkElement)sender).DataContext is Cliente cliente)
+            if (((FrameworkElement)sender).DataContext is Modelos.Cliente cliente)
             {
                 if(await ClienteService.eliminarCliente(cliente.IdCliente))
                 {

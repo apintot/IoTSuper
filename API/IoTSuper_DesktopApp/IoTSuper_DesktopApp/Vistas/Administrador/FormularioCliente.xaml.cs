@@ -23,14 +23,14 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
     /// </summary>
     public partial class FormularioCliente : UserControl
     {
-        Cliente _cliente = null;
+        Modelos.Cliente _cliente = null;
 
         public FormularioCliente()
         {
             InitializeComponent();
         }
 
-        public FormularioCliente(Cliente cliente)
+        public FormularioCliente(Modelos.Cliente cliente)
         {
             InitializeComponent();
 
@@ -54,7 +54,7 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
 
         private async void CrearCliente_ClickAsync(object sender, RoutedEventArgs e)
         {
-            Cliente clienteNuevo = new Cliente();
+            Modelos.Cliente clienteNuevo = new Modelos.Cliente();
             Crypto crypto = new Crypto();
 
             clienteNuevo.Nombre = camNombre.Texto;

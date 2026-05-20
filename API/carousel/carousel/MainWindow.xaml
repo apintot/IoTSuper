@@ -1,0 +1,350 @@
+﻿<Window x:Class="carousel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:carousel"
+        Title="Centro Manager" Height="600" Width="1100"
+        Background="#F0F2F5"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+
+    <!-- Estilos locales para los ítems del sidebar -->
+    <Window.Resources>
+        <Style x:Key="NavItemStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Margin" Value="10,2"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style x:Key="NavIconStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#8A93A6"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+        <Style x:Key="NavLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8A93A6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="NavItemSelectedStyle" TargetType="Border" BasedOn="{StaticResource NavItemStyle}">
+            <Setter Property="Background" Value="#2A3347"/>
+        </Style>
+        <Style x:Key="NavIconSelectedStyle" TargetType="TextBlock" BasedOn="{StaticResource NavIconStyle}">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="NavLabelSelectedStyle" TargetType="TextBlock" BasedOn="{StaticResource NavLabelStyle}">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- Sidebar -->
+            <ColumnDefinition Width="200"/>
+            <!-- Contenido principal -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--  no ver                                            -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Border Grid.Column="0" Background="#1E2533">
+            <StackPanel>
+                <!-- Bienvenida -->
+                <StackPanel Margin="20,30,20,0">
+                    <TextBlock Text="Bienvenido, Alberto"
+                               Foreground="White"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"/>
+                    <Separator Background="#3A4154" Margin="0,12,0,0"/>
+                </StackPanel>
+
+                <!-- Menú -->
+                <StackPanel Margin="0,16,0,0">
+
+                    <!-- Inicio -->
+                    <Border Style="{StaticResource NavItemStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE80F;" Style="{StaticResource NavIconStyle}"/>
+                            <TextBlock Text="Inicio"   Style="{StaticResource NavLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Centros (seleccionado) -->
+                    <Border Style="{StaticResource NavItemSelectedStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE737;" Style="{StaticResource NavIconSelectedStyle}"/>
+                            <TextBlock Text="Centros"  Style="{StaticResource NavLabelSelectedStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Incidencias -->
+                    <Border Style="{StaticResource NavItemStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE7BA;"     Style="{StaticResource NavIconStyle}"/>
+                            <TextBlock Text="Incidencias"  Style="{StaticResource NavLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Nuevo Centro -->
+                    <Border Style="{StaticResource NavItemStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE710;"       Style="{StaticResource NavIconStyle}"/>
+                            <TextBlock Text="Nuevo Centro"   Style="{StaticResource NavLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--  CONTENIDO PRINCIPAL                                   -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Grid Grid.Column="1" Margin="30,24,30,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Cabecera -->
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <TextBlock Text="Centro"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+                <Button HorizontalAlignment="Right"
+                        Content="+ Nuevo Centro"
+                        Background="#2D72F5"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Padding="16,8"
+                        FontSize="13"
+                        Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                CornerRadius="6"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#1A5FE0"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+
+            <!-- Carousel manual: flechas + 3 tarjetas -->
+            <Grid Grid.Row="1" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Flecha izquierda -->
+                <Button Grid.Column="0"
+                        x:Name="BtnPrev"
+                        Click="BtnPrev_Click"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="38" Height="38"
+                        Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="#1E2533" CornerRadius="19">
+                                <TextBlock Text="&#xE76B;"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           FontSize="14" Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="Bd"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="#3A4154" Duration="0:0:0.15"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Normal"/>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Las 3 tarjetas visibles -->
+                <UniformGrid Grid.Column="1" Columns="3" x:Name="CardsPanel">
+
+                    <!-- Tarjeta IZQUIERDA -->
+                    <Border x:Name="CardLeft" CornerRadius="14" Background="White"
+                            Margin="6" Opacity="0.6">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#AAAAAA" BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <Border CornerRadius="14,14,0,0" ClipToBounds="True" Height="160">
+                                <Image x:Name="ImgLeft" Stretch="UniformToFill"/>
+                            </Border>
+                            <StackPanel Margin="12,8,12,12">
+                                <TextBlock x:Name="TitleLeft" FontSize="16" FontWeight="Bold" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Border Background="#E8F0FF" CornerRadius="20" Padding="7,3" Margin="0,0,5,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="SecLeft" Foreground="#2D72F5" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                            <TextBlock Text="Secciones" Foreground="#2D72F5" FontSize="11" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#E8F0FF" CornerRadius="20" Padding="7,3">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="DispLeft" Foreground="#2D72F5" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                            <TextBlock Text="Dispositivos" Foreground="#2D72F5" FontSize="11" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Background="#1E2533" CornerRadius="6" Padding="12,6" Margin="0,0,6,0" Cursor="Hand">
+                                        <TextBlock Text="Ver Seccion" Foreground="White" FontSize="11"/>
+                                    </Border>
+                                    <Border Background="Transparent" CornerRadius="6" Padding="8,6" Cursor="Hand">
+                                        <TextBlock Text="•••" FontSize="14"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Tarjeta CENTRO (seleccionada) -->
+                    <Border x:Name="CardCenter" CornerRadius="14" Background="White" Margin="6">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#AAAAAA" BlurRadius="20" ShadowDepth="5" Opacity="0.2"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <Border CornerRadius="14,14,0,0" ClipToBounds="True" Height="180">
+                                <Image x:Name="ImgCenter" Stretch="UniformToFill"/>
+                            </Border>
+                            <StackPanel Margin="14,10,14,14">
+                                <TextBlock x:Name="TitleCenter" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <Border Background="#E8F0FF" CornerRadius="20" Padding="8,4" Margin="0,0,6,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="SecCenter" Foreground="#2D72F5" FontWeight="Bold" FontSize="12" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                            <TextBlock Text="Secciones" Foreground="#2D72F5" FontSize="12" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#E8F0FF" CornerRadius="20" Padding="8,4">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="DispCenter" Foreground="#2D72F5" FontWeight="Bold" FontSize="12" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                            <TextBlock Text="Dispositivos" Foreground="#2D72F5" FontSize="12" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Background="#1E2533" CornerRadius="6" Padding="14,7" Margin="0,0,8,0" Cursor="Hand">
+                                        <TextBlock Text="Ver Seccion" Foreground="White" FontSize="12"/>
+                                    </Border>
+                                    <Border Background="Transparent" CornerRadius="6" Padding="8,7" Cursor="Hand">
+                                        <TextBlock Text="•••" FontSize="16"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Tarjeta DERECHA -->
+                    <Border x:Name="CardRight" CornerRadius="14" Background="White"
+                            Margin="6" Opacity="0.6">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#AAAAAA" BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <Border CornerRadius="14,14,0,0" ClipToBounds="True" Height="160">
+                                <Image x:Name="ImgRight" Stretch="UniformToFill"/>
+                            </Border>
+                            <StackPanel Margin="12,8,12,12">
+                                <TextBlock x:Name="TitleRight" FontSize="16" FontWeight="Bold" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Border Background="#E8F0FF" CornerRadius="20" Padding="7,3" Margin="0,0,5,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="SecRight" Foreground="#2D72F5" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                            <TextBlock Text="Secciones" Foreground="#2D72F5" FontSize="11" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#E8F0FF" CornerRadius="20" Padding="7,3">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="DispRight" Foreground="#2D72F5" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                            <TextBlock Text="Dispositivos" Foreground="#2D72F5" FontSize="11" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Background="#1E2533" CornerRadius="6" Padding="12,6" Margin="0,0,6,0" Cursor="Hand">
+                                        <TextBlock Text="Ver Seccion" Foreground="White" FontSize="11"/>
+                                    </Border>
+                                    <Border Background="Transparent" CornerRadius="6" Padding="8,6" Cursor="Hand">
+                                        <TextBlock Text="•••" FontSize="14"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                </UniformGrid>
+
+                <!-- Flecha derecha -->
+                <Button Grid.Column="2"
+                        x:Name="BtnNext"
+                        Click="BtnNext_Click"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="38" Height="38"
+                        Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="#1E2533" CornerRadius="19">
+                                <TextBlock Text="&#xE76C;"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           FontSize="14" Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="Bd"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="#3A4154" Duration="0:0:0.15"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Normal"/>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

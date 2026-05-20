@@ -9,7 +9,7 @@ namespace IoTSuper_API.Services.Interface
         Task ActualizarCentroAsync(CentroDTO centroDTO);
         Task CrearCentroAsync(CentroDTO centroDTO);
         Task EliminarCentroAsync(int id);
-        Task<List<CentroDTO>> ObtenerCentrosAsync();
+        Task<List<CentroDTO>> ObtenerCentrosAsync(int id);
 
         //internal Task<LocalizacionDTO> ObtenerLocalizacionAsync(int idLocalizacion);
         //internal Task<TipologiaDTO> ObtenerTipologiaAsync(int idTipologia);

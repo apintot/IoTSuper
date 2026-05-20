@@ -1,4 +1,5 @@
-﻿using IoTSuper_API.DTO.Centro;
+﻿using IoTSuper_API.DTO;
+using IoTSuper_API.DTO.Centro;
 using IoTSuper_API.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +18,8 @@ namespace IoTSuper_API.Controllers
             _centroService = centroService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetCentros()
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetCentros(int id)
         {
             try
             {
@@ -27,7 +28,7 @@ namespace IoTSuper_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                List<CentroDTO> centros = await _centroService.ObtenerCentrosAsync();
+                List<CentroDTO> centros = await _centroService.ObtenerCentrosAsync(id);
 
                 if (centros == null || centros.Count == 0)
                 {
@@ -72,7 +73,7 @@ namespace IoTSuper_API.Controllers
                 }
 
                 await _centroService.ActualizarCentroAsync(centroDTO);
-                return Ok();
+                return Ok(new ErrorDTO());
             }
             catch (Exception ex)
             {

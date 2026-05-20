@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Estilos\Fuentes\Manrope-VariableFont_wght.ttf" />
+    <None Remove="Estilos\Iconos\basket.png" />
     <None Remove="Estilos\Iconos\candado.png" />
     <None Remove="Estilos\Iconos\centros.png" />
     <None Remove="Estilos\Iconos\edit.png" />
@@ -25,6 +26,7 @@
     <None Remove="Estilos\Iconos\scanner.png" />
     <None Remove="Estilos\Iconos\trash.png" />
     <None Remove="Estilos\Iconos\user.png" />
+    <None Remove="Estilos\Imagenes\ImagenDefecto.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,9 +39,12 @@
 
   <ItemGroup>
     <Resource Include="Estilos\Fuentes\Manrope-VariableFont_wght.ttf" />
+    <Resource Include="Estilos\Iconos\basket.png" />
     <Resource Include="Estilos\Iconos\candado.png" />
     <Resource Include="Estilos\Iconos\centros.png" />
-    <Resource Include="Estilos\Iconos\edit.png" />
+    <Resource Include="Estilos\Iconos\edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\exit.png" />
     <Resource Include="Estilos\Iconos\incidencias.png" />
     <Resource Include="Estilos\Iconos\inicio.png" />
@@ -50,12 +55,11 @@
     <Resource Include="Estilos\Iconos\qr.png" />
     <Resource Include="Estilos\Iconos\right.png" />
     <Resource Include="Estilos\Iconos\scanner.png" />
-    <Resource Include="Estilos\Iconos\trash.png" />
+    <Resource Include="Estilos\Iconos\trash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\user.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Vistas\Cliente\" />
+    <Resource Include="Estilos\Imagenes\ImagenDefecto.png" />
   </ItemGroup>
 
 </Project>

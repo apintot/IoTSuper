@@ -21,7 +21,6 @@ namespace IoTSuper_API.Services
         public async Task ActualizarCentroAsync(CentroDTO centroDTO)
         {
             Localizacion localizacion = await _context.Localizaciones.FirstOrDefaultAsync(l => l.IdLocalizacion == centroDTO.IdLocalizacion) ?? new Localizacion();
-            Tipologia tipologiaDTO = await _context.Tipologias.FirstOrDefaultAsync(t => t.IdTipologia == centroDTO.IdTipologia) ?? new Tipologia();
 
             Centro nuevoCentro = await _context.Centros.FirstOrDefaultAsync(c => c.IdCentro == centroDTO.IdCentro) ?? new Centro();
 
@@ -30,10 +29,8 @@ namespace IoTSuper_API.Services
             localizacion.Pais = centroDTO.Localizacion.Pais;
             localizacion.provincia = centroDTO.Localizacion.provincia;
 
-            tipologiaDTO.TipoTienda = centroDTO.Tipologia.TipoTienda;
-
             nuevoCentro.IdCliente = centroDTO.IdCliente;
-            nuevoCentro.IdTipologia = tipologiaDTO.IdTipologia;
+            nuevoCentro.IdTipologia = centroDTO.IdTipologia;
             nuevoCentro.IdLocalizacion = localizacion.IdLocalizacion;
             nuevoCentro.Nombre = centroDTO.Nombre;
             nuevoCentro.Imagen = centroDTO.Imagen;
@@ -42,7 +39,6 @@ namespace IoTSuper_API.Services
             nuevoCentro.UpdatedAt = DateTime.UtcNow;
 
             _context.Localizaciones.Update(localizacion);
-            _context.Tipologias.Update(tipologiaDTO);
             _context.Centros.Update(nuevoCentro);
 
             await _context.SaveChangesAsync();
@@ -61,23 +57,10 @@ namespace IoTSuper_API.Services
             await _context.Localizaciones.AddAsync(localizacion);
             await _context.SaveChangesAsync();
 
-            Tipologia? tipologia = await _context.Tipologias.FirstOrDefaultAsync(t => t.TipoTienda == centroDTO.Tipologia.TipoTienda);
-
-            if (tipologia == null)
-            {
-                tipologia = new Tipologia()
-                {
-                    TipoTienda = centroDTO.Tipologia.TipoTienda
-                };
-
-                await _context.Tipologias.AddAsync(tipologia);
-                await _context.SaveChangesAsync();
-            }
-
             Centro nuevoCentro = new Centro()
             {
                 IdCliente = centroDTO.IdCliente,
-                IdTipologia = tipologia.IdTipologia,
+                IdTipologia = centroDTO.IdTipologia,
                 IdLocalizacion = localizacion.IdLocalizacion,
                 Habilitado = centroDTO.Habilitado,
                 Nombre = centroDTO.Nombre,
@@ -103,9 +86,10 @@ namespace IoTSuper_API.Services
             }
         }
 
-        public async Task<List<CentroDTO>> ObtenerCentrosAsync()
+        public async Task<List<CentroDTO>> ObtenerCentrosAsync(int id)
         {
             List<CentroDTO> centros = await _context.Centros
+            .Where(c => c.IdCliente == id)
             .Select(c => new CentroDTO
             {
                 IdCentro = c.IdCentro,
@@ -120,12 +104,12 @@ namespace IoTSuper_API.Services
                 CreatedAt = c.CreatedAt,
                 UpdatedAt = c.UpdatedAt
             })
+            .Where(c => c.Habilitado)
             .ToListAsync();
 
             foreach (CentroDTO centro in centros)
             {
                 centro.Localizacion = await ObtenerLocalizacionAsync(centro.IdLocalizacion);
-                centro.Tipologia = await ObtenerTipologiaAsync(centro.IdTipologia);
             }
 
             return centros;

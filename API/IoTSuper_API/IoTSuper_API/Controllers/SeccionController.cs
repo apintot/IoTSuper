@@ -1,4 +1,5 @@
-﻿using IoTSuper_API.DTO.Seccion;
+﻿using IoTSuper_API.DTO;
+using IoTSuper_API.DTO.Seccion;
 using IoTSuper_API.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace IoTSuper_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var secciones = await _seccionService.ObtenerSeccionesAsync(Id);
+                List<SeccionDTO> secciones = await _seccionService.ObtenerSeccionesAsync(Id);
 
                 if (secciones == null || secciones.Count == 0)
                 {
@@ -52,7 +53,7 @@ namespace IoTSuper_API.Controllers
                     return BadRequest(ModelState);
                 }
                 await _seccionService.CrearSeccionAsync(seccionDTO);
-                return Ok();
+                return Ok(new ErrorDTO());
             }
             catch (Exception ex)
             {
@@ -70,11 +71,11 @@ namespace IoTSuper_API.Controllers
                     return BadRequest(ModelState);
                 }
                 await _seccionService.ActualizarSeccionAsync(seccionDTO);
-                return Ok();
+                return Ok(new ErrorDTO());
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al eliminar la sección.");
+                return StatusCode(500, "Ocurrió un error al actualizar la sección.");
             }
         }
 

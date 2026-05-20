@@ -47,14 +47,17 @@ namespace IoTSuper_API.Services
 
         public async Task EliminarSeccionAsync(int id)
         {
-            await _context.Secciones.Where(s => s.IdSeccion == id).ExecuteDeleteAsync();
-            await _context.SaveChangesAsync();
+            await _context.Secciones
+                .Where(s => s.IdSeccion == id)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(p => p.Habilitado, false)
+                    .SetProperty(p => p.UpdateAt, DateTime.UtcNow));
         }
 
         public async Task<List<SeccionDTO>> ObtenerSeccionesAsync(int centroId)
         {
             return await _context.Secciones
-                .Where(s => s.IdCentro == centroId)
+                .Where(s => s.IdCentro == centroId && s.Habilitado == true)
                 .Select(s => new SeccionDTO
                 {
                     IdSeccion = s.IdSeccion,

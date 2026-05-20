@@ -1,6 +1,7 @@
 ﻿using IoTSuper_DesktopApp.Config;
 using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Vistas.Administrador;
+using IoTSuper_DesktopApp.Vistas.Cliente;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
@@ -52,13 +53,18 @@ namespace IoTSuper_DesktopApp
             }
             else
             {
-               //Navegacion.IrA(new AdminInicio());
+               Navegacion.IrA(new CarruselCentro());
             }
         }
 
         private void navegar(UserControl vista)
         {
             VistaActual = vista;
+        }
+
+        private void VerCentros_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Navegacion.IrA(new CarruselCentro());
         }
     }
 }

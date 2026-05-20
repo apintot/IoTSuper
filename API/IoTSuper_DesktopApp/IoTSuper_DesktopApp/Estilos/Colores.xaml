@@ -3,10 +3,12 @@
 
                     <!--Fondos-->
     <SolidColorBrush x:Key="scbFondo" Color="#F3F4F6"/>
-    <SolidColorBrush x:Key="scbTarjeta" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="scbTarjeta" Color="#EEEEEE"/>
     <SolidColorBrush x:Key="scbFondoLateral" Color="#1F2937"/> <!--// #111827 #111827-->
-    
-                    <!--Texto-->
+
+    <Color x:Key="scbSombra">#AAAAAA</Color>
+
+    <!--Texto-->
     <SolidColorBrush x:Key="scbTexto" Color="#000000"/> 
     
                     <!--Campo-->

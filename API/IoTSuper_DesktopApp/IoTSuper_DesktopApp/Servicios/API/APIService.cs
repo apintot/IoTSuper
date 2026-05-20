@@ -13,24 +13,38 @@ namespace IoTSuper_DesktopApp.Servicios.API
     {
         private static readonly HttpClient _client = new HttpClient();
 
-        public static async Task<T> PostAsync<T>(string endpoint, object data)
+        public static async Task<T> PostAsync<T>(string endpoint, object data, bool esMiApi = true)
         {
             try
             {
                 Crypto crypto = new Crypto();
-                using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+                using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
-                string url = Sesion.ApiConfigFolder.API + endpoint;
+                string url = string.Empty;
+
+                if (esMiApi)
+                    url = Sesion.ApiConfigFolder.API + endpoint;
+                else
+                    url = endpoint;
 
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
 
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{crypto.Desencriptar(Sesion.ApiConfigFolder.APIUsuario)}:{crypto.Desencriptar(Sesion.ApiConfigFolder.APIcontrasena)}")));
+                if(esMiApi)
+                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{crypto.Desencriptar(Sesion.ApiConfigFolder.APIUsuario)}:{crypto.Desencriptar(Sesion.ApiConfigFolder.APIcontrasena)}")));
+                
                 request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = await _client.SendAsync(request, cts.Token);
 
                 if (response.Content != null)
-                    return await response.Content.ReadFromJsonAsync<T>();
+                {
+                    var opciones = new System.Text.Json.JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    return await response.Content.ReadFromJsonAsync<T>(opciones);
+                }
                 else
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.OK) { return (T)(object)true; }
@@ -71,19 +85,23 @@ namespace IoTSuper_DesktopApp.Servicios.API
             catch (Exception ex) { return default(T); }
         }
 
-        public static async Task<T> GetAsync<T>(string endpoint)
+        public static async Task<T> GetAsync<T>(string endpoint, bool esMiApi = true)
         {
             try
             {
                 Crypto crypto = new Crypto();
                 using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+                string url = string.Empty;
 
-                string url = Sesion.ApiConfigFolder.API + endpoint;
+                if (esMiApi)
+                    url = Sesion.ApiConfigFolder.API + endpoint;
+                else
+                    url = endpoint;
 
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
 
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{crypto.Desencriptar(Sesion.ApiConfigFolder.APIUsuario)}:{crypto.Desencriptar(Sesion.ApiConfigFolder.APIcontrasena)}")));
-                //request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+                if(esMiApi)
+                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{crypto.Desencriptar(Sesion.ApiConfigFolder.APIUsuario)}:{crypto.Desencriptar(Sesion.ApiConfigFolder.APIcontrasena)}")));
 
                 HttpResponseMessage response = await _client.SendAsync(request, cts.Token);
 

@@ -16,6 +16,8 @@
     <BitmapImage x:Key="IElimina" UriSource="pack://application:,,,/Estilos/Iconos/trash.png"/>
     <BitmapImage x:Key="IDerecha" UriSource="pack://application:,,,/Estilos/Iconos/right.png"/>
     <BitmapImage x:Key="IIzquierda" UriSource="pack://application:,,,/Estilos/Iconos/left.png"/>
+    <BitmapImage x:Key="IBasked" UriSource="pack://application:,,,/Estilos/Iconos/basket.png"/>
+    
 
     <!--Todas las imagenes de aqui seran high quality.-->
     <Style TargetType="Image">

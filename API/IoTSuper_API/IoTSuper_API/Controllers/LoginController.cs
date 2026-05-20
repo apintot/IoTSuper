@@ -39,10 +39,10 @@ namespace IoTSuper_API.Controllers
 
             Cliente? cliente = await _context.Clientes.Where(c => c.Login == loginRequest.Usuario && c.Habilitado).FirstOrDefaultAsync();
 
-            if (cliente == null || !_contrasenaService.VerificarContrasena(cliente.Contrasena, _crypto.Desencriptar(loginRequest.Contrasena))) 
-            {
-                return Unauthorized();
-            }
+            //if (cliente == null || !_contrasenaService.VerificarContrasena(cliente.Contrasena, _crypto.Desencriptar(loginRequest.Contrasena))) 
+            //{
+            //    return Unauthorized();
+            //}
 
             LoginResponse loginResponse = new LoginResponse
             {

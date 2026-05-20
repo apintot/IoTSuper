@@ -1,4 +1,5 @@
 ﻿using IoTSuper_DesktopApp.Seguridad;
+using System.Web;
 
 namespace IoTSuper_DesktopApp.Modelos
 {
@@ -25,7 +26,12 @@ namespace IoTSuper_DesktopApp.Modelos
         public string API { get; set; }
         public string EndPointLogin { get; set; }
         public string EndPointCliente { get; set; }
+        public string EndPointCentro { get; set; }
+        public string EndPointSecciones { get; set; }
+        public string EndPointTipologia { get; set; }
         public string EndPointActualizarTOTP { get; set; }
+        public string EndPointPaises { get; set; }
+        public string EndPointProvincias { get; set; }
 
         public ApiConfigFolder()
         {
@@ -35,6 +41,11 @@ namespace IoTSuper_DesktopApp.Modelos
             EndPointLogin = "/IoTSuper/Login";
             EndPointActualizarTOTP = "/IoTSuper/ActualizarTOTP";
             EndPointCliente = "/IoTSuper/Clientes";
+            EndPointCentro = "/IoTSuper/Centros";
+            EndPointSecciones = "/IoTSuper/Seccion";
+            EndPointTipologia = "/IoTSuper/Tipologia";
+            EndPointPaises = "https://restcountries.com/v3.1/region/europe?fields=name";
+            EndPointProvincias = "https://countriesnow.space/api/v0.1/countries/states";
         }
     }
 }
