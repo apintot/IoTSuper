@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IoTSuper_DesktopApp"
         mc:Ignorable="d"
-        Title="MainWindow" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" WindowState="Maximized">
+        WindowStartupLocation="CenterScreen" Title="IoTSuper" WindowState="Maximized">
     <Grid Background="{StaticResource scbFondo}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -27,7 +27,7 @@
             <Grid Grid.Row="1">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Tag="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,0">
-                        <Border Style="{StaticResource stlBoton}">
+                        <Border Style="{StaticResource stlBoton}" MouseLeftButtonUp="Inicio_MouseLeftButtonUp">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
                                 <Image Source="{StaticResource IInicio}" Width="25" Margin="0,0,10,0"/>
                                 <TextBlock Text="Inicio" Style="{StaticResource stlSubtitulo}" Foreground="{StaticResource scbFondo}"/>
@@ -54,7 +54,7 @@
                     </StackPanel>
 
                     <StackPanel Tag="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,35,0,0">
-                        <Border Style="{StaticResource stlBoton}">
+                        <Border Style="{StaticResource stlBoton}" MouseLeftButtonUp="CrearCentro_MouseLeftButtonUp">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
                                 <Image Source="{StaticResource INuevo}" Width="25" Margin="0,0,10,0"/>
                                 <TextBlock Text="Crear centro" Style="{StaticResource stlSubtitulo}" Foreground="{StaticResource scbFondo}"/>

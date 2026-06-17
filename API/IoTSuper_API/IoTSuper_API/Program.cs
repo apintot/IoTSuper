@@ -27,6 +27,7 @@ builder.Services.AddSingleton<Crypto>(sp =>
 builder.Services.AddScoped<IContrasenaService, ContrasenaService>();
 builder.Services.AddScoped<ICentroService, CentroService>();
 builder.Services.AddScoped<ISeccionService, SeccionService>();
+builder.Services.AddScoped<IComponenteService, ComponenteService>();
 
 builder.Services.AddAuthorization();
 

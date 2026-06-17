@@ -58,24 +58,24 @@ namespace IoTSuper_DesktopApp.Servicios.Centro
             catch (Exception ex) { return new Dictionary<int, string>(); }
         }
 
-        public static async Task<ErrorPost> GuardarCentro(CentroDTO centro)
+        public static async Task<ErrorDTO> GuardarCentro(CentroDTO centro)
         {
             try
             {
-                return await APIService.PostAsync<ErrorPost>(Sesion.ApiConfigFolder.EndPointCentro, centro) ?? new ErrorPost { Status = 500 };
+                return await APIService.PostAsync<ErrorDTO>(Sesion.ApiConfigFolder.EndPointCentro, centro) ?? new ErrorDTO { Status = 500 };
             }
-            catch (Exception ex) { return new ErrorPost { Status = 500 }; }
+            catch (Exception ex) { return new ErrorDTO { Status = 500 }; }
         }
 
-        public static async Task<ErrorPost> EditarCentro(CentroDTO centro)
+        public static async Task<ErrorDTO> EditarCentro(CentroDTO centro)
         {
             try
             {
-                return await APIService.PutAsync<ErrorPost>($"{Sesion.ApiConfigFolder.EndPointCentro}", centro) ?? new ErrorPost { Status = 500 };
+                return await APIService.PutAsync<ErrorDTO>($"{Sesion.ApiConfigFolder.EndPointCentro}", centro) ?? new ErrorDTO { Status = 500 };
             }
             catch (Exception ex)
             {
-                return new ErrorPost { Status = 500 };
+                return new ErrorDTO { Status = 500 };
             }
         }
 

@@ -22,8 +22,6 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
     /// </summary>
     public partial class CarruselCentro : UserControl
     {
-        private List<Modelos.CentroDTO> _centros;
-
         private int _indiceCarusel = 1;
 
         private TarjetaCentro _tarjetaIzquierda;
@@ -38,21 +36,19 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private async void CarruselCentro_Loaded(object sender, RoutedEventArgs e)
         {
-            _centros = await CentroService.ObtenerCentros(Sesion.LoginData.IdCliente);
+            if(Sesion._centros == null || Sesion._centros.Count == 0) { btnDerecha.Visibility = Visibility.Collapsed; btnIzquierda.Visibility = Visibility.Collapsed; return; }
 
-            if(_centros == null || _centros.Count == 0) { btnDerecha.Visibility = Visibility.Collapsed; btnIzquierda.Visibility = Visibility.Collapsed; return; }
-
-            if(_centros.Count == 1)
+            if(Sesion._centros.Count == 1)
             {
-                _tarjetaCentro = new TarjetaCentro(_centros[0]);
+                _tarjetaCentro = new TarjetaCentro(Sesion._centros[0]);
 
                 ContenedorCarusel.Children.Add(_tarjetaCentro);
             }
 
-            if(_centros.Count == 2)
+            if(Sesion._centros.Count == 2)
             {
-                _tarjetaIzquierda = new TarjetaCentro(_centros[0]);
-                _tarjetaCentro = new TarjetaCentro(_centros[1]);
+                _tarjetaIzquierda = new TarjetaCentro(Sesion._centros[0]);
+                _tarjetaCentro = new TarjetaCentro(Sesion._centros[1]);
 
                 _tarjetaIzquierda.Height = 450;
                 _tarjetaIzquierda.Width = 350;
@@ -64,12 +60,11 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
                 ContenedorCarusel.Children.Add(_tarjetaCentro);
             }
 
-            if (_centros.Count > 2)
+            if (Sesion._centros.Count > 2)
             {
-                _tarjetaIzquierda = new TarjetaCentro(_centros[0]);
-                _tarjetaCentro = new TarjetaCentro(_centros[1]);
-                _tarjetaDerecha = new TarjetaCentro(_centros[2]);
-
+                _tarjetaIzquierda = new TarjetaCentro(Sesion._centros[0]);
+                _tarjetaCentro = new TarjetaCentro(Sesion._centros[1]);
+                _tarjetaDerecha = new TarjetaCentro(Sesion._centros[2]);
                 _tarjetaIzquierda.Height = 450;
                 _tarjetaIzquierda.Width = 350;
                 _tarjetaIzquierda.Opacity = 0.7;
@@ -90,15 +85,15 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         public void ActualizarCarrusel()
         {
-            int total = _centros.Count;
+            int total = Sesion._centros.Count;
 
             int izq = (_indiceCarusel - 1 + total) % total;
             int centro = _indiceCarusel;
             int der = (_indiceCarusel + 1) % total;
 
-            _tarjetaIzquierda?.ActualizarCentro(_centros[izq]);
-            _tarjetaCentro?.ActualizarCentro(_centros[centro]);
-            _tarjetaDerecha?.ActualizarCentro(_centros[der]);
+            _tarjetaIzquierda?.ActualizarCentro(Sesion._centros[izq]);
+            _tarjetaCentro?.ActualizarCentro(Sesion._centros[centro]);
+            _tarjetaDerecha?.ActualizarCentro(Sesion._centros[der]);
         }
 
         private void CrearCentroView_Click(object sender, RoutedEventArgs e)
@@ -108,13 +103,13 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private void btnDerecha_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _indiceCarusel = (_indiceCarusel - 1 + _centros.Count) % _centros.Count;
+            _indiceCarusel = (_indiceCarusel - 1 + Sesion._centros.Count) % Sesion._centros.Count;
             ActualizarCarrusel();
         }
 
         private void btnIzquierda_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _indiceCarusel = (_indiceCarusel + 1) % _centros.Count;
+            _indiceCarusel = (_indiceCarusel + 1) % Sesion._centros.Count;
             ActualizarCarrusel();
         }
     }

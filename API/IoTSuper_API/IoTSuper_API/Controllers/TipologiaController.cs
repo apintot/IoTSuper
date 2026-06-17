@@ -1,4 +1,5 @@
 ﻿using IoTSuper_API.Data;
+using IoTSuper_API.DTO;
 using IoTSuper_API.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,14 +30,15 @@ namespace IoTSuper_API.Controllers
 
                 if (tipologias == null || tipologias.Count == 0)
                 {
-                    return NotFound("No se encontraron tipologías.");
+                    return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "No se encontraron tipologías." } } } });
+                    
                 }
 
                 return Ok(tipologias);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al obtener las tipologías.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Ocurrió un error al obtener las tipologias." } } } });
             }
         }
     }

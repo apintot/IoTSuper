@@ -20,22 +20,22 @@ namespace IoTSuper_DesktopApp.Servicios.Seccion
             catch (Exception ex) { throw new Exception("Error al eliminar la sección: " + ex.Message); }
         }
 
-        public static async Task<ErrorPost> GuardarSeccion(SeccionDTO seccion)
+        public static async Task<ErrorDTO> GuardarSeccion(SeccionDTO seccion)
         {
             try
             {
-                return await APIService.PostAsync<ErrorPost>(Sesion.ApiConfigFolder.EndPointSecciones, seccion) ?? new ErrorPost { Status = 500 };
+                return await APIService.PostAsync<ErrorDTO>(Sesion.ApiConfigFolder.EndPointSecciones, seccion) ?? new ErrorDTO { Status = 500 };
             }
-            catch (Exception ex) { return new ErrorPost { Status = 500 }; }
+            catch (Exception ex) { return new ErrorDTO { Status = 500 }; }
         }
 
-        internal static async Task<ErrorPost> ActualizarSeccion(SeccionDTO seccion)
+        internal static async Task<ErrorDTO> ActualizarSeccion(SeccionDTO seccion)
         {
             try
             {
-                return await APIService.PutAsync<ErrorPost>(Sesion.ApiConfigFolder.EndPointSecciones, seccion) ?? new ErrorPost { Status = 500 };
+                return await APIService.PutAsync<ErrorDTO>(Sesion.ApiConfigFolder.EndPointSecciones, seccion) ?? new ErrorDTO { Status = 500 };
             }
-            catch (Exception ex) { return new ErrorPost { Status = 500 }; }
+            catch (Exception ex) { return new ErrorDTO { Status = 500 }; }
         }
     }
 }

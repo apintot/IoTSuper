@@ -24,6 +24,11 @@ namespace IoTSuper_DesktopApp
                 Directory.CreateDirectory(Rutas.AppFolder);
             }
 
+            if (!Directory.Exists(Rutas.Logs))
+            {
+                Directory.CreateDirectory(Rutas.Logs);
+            }
+
             if (!File.Exists(Rutas.ApiConfigFile))
             {
                 FileWriter.Write<ApiConfigFolder>(Rutas.ApiConfigFile, new ApiConfigFolder());

@@ -125,7 +125,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             GuardarDatosCentro();
 
-            ErrorPost errores = await CentroService.GuardarCentro(_centro);
+            ErrorDTO errores = await CentroService.GuardarCentro(_centro);
 
             if (errores != null && errores.Status == 200) { Navegacion.IrA(new CarruselCentro()); }
 
@@ -158,7 +158,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             _centro.Nombre = camNombre.Texto;
         }
 
-        private void MostrarErrores(ErrorPost errores)
+        private void MostrarErrores(ErrorDTO errores)
         {
             foreach (KeyValuePair<string, List<string>> error in errores.Errors)
             {
@@ -246,7 +246,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             GuardarDatosCentro();
 
-            ErrorPost errores = await CentroService.EditarCentro(_centro);
+            ErrorDTO errores = await CentroService.EditarCentro(_centro);
 
             if (errores != null && errores.Status == 200) { Navegacion.IrA(new CarruselCentro()); }
 

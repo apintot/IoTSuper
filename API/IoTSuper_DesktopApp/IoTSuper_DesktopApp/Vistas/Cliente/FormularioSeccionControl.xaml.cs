@@ -73,7 +73,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             _seccion.Nombre = camNombre.Texto;
             _seccion.IdCentro = _idCentro;
 
-            ErrorPost errores = await SeccionService.GuardarSeccion(_seccion);
+            ErrorDTO errores = await SeccionService.GuardarSeccion(_seccion);
 
             if (errores != null && errores.Status == 200) { Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); }
 
@@ -84,14 +84,14 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
         {
             _seccion.Nombre = camNombre.Texto;
 
-            ErrorPost errores = await SeccionService.ActualizarSeccion(_seccion);
+            ErrorDTO errores = await SeccionService.ActualizarSeccion(_seccion);
 
             if (errores != null && errores.Status == 200) { Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); }
 
             MostrarErrores(errores);
         }
 
-        private void MostrarErrores(ErrorPost errores)
+        private void MostrarErrores(ErrorDTO errores)
         {
             foreach (KeyValuePair<string, List<string>> error in errores.Errors)
             {

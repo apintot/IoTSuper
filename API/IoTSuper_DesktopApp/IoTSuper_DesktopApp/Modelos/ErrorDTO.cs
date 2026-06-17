@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IoTSuper_DesktopApp.Modelos
 {
-    public class ErrorPost
+    public class ErrorDTO
     {
         public string Type { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;

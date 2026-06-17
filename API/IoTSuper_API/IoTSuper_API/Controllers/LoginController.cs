@@ -37,7 +37,7 @@ namespace IoTSuper_API.Controllers
 
             //loginRequest.Contrasena = _crypto.Encriptar(loginRequest.Contrasena);
 
-            Cliente? cliente = await _context.Clientes.Where(c => c.Login == loginRequest.Usuario && c.Habilitado).FirstOrDefaultAsync();
+             Cliente? cliente = await _context.Clientes.Where(c => c.Login == loginRequest.Usuario && c.Habilitado).FirstOrDefaultAsync();
 
             //if (cliente == null || !_contrasenaService.VerificarContrasena(cliente.Contrasena, _crypto.Desencriptar(loginRequest.Contrasena))) 
             //{

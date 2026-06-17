@@ -17,11 +17,22 @@
     <BitmapImage x:Key="IDerecha" UriSource="pack://application:,,,/Estilos/Iconos/right.png"/>
     <BitmapImage x:Key="IIzquierda" UriSource="pack://application:,,,/Estilos/Iconos/left.png"/>
     <BitmapImage x:Key="IBasked" UriSource="pack://application:,,,/Estilos/Iconos/basket.png"/>
+    <BitmapImage x:Key="ISave" UriSource="pack://application:,,,/Estilos/Iconos/save.png"/>
+    <BitmapImage x:Key="IBack" UriSource="pack://application:,,,/Estilos/Iconos/volver.png"/>
+    <BitmapImage x:Key="IRojo" UriSource="pack://application:,,,/Estilos/Iconos/rojo.png"/>
+    <BitmapImage x:Key="IVerde" UriSource="pack://application:,,,/Estilos/Iconos/verde.png"/>
+    <BitmapImage x:Key="IStock" UriSource="pack://application:,,,/Estilos/Iconos/pallet.png"/>
+    <BitmapImage x:Key="ITermometro" UriSource="pack://application:,,,/Estilos/Iconos/thermometer.png"/>
+    <BitmapImage x:Key="ILcd" UriSource="pack://application:,,,/Estilos/Iconos/lcd.png"/>
     
-
+    <BitmapImage x:Key="ISmbOk" UriSource="pack://application:,,,/Estilos/Iconos/check.png"/>
+    <BitmapImage x:Key="ISmbError" UriSource="pack://application:,,,/Estilos/Iconos/exclamation.png"/>
+    <BitmapImage x:Key="ISmbStck" UriSource="pack://application:,,,/Estilos/Iconos/simboloPallet.png"/>
+    <BitmapImage x:Key="ISmbTmp" UriSource="pack://application:,,,/Estilos/Iconos/celsius.png"/>
+    
     <!--Todas las imagenes de aqui seran high quality.-->
     <Style TargetType="Image">
-        <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant"/>
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 

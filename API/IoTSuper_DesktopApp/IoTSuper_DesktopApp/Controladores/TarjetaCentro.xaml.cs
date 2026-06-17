@@ -1,6 +1,8 @@
-﻿using IoTSuper_DesktopApp.Helpers;
+﻿using IoTSuper_DesktopApp.Config;
+using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Modelos;
 using IoTSuper_DesktopApp.Servicios.Centro;
+using IoTSuper_DesktopApp.Servicios.Componente;
 using IoTSuper_DesktopApp.Vistas.Cliente;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,13 +18,30 @@ namespace IoTSuper_DesktopApp.Controladores
     public partial class TarjetaCentro : UserControl
     {
         private CentroDTO _centro;
-        private List<Modelos.SeccionDTO> _secciones;
 
         public TarjetaCentro(CentroDTO centro)
         {
             InitializeComponent();
 
-            ActualizarCentro(centro);;
+            txbNumeroSensores.Text = 0.ToString();
+
+            this.Loaded += TarjetaCentro_Loaded;
+
+            ActualizarCentro(centro);
+        }
+
+        private async void TarjetaCentro_Loaded(object sender, RoutedEventArgs e)
+        {
+            _centro._secciones = Sesion._centros.Where(c => c.IdCentro == _centro.IdCentro).FirstOrDefault()?._secciones;
+            txbNumeroSecciones.Text = _centro._secciones?.Count.ToString();
+            _centro.numeroComponentes = 0;
+
+            foreach (SeccionDTO seccion in _centro._secciones)
+            {
+                _centro.numeroComponentes += seccion._componentes.Count;
+            }
+
+            txbNumeroSensores.Text = _centro.numeroComponentes.ToString();
         }
 
         public async void ActualizarCentro(CentroDTO centro)
@@ -30,6 +49,8 @@ namespace IoTSuper_DesktopApp.Controladores
             _centro = centro;
 
             txbTituloCentro.Text = centro.Nombre;
+
+            txbNumeroSensores.Text = _centro.numeroComponentes.ToString();
 
             if (string.IsNullOrWhiteSpace(centro.Imagen))
             {
@@ -44,17 +65,18 @@ namespace IoTSuper_DesktopApp.Controladores
                 ImgCentro.Height = double.NaN;
             }
 
-            _secciones = await CentroService.ObtenerSeccionesCentro(_centro.IdCentro);
+            _centro._secciones = centro._secciones;
 
-            if (_secciones == null) { txbNumeroSecciones.Text = "0"; return; }
+            if (_centro._secciones == null) { txbNumeroSecciones.Text = "0"; return; }
 
-            txbNumeroSecciones.Text = _secciones.Count.ToString();
+            txbNumeroSecciones.Text = _centro._secciones.Count.ToString();
         }
 
         private void VerSecciones_Click(object sender, RoutedEventArgs e)
         {
-            if(_secciones == null || _secciones.Count == 0) { return; }
-            Navegacion.IrA(new CarruselSeccion(_secciones, _centro.IdCentro));
+            if(_centro._secciones == null || _centro._secciones.Count == 0) { return; }
+            Sesion.centroSelecionado = _centro.IdCentro;
+            Navegacion.IrA(new CarruselSeccion(_centro._secciones, _centro.IdCentro));
         }
 
         private void OtrasOpciones_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -80,6 +102,7 @@ namespace IoTSuper_DesktopApp.Controladores
             try
             {
                 await CentroService.EliminarCentro(this._centro.IdCentro);
+                Sesion._centros.Remove(this._centro);
                 Navegacion.IrA(new CarruselCentro());
             }
             catch (Exception ex) 

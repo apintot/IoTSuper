@@ -1,5 +1,8 @@
 ﻿using IoTSuper_DesktopApp.Config;
 using IoTSuper_DesktopApp.Helpers;
+using IoTSuper_DesktopApp.Modelos;
+using IoTSuper_DesktopApp.Servicios.Centro;
+using IoTSuper_DesktopApp.Servicios.Componente;
 using IoTSuper_DesktopApp.Vistas.Administrador;
 using IoTSuper_DesktopApp.Vistas.Cliente;
 using System.ComponentModel;
@@ -43,6 +46,7 @@ namespace IoTSuper_DesktopApp
         {
             InitializeComponent();
 
+
             DataContext = this;
 
             Navegacion.CambiarVista = navegar;
@@ -53,7 +57,38 @@ namespace IoTSuper_DesktopApp
             }
             else
             {
-               Navegacion.IrA(new CarruselCentro());
+                this.Loaded += MainWindow_Loaded;
+            }
+        }
+
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Sesion.conectarAMqtt();
+
+            Sesion._centros = await CentroService.ObtenerCentros(Sesion.LoginData.IdCliente);
+
+            foreach(CentroDTO centro in Sesion._centros)
+            {
+                centro._secciones = await CentroService.ObtenerSeccionesCentro(centro.IdCentro);
+                
+                foreach(SeccionDTO seccion in centro._secciones)
+                {
+                    seccion._componentes = await ComponenteService.ObtenerComponentesSeccion(seccion.IdSeccion);
+                }
+            }
+
+            cargarTablaResumen();
+
+            Navegacion.IrA(new ResumenViewControl());
+        }
+
+        private void cargarTablaResumen()
+        {
+            List<ResumenDTO> resumenDTOs = Sesion._centros.SelectMany(c => c._secciones.SelectMany(s => s._componentes.Select(x => ComponenteToResumen.ConvierteAResumenDTO(x, c.Nombre, s.Nombre)))).ToList();
+
+            foreach(ResumenDTO resumenDTO in resumenDTOs)
+            {
+                Sesion.Componentes.Add(resumenDTO);
             }
         }
 
@@ -64,7 +99,26 @@ namespace IoTSuper_DesktopApp
 
         private void VerCentros_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Navegacion.IrA(new CarruselCentro());
+            if(VistaActual is not CarruselCentro)
+                Navegacion.IrA(new CarruselCentro());
+        }
+
+        private void CrearCentro_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if(VistaActual is not FormularioCentroControl)
+                Navegacion.IrA(new FormularioCentroControl());
+        }
+
+        private void Inicio_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Sesion.LoginData.EsAdmin)
+            {
+                Navegacion.IrA(new AdminInicio());
+            }
+            else
+            {
+                Navegacion.IrA(new ResumenViewControl());
+            }
         }
     }
 }

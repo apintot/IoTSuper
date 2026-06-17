@@ -12,26 +12,42 @@
     <None Remove="Estilos\Fuentes\Manrope-VariableFont_wght.ttf" />
     <None Remove="Estilos\Iconos\basket.png" />
     <None Remove="Estilos\Iconos\candado.png" />
+    <None Remove="Estilos\Iconos\celsius.png" />
     <None Remove="Estilos\Iconos\centros.png" />
+    <None Remove="Estilos\Iconos\check.png" />
     <None Remove="Estilos\Iconos\edit.png" />
+    <None Remove="Estilos\Iconos\exclamation.png" />
     <None Remove="Estilos\Iconos\exit.png" />
     <None Remove="Estilos\Iconos\incidencias.png" />
     <None Remove="Estilos\Iconos\inicio.png" />
     <None Remove="Estilos\Iconos\iot.png" />
+    <None Remove="Estilos\Iconos\lcd.png" />
     <None Remove="Estilos\Iconos\left.png" />
     <None Remove="Estilos\Iconos\lupa.png" />
     <None Remove="Estilos\Iconos\nuevo.png" />
+    <None Remove="Estilos\Iconos\pallet.png" />
     <None Remove="Estilos\Iconos\qr.png" />
     <None Remove="Estilos\Iconos\right.png" />
+    <None Remove="Estilos\Iconos\rojo.png" />
+    <None Remove="Estilos\Iconos\save.png" />
     <None Remove="Estilos\Iconos\scanner.png" />
+    <None Remove="Estilos\Iconos\simboloPallet.png" />
+    <None Remove="Estilos\Iconos\thermometer.png" />
     <None Remove="Estilos\Iconos\trash.png" />
     <None Remove="Estilos\Iconos\user.png" />
+    <None Remove="Estilos\Iconos\verde.png" />
+    <None Remove="Estilos\Iconos\volver.png" />
     <None Remove="Estilos\Imagenes\ImagenDefecto.png" />
+    <None Remove="Estilos\Imagenes\imgTest.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="10.0.7" />
+    <PackageReference Include="MQTTnet" Version="5.1.0.1559" />
+    <PackageReference Include="MQTTnet.AspNetCore" Version="5.1.0.1559" />
+    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.7.1207" />
+    <PackageReference Include="MQTTnet.Extensions.TopicTemplate" Version="5.1.0.1559" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Otp.NET" Version="1.4.1" />
     <PackageReference Include="QRCoder" Version="1.8.0" />
@@ -41,25 +57,61 @@
     <Resource Include="Estilos\Fuentes\Manrope-VariableFont_wght.ttf" />
     <Resource Include="Estilos\Iconos\basket.png" />
     <Resource Include="Estilos\Iconos\candado.png" />
+    <Resource Include="Estilos\Iconos\celsius.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\centros.png" />
+    <Resource Include="Estilos\Iconos\check.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\edit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Estilos\Iconos\exclamation.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Estilos\Iconos\exit.png" />
     <Resource Include="Estilos\Iconos\incidencias.png" />
     <Resource Include="Estilos\Iconos\inicio.png" />
     <Resource Include="Estilos\Iconos\iot.png" />
+    <Resource Include="Estilos\Iconos\lcd.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\left.png" />
     <Resource Include="Estilos\Iconos\lupa.png" />
     <Resource Include="Estilos\Iconos\nuevo.png" />
+    <Resource Include="Estilos\Iconos\pallet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\qr.png" />
     <Resource Include="Estilos\Iconos\right.png" />
+    <Resource Include="Estilos\Iconos\rojo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Estilos\Iconos\save.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\scanner.png" />
+    <Resource Include="Estilos\Iconos\simboloPallet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Estilos\Iconos\thermometer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Iconos\trash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Estilos\Iconos\user.png" />
+    <Resource Include="Estilos\Iconos\verde.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Estilos\Iconos\volver.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Estilos\Imagenes\ImagenDefecto.png" />
+    <Resource Include="Estilos\Imagenes\imgTest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

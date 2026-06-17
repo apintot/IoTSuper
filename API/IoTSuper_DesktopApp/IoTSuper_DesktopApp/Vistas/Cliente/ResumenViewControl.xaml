@@ -1,0 +1,158 @@
+﻿<UserControl x:Class="IoTSuper_DesktopApp.Vistas.Cliente.ResumenViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IoTSuper_DesktopApp.Vistas.Cliente"
+             mc:Ignorable="d">
+    <Grid Margin="50" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="175"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource stlTitulo}" Text="Resumen" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Grid HorizontalAlignment="Stretch"  VerticalAlignment="Top" Height="120">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border CornerRadius="15" Grid.Column="0" Background="White" Margin="10" BorderThickness="5">
+                    <Border.Effect>
+                        <DropShadowEffect Color="{StaticResource scbSombra}" BlurRadius="10" ShadowDepth="2" Opacity="1"/>
+                    </Border.Effect>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource ISmbOk}" Height="50" Width="50" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Style="{StaticResource stlCampo}" Text="Dispositivos Activos"/>
+                            <TextBlock x:Name="txbOk" Foreground="{StaticResource scbOk}" FontSize="40" FontWeight="Bold" HorizontalAlignment="Left" Text="0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="15" Grid.Column="1" Background="White" Margin="10" BorderThickness="5" >
+                    <Border.Effect>
+                        <DropShadowEffect Color="{StaticResource scbSombra}" BlurRadius="10" ShadowDepth="2" Opacity="1"/>
+                    </Border.Effect>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource ISmbError}" Height="45" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Style="{StaticResource stlCampo}" Text="Dispositivos en error"/>
+                            <TextBlock x:Name="txbEnError" Foreground="{StaticResource scbError}" FontSize="40" FontWeight="Bold" HorizontalAlignment="Left" Text="0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="15" Grid.Column="2" Background="White" Margin="10" BorderThickness="5" >
+                    <Border.Effect>
+                        <DropShadowEffect Color="{StaticResource scbSombra}" BlurRadius="10" ShadowDepth="2" Opacity="1"/>
+                    </Border.Effect>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource ISmbStck}" Height="50" Width="50" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Style="{StaticResource stlCampo}" Text="Stocks al minimo"/>
+                            <TextBlock x:Name="txbMinimo" Foreground="{StaticResource scbAdvertenciaStock}" FontSize="40" FontWeight="Bold" HorizontalAlignment="Left" Text="0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="15" Grid.Column="3" Background="White" Margin="10"  BorderThickness="5">
+                    <Border.Effect>
+                        <DropShadowEffect Color="{StaticResource scbSombra}" BlurRadius="10" ShadowDepth="2" Opacity="1"/>
+                    </Border.Effect>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource ISmbTmp}" Height="50" Width="50" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Style="{StaticResource stlCampo}" Text="Temperatura fuera de rango"/>
+                            <TextBlock x:Name="txbAlerta" Foreground="{StaticResource scbAzul}" FontSize="40" FontWeight="Bold" HorizontalAlignment="Left" Text="0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Background="Transparent">
+            <Border CornerRadius="15" Background="White" Padding="10" Margin="10" BorderThickness="5">
+                <Border.Effect>
+                    <DropShadowEffect Color="{StaticResource scbSombra}" BlurRadius="10" ShadowDepth="2" Opacity="1"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="75"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Style="{StaticResource stlTitulo}" Grid.Row="0" Text="Lista de componentes"/>
+
+                    <TextBlock Style="{StaticResource stlTitulo}" Grid.Row="1" Text="" />
+
+                    <DataGrid x:Name="dgComponentes" BorderBrush="White"
+                        Grid.Row="2"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        HeadersVisibility="Column"
+                        GridLinesVisibility="None"
+                        RowHeight="45"
+                        BorderThickness="1"
+                        Background="Transparent"
+                        AlternatingRowBackground="LightGray"
+                        RowBackground="White"
+                        IsHitTestVisible="True"
+                        IsManipulationEnabled="False"
+                        AlternationCount="2">       
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="Nombre" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Nombre}"
+                                Width="*"/>
+
+                            <DataGridTextColumn Header="Tipo" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Tipo}"
+                                Width="*"/>
+
+                            <DataGridTextColumn Header="Centro" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Centro}"
+                                Width="*"/>
+
+                            <DataGridTextColumn Header="Seccion" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Seccion}"
+                                Width="*"/>
+
+                            <DataGridTemplateColumn Header="Estado" Width="*" HeaderStyle="{StaticResource stlTablaHeader}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" Width="75" Height="30" Background="{Binding EstadoColor}"> 
+                                            <TextBlock Text="{Binding Estado}" Foreground="White" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="Ultimo Dato" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding UltimoDato}"
+                                Width="*"/>
+
+                            <DataGridTextColumn Header="Actualizado" IsReadOnly="True"
+                                HeaderStyle="{StaticResource stlTablaHeader}"
+                                ElementStyle="{StaticResource stlTablaText}"
+                                Binding="{Binding Actualizado}"
+                                Width="*"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

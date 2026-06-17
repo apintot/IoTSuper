@@ -27,5 +27,10 @@ namespace IoTSuper_DesktopApp.Modelos
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public LocalizacionDTO Localizacion { get; set; } = new LocalizacionDTO();
+
+
+        public List<Modelos.SeccionDTO> _secciones;
+
+        public int numeroComponentes = 0;
     }
 }

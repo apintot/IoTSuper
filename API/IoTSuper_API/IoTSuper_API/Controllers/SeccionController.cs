@@ -32,14 +32,14 @@ namespace IoTSuper_API.Controllers
 
                 if (secciones == null || secciones.Count == 0)
                 {
-                    return NotFound("Sección no encontrada");
+                    return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Sección no encontrada" } } } });
                 }
 
                 return Ok(secciones);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al obtener las secciones.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Sección no encontrada" } } } });
             }
         }
 
@@ -53,11 +53,11 @@ namespace IoTSuper_API.Controllers
                     return BadRequest(ModelState);
                 }
                 await _seccionService.CrearSeccionAsync(seccionDTO);
-                return Ok(new ErrorDTO());
+                return Ok(new ErrorDTO() { Title="Seccion creada correctamente"});
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al crear la sección.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al crear la seccion" } } } });
             }
         }
 
@@ -75,7 +75,7 @@ namespace IoTSuper_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al actualizar la sección.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar la seccion" } } } });
             }
         }
 
@@ -89,11 +89,11 @@ namespace IoTSuper_API.Controllers
                     return BadRequest(ModelState);
                 }
                 await _seccionService.EliminarSeccionAsync(Id);
-                return Ok();
+                return Ok(new ErrorDTO() { Status = 200 });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al eliminar la sección.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al eliminar seccion" } } } });
             }
         }
     }

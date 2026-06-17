@@ -1,6 +1,8 @@
-﻿using IoTSuper_DesktopApp.Helpers;
+﻿using IoTSuper_DesktopApp.Config;
+using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Modelos;
 using IoTSuper_DesktopApp.Servicios.Centro;
+using IoTSuper_DesktopApp.Servicios.Componente;
 using IoTSuper_DesktopApp.Servicios.Seccion;
 using IoTSuper_DesktopApp.Vistas.Cliente;
 using System;
@@ -24,6 +26,7 @@ namespace IoTSuper_DesktopApp.Controladores
     public partial class TarjetaSeccion : UserControl
     {
         private SeccionDTO _seccion;
+        private List<ComponenteDTO> componentes;
 
         public TarjetaSeccion(SeccionDTO seccion)
         {
@@ -31,6 +34,15 @@ namespace IoTSuper_DesktopApp.Controladores
 
             ActualizarSeccion(seccion);
             _seccion = seccion;
+
+            this.Loaded += TarjetaSeccion_Loaded;
+        }
+
+        private async void TarjetaSeccion_Loaded(object sender, RoutedEventArgs e)
+        {
+            componentes = await ComponenteService.ObtenerComponentesSeccion(_seccion.IdSeccion);
+            txbNumeroSensores.Text = componentes.Count().ToString();
+            _seccion.NumComponentes = componentes.Count();
         }
 
         public async void ActualizarSeccion(SeccionDTO seccion)
@@ -38,6 +50,8 @@ namespace IoTSuper_DesktopApp.Controladores
             _seccion = seccion;
 
             txbTituloSeccion.Text = _seccion.Nombre;
+
+            txbNumeroSensores.Text = _seccion.NumComponentes.ToString();
 
             if (string.IsNullOrWhiteSpace(_seccion.Imagen))
             {
@@ -55,7 +69,8 @@ namespace IoTSuper_DesktopApp.Controladores
 
         private void VerSecciones_Click(object sender, RoutedEventArgs e)
         {
-
+            Sesion.seccionSelecionado = this._seccion.IdSeccion;
+            Navegacion.IrA(new ComponeneViewControl(this._seccion));
         }
 
         private void OtrasOpciones_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

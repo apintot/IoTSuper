@@ -15,7 +15,11 @@ namespace IoTSuper_DesktopApp.Modelos
 
         public bool Habilitado { get; set; } = true;
 
+        public int NumComponentes = 0;
+
         public DateTime? UpdateAt { get; set; } = new DateTime(1900, 1, 1);
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public List<ComponenteDTO> _componentes;
     }
 }

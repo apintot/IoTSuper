@@ -32,14 +32,14 @@ namespace IoTSuper_API.Controllers
 
                 if (centros == null || centros.Count == 0)
                 {
-                    return NotFound("Centro no encontrado");
+                    return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al encontrar centro" } } } });
                 }
 
                 return Ok(centros);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al obtener los centros.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al obtener el centro" } } } });
             }
         }
 
@@ -54,11 +54,11 @@ namespace IoTSuper_API.Controllers
                 }
 
                 await _centroService.CrearCentroAsync(centroDTO);
-                return Ok();
+                return Ok(new ErrorDTO() { Status = 200 });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al crear el centro.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al crear centro" } } } });
             }
         }
 
@@ -73,11 +73,11 @@ namespace IoTSuper_API.Controllers
                 }
 
                 await _centroService.ActualizarCentroAsync(centroDTO);
-                return Ok(new ErrorDTO());
+                return Ok(new ErrorDTO() { Status = 200 });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al actualizar el centro.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar centro" } } } });
             }
         }
 
@@ -92,11 +92,11 @@ namespace IoTSuper_API.Controllers
                 }
 
                 await _centroService.EliminarCentroAsync(id);
-                return Ok();
+                return Ok(new ErrorDTO() { Status = 200 });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al eliminar el centro.");
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al eliminar centro" } } } });
             }
         }
     }

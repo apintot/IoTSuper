@@ -27,6 +27,7 @@ namespace IoTSuper_DesktopApp.Modelos
         public string EndPointLogin { get; set; }
         public string EndPointCliente { get; set; }
         public string EndPointCentro { get; set; }
+        public string EndPointComponente { get; set; }
         public string EndPointSecciones { get; set; }
         public string EndPointTipologia { get; set; }
         public string EndPointActualizarTOTP { get; set; }
@@ -44,6 +45,7 @@ namespace IoTSuper_DesktopApp.Modelos
             EndPointCentro = "/IoTSuper/Centros";
             EndPointSecciones = "/IoTSuper/Seccion";
             EndPointTipologia = "/IoTSuper/Tipologia";
+            EndPointComponente = "/IoTSuper/Componentes";
             EndPointPaises = "https://restcountries.com/v3.1/region/europe?fields=name";
             EndPointProvincias = "https://countriesnow.space/api/v0.1/countries/states";
         }

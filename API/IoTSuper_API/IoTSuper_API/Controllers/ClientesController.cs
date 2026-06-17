@@ -1,4 +1,5 @@
 ﻿using IoTSuper_API.Data;
+using IoTSuper_API.DTO;
 using IoTSuper_API.DTO.Cliente;
 using IoTSuper_API.Models;
 using IoTSuper_API.Security;
@@ -32,7 +33,7 @@ namespace IoTSuper_API.Controllers
 
             if(clientes == null || clientes.Count == 0)
             {
-                return NotFound();
+                return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Cliente no encontrado" } } } });
             }
 
             List<ClienteResponse> clientesResponse = clientes.Select(c => new ClienteResponse
@@ -56,7 +57,7 @@ namespace IoTSuper_API.Controllers
 
             if (cliente == null)
             {
-                return NotFound();
+                return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Cliente no encontrado" } } } });
             }
 
             ClienteResponse clienteResponse = new ClienteResponse
@@ -84,17 +85,14 @@ namespace IoTSuper_API.Controllers
 
             if (await _context.Clientes.AnyAsync(c => c.Login == cliente.Login))
             {
-                return BadRequest(new { mensaje = "El login ya existe." });
+                return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } });
             }
 
             if (string.IsNullOrWhiteSpace(cliente.Nombre)) { return BadRequest(new { mensaje = "El nombre es obligatorio." }); }
 
             if (!_contrasenaService.EsContrasenaSegura(_crypto.Desencriptar(cliente.Contrasena)))
             {
-                return BadRequest(new
-                {
-                    mensaje = "La contraseña debe tener al menos 12 caracteres e incluir mayúsculas, minúsculas, números y caracteres especiales."
-                });
+                return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } });
             }
 
             Cliente nuevoCliente = new Cliente
@@ -113,18 +111,9 @@ namespace IoTSuper_API.Controllers
                 _context.Clientes.Add(nuevoCliente);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) { return StatusCode(500, new { mensaje = "Error interno del servidor." }); }
+            catch (Exception ex) { return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } }); }
 
-            ClienteResponse response = new ClienteResponse
-            {
-                IdCliente = nuevoCliente.IdCliente,
-                Nombre = nuevoCliente.Nombre,
-                Apellido = nuevoCliente.Apellido,
-                Empresa = nuevoCliente.Empresa,
-                Login = nuevoCliente.Login,
-            };
-
-            return CreatedAtAction(nameof(obtenerCliente), new { id = nuevoCliente.IdCliente }, response);
+            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -153,10 +142,7 @@ namespace IoTSuper_API.Controllers
             {
                 if (!_contrasenaService.EsContrasenaSegura(contrasena))
                 {
-                    return BadRequest(new
-                    {
-                        mensaje = "La contraseña debe tener al menos 12 caracteres e incluir mayúsculas, minúsculas, números y caracteres especiales."
-                    });
+                    return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } });
                 }
 
                 clienteExistente.Contrasena = _contrasenaService.hashContrasena(contrasena);
@@ -167,7 +153,7 @@ namespace IoTSuper_API.Controllers
                 _context.Clientes.Update(clienteExistente);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) { return StatusCode(500, new { mensaje = "Error interno del servidor." }); }
+            catch (Exception ex) { return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } }); }
 
             return Ok();
         }
@@ -179,7 +165,7 @@ namespace IoTSuper_API.Controllers
 
             if (clienteExistente == null)
             {
-                return NotFound();
+                return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Cliente no encontrado" } } } });
             }
 
             clienteExistente.Habilitado = false;
@@ -188,10 +174,13 @@ namespace IoTSuper_API.Controllers
             {
                 _context.Clientes.Update(clienteExistente);
                 await _context.SaveChangesAsync();
-            }
-            catch (Exception ex) { return StatusCode(500, new { mensaje = "Error interno del servidor." }); }
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al eliminar cliente" } } } });
+            }
         }
     }
 }

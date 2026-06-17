@@ -150,6 +150,121 @@ namespace IoTSuper_API.Migrations
                     b.ToTable("Clientes");
                 });
 
+            modelBuilder.Entity("IoTSuper_API.Models.Componente", b =>
+                {
+                    b.Property<int>("IdComponente")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_componente");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdComponente"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("Habilitado")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("habilitado");
+
+                    b.Property<int>("IdSeccion")
+                        .HasColumnType("int")
+                        .HasColumnName("id_seccion");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("nombre");
+
+                    b.Property<double>("PosicionX")
+                        .HasColumnType("double")
+                        .HasColumnName("posX");
+
+                    b.Property<double>("PosicionY")
+                        .HasColumnType("double")
+                        .HasColumnName("posY");
+
+                    b.Property<string>("Topic")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("topic");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("update_at");
+
+                    b.HasKey("IdComponente");
+
+                    b.HasIndex("Topic")
+                        .IsUnique();
+
+                    b.ToTable("Componentes");
+                });
+
+            modelBuilder.Entity("IoTSuper_API.Models.Etiqueta", b =>
+                {
+                    b.Property<int>("IdEtiqueta")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_etiqueta");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdEtiqueta"));
+
+                    b.Property<string>("Frase1")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Frase2")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Frase3")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Frase4")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("IdComponente")
+                        .HasColumnType("int")
+                        .HasColumnName("id_componente");
+
+                    b.Property<int>("Visualizaciones")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdEtiqueta");
+
+                    b.ToTable("Etiquetas");
+                });
+
+            modelBuilder.Entity("IoTSuper_API.Models.Evento", b =>
+                {
+                    b.Property<int>("IdEvento")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_evento");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdEvento"));
+
+                    b.Property<DateTime>("FechaEvento")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("fecha_evento");
+
+                    b.Property<int>("IdComponente")
+                        .HasColumnType("int")
+                        .HasColumnName("id_componente");
+
+                    b.Property<string>("TipoEvento")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("tipo_evento");
+
+                    b.HasKey("IdEvento");
+
+                    b.ToTable("Eventos");
+                });
+
             modelBuilder.Entity("IoTSuper_API.Models.Localizacion", b =>
                 {
                     b.Property<int>("IdLocalizacion")
@@ -227,6 +342,78 @@ namespace IoTSuper_API.Migrations
                     b.HasKey("IdSeccion");
 
                     b.ToTable("Secciones");
+                });
+
+            modelBuilder.Entity("IoTSuper_API.Models.Stock", b =>
+                {
+                    b.Property<int>("IdStock")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_stock");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdStock"));
+
+                    b.Property<string>("EmailEmergencia")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("email_emergencia");
+
+                    b.Property<int>("IdComponente")
+                        .HasColumnType("int")
+                        .HasColumnName("id_componente");
+
+                    b.Property<double>("Stock_Maximo")
+                        .HasColumnType("double")
+                        .HasColumnName("stock_maximo");
+
+                    b.Property<double>("Stock_Minimo")
+                        .HasColumnType("double")
+                        .HasColumnName("stock_minimo");
+
+                    b.Property<string>("TelefonoEmergencia")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("telefono_emergencia");
+
+                    b.HasKey("IdStock");
+
+                    b.ToTable("Stocks");
+                });
+
+            modelBuilder.Entity("IoTSuper_API.Models.Termometro", b =>
+                {
+                    b.Property<int>("IdTermometro")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_termometro");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdTermometro"));
+
+                    b.Property<string>("EmailEmergencia")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("email_emergencia");
+
+                    b.Property<int>("IdComponente")
+                        .HasColumnType("int")
+                        .HasColumnName("id_componente");
+
+                    b.Property<string>("TelefonoEmergencia")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("telefono_emergencia");
+
+                    b.Property<double>("Temperatura_Maxima")
+                        .HasColumnType("double")
+                        .HasColumnName("temperatura_maxima");
+
+                    b.Property<double>("Temperatura_Minima")
+                        .HasColumnType("double")
+                        .HasColumnName("temperatura_minima");
+
+                    b.HasKey("IdTermometro");
+
+                    b.ToTable("Termometros");
                 });
 
             modelBuilder.Entity("IoTSuper_API.Models.Tipologia", b =>
