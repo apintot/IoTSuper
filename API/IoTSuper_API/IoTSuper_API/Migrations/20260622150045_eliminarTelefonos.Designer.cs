@@ -4,6 +4,7 @@ using IoTSuper_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IoTSuper_API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260622150045_eliminarTelefonos")]
+    partial class eliminarTelefonos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -367,16 +370,12 @@ namespace IoTSuper_API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id_componente");
 
-                    b.Property<double>("PesoUnidad")
+                    b.Property<double>("Stock_Maximo")
                         .HasColumnType("double")
-                        .HasColumnName("peso_unidad");
-
-                    b.Property<int>("Stock_Maximo")
-                        .HasColumnType("int")
                         .HasColumnName("stock_maximo");
 
-                    b.Property<int>("Stock_Minimo")
-                        .HasColumnType("int")
+                    b.Property<double>("Stock_Minimo")
+                        .HasColumnType("double")
                         .HasColumnName("stock_minimo");
 
                     b.HasKey("IdStock");

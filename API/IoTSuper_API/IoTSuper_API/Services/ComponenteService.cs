@@ -32,8 +32,7 @@ namespace IoTSuper_API.Services
                     .ExecuteUpdateAsync(t => t
                         .SetProperty(p => p.Temperatura_Maxima, componenteDTO.Termometro.Temperatura_Maxima)
                         .SetProperty(p => p.Temperatura_Minima, componenteDTO.Termometro.Temperatura_Minima)
-                        .SetProperty(p => p.EmailEmergencia, componenteDTO.Termometro.EmailEmergencia)
-                        .SetProperty(p => p.TelefonoEmergencia, componenteDTO.Termometro.TelefonoEmergencia));
+                        .SetProperty(p => p.EmailEmergencia, componenteDTO.Termometro.EmailEmergencia));
             }
             else if(componenteDTO.Etiqueta != null)
             {
@@ -50,8 +49,8 @@ namespace IoTSuper_API.Services
                     .ExecuteUpdateAsync(s => s
                         .SetProperty(p => p.Stock_Maximo, componenteDTO.Stock.Stock_Maximo)
                         .SetProperty(p => p.Stock_Minimo, componenteDTO.Stock.Stock_Minimo)
-                        .SetProperty(p => p.EmailEmergencia, componenteDTO.Stock.EmailEmergencia)
-                        .SetProperty(p => p.TelefonoEmergencia, componenteDTO.Stock.TelefonoEmergencia));
+                        .SetProperty(p => p.Peso_Unidad, componenteDTO.Stock.Peso_Unidad)
+                        .SetProperty(p => p.EmailEmergencia, componenteDTO.Stock.EmailEmergencia));
             } else { throw new Exception("El componente debe tener un tipo específico (Termómetro, Stock o Etiqueta)."); }
         }
 
@@ -80,8 +79,7 @@ namespace IoTSuper_API.Services
                     IdComponente = nuevoId,
                     Temperatura_Maxima = componenteDTO.Termometro.Temperatura_Maxima,
                     Temperatura_Minima = componenteDTO.Termometro.Temperatura_Minima,
-                    EmailEmergencia = componenteDTO.Termometro.EmailEmergencia,
-                    TelefonoEmergencia = componenteDTO.Termometro.TelefonoEmergencia
+                    EmailEmergencia = componenteDTO.Termometro.EmailEmergencia
                 });
             }
             else if(componenteDTO.Etiqueta != null)
@@ -102,8 +100,8 @@ namespace IoTSuper_API.Services
                     IdComponente = nuevoId,
                     Stock_Maximo = componenteDTO.Stock.Stock_Maximo,
                     Stock_Minimo = componenteDTO.Stock.Stock_Minimo,
-                    EmailEmergencia = componenteDTO.Stock.EmailEmergencia,
-                    TelefonoEmergencia = componenteDTO.Stock.TelefonoEmergencia
+                    Peso_Unidad = componenteDTO.Stock.Peso_Unidad,
+                    EmailEmergencia = componenteDTO.Stock.EmailEmergencia
                 });
             }
             else { throw new Exception("El componente debe tener un tipo específico (Termómetro, Stock o Etiqueta)."); }
@@ -140,8 +138,7 @@ namespace IoTSuper_API.Services
                             IdTermometro = t.IdTermometro,
                             Temperatura_Maxima = t.Temperatura_Maxima,
                             Temperatura_Minima = t.Temperatura_Minima,
-                            EmailEmergencia = t.EmailEmergencia,
-                            TelefonoEmergencia = t.TelefonoEmergencia
+                            EmailEmergencia = t.EmailEmergencia
                         })
                         .FirstOrDefault(),
 
@@ -152,8 +149,8 @@ namespace IoTSuper_API.Services
                             IdStock = s.IdStock,
                             Stock_Maximo = s.Stock_Maximo,
                             Stock_Minimo = s.Stock_Minimo,
-                            EmailEmergencia = s.EmailEmergencia,
-                            TelefonoEmergencia = s.TelefonoEmergencia
+                            Peso_Unidad = s.Peso_Unidad,
+                            EmailEmergencia = s.EmailEmergencia
                         })
                         .FirstOrDefault(),
 
@@ -173,6 +170,23 @@ namespace IoTSuper_API.Services
                 .ToListAsync();
 
             return componentes.Count > 0 ? componentes : new List<ComponenteDTO>();
+        }
+
+        public Task SumarUnoVisualizacionAsync(string topic)
+        {
+            Componente? componente = _context.Componentes.FirstOrDefault(c => c.Topic == topic && c.Habilitado == true);
+
+            Etiqueta? etiqueta = _context.Etiquetas.FirstOrDefault(e => e.IdComponente == componente.IdComponente);
+
+            if (etiqueta != null)
+            {
+                etiqueta.Visualizaciones += 1;
+                return _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se encontró una etiqueta asociada al componente con el topic proporcionado.");
+            }
         }
     }
 }

@@ -13,17 +13,17 @@ namespace IoTSuper_API.Models
         public int IdComponente { get; set; }
 
         [Column("stock_maximo")]
-        public double Stock_Maximo { get; set; }
+        public int Stock_Maximo { get; set; }
 
         [Column("stock_minimo")]
-        public double Stock_Minimo { get; set; }
+        public int Stock_Minimo { get; set; }
+
+        [Column("peso_unidad")]
+        public double Peso_Unidad { get; set; }
 
         [Column("email_emergencia")]
         [Length(100, 20)]
         public string EmailEmergencia { get; set; }
 
-        [Column("telefono_emergencia")]
-        [Length(20, 8)]
-        public string TelefonoEmergencia { get; set; }
     }
 }

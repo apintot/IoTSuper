@@ -137,6 +137,8 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             imgCentro.Stretch = Stretch.UniformToFill;
             imgCentro.Width = double.NaN;
             imgCentro.Height = double.NaN;
+
+            RClone.RClone.SubirImagenesAlServidorAsync();
         }
     }
 }

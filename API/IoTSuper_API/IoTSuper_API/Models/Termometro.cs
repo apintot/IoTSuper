@@ -21,9 +21,5 @@ namespace IoTSuper_API.Models
         [Column("email_emergencia")]
         [Length(100, 20)]
         public string EmailEmergencia { get; set; } = string.Empty;
-
-        [Column("telefono_emergencia")]
-        [Length(20, 8)]
-        public string TelefonoEmergencia { get; set; } = string.Empty;
     }
 }

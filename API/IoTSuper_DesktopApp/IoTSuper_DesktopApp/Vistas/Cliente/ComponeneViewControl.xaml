@@ -11,8 +11,8 @@
                 <Border Background="AliceBlue" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="{StaticResource scbAzul}" BorderThickness="4" CornerRadius="20" Padding="10" Width="294" Height="81" Canvas.Left="676" Canvas.Top="58">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Image Source="{StaticResource ILcd}" Margin="0,0,50,0" x:Name="ImageLCD" MouseLeftButtonDown="ImageLCD_MouseLeftButtonDown" MouseLeftButtonUp="ImageLCD_MouseLeftButtonUp" AllowDrop="True"/>
-                <Image Source="{StaticResource ITermometro}" x:Name="ImageTemperatura"/>
-                <Image Source="{StaticResource IStock}" Margin="50,0,0,0" x:Name="ImageStock"/>
+                    <Image Source="{StaticResource ITermometro}" x:Name="ImageTemperatura" MouseLeftButtonDown="ImageTMP_MouseLeftButtonDown" MouseLeftButtonUp="ImageTMP_MouseLeftButtonUp" AllowDrop="True"/>
+                <Image Source="{StaticResource IStock}" Margin="50,0,0,0" x:Name="ImageStock" MouseLeftButtonDown="ImageSTK_MouseLeftButtonDown" MouseLeftButtonUp="ImageSTK_MouseLeftButtonUp" AllowDrop="True"/>
             </StackPanel>
         </Border>
             <Border ClipToBounds="True" BorderBrush="{StaticResource scbAzul}" BorderThickness="3" CornerRadius="20" Padding="0" Width="1625" Height="767" Canvas.Left="10" Canvas.Top="230" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{StaticResource scbTarjeta}">

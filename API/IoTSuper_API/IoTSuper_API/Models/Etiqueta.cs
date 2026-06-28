@@ -26,6 +26,10 @@ namespace IoTSuper_API.Models
         [Length(20, 5)]
         public string Frase4 { get; set; } = string.Empty;
 
+        [Column("email_emergencia")]
+        [Length(100, 20)]
+        public string EmailEmergencia { get; set; } = string.Empty;
+
         public int Visualizaciones { get; set; } = 0;
     }
 }

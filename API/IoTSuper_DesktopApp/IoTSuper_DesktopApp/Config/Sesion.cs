@@ -125,7 +125,11 @@ namespace IoTSuper_DesktopApp.Config
             {
                 if (componenteActual.Stock != null)
                 {
-                    componenteActual.Stock.Stock_Actual = int.Parse(mensaje);
+                    double peso = double.TryParse(mensaje.Replace('.', ','), out double result) ? result : 0;
+
+                    int unidades = (int)(peso / componenteActual.Stock.Peso_Unidad);
+
+                    componenteActual.Stock.Stock_Actual = unidades;
                     resumenActual.UltimoDato = $"{componenteActual.Stock.Stock_Actual} uds";
                     resumenActual.Estado = componenteActual.Stock.Stock_Actual > 0 ? "OK" : "Vacío";
 
@@ -138,6 +142,9 @@ namespace IoTSuper_DesktopApp.Config
                         "Error" => new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44)),
                         "Agotandose" => new SolidColorBrush(Color.FromRgb(0xFB, 0xBF, 0x24))
                     };
+
+                    resumenActual.Disponible?.Stop();
+                    resumenActual.Disponible?.Start();
                 }
                 else if (componenteActual.Termometro != null)
                 {
@@ -151,6 +158,9 @@ namespace IoTSuper_DesktopApp.Config
                         "Error" => new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44)),
                         "Alerta!" => new SolidColorBrush(Color.FromRgb(0x25, 0x63, 0xEB))
                     };
+
+                    resumenActual.Disponible?.Stop();
+                    resumenActual.Disponible?.Start();
                 }
                 else if (componenteActual.Etiqueta != null)
                 {
@@ -163,6 +173,9 @@ namespace IoTSuper_DesktopApp.Config
                         "OK" => new SolidColorBrush(Color.FromRgb(0x10, 0xB9, 0x81)),
                         "Error" => new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44))
                     };
+
+                    resumenActual.Disponible?.Stop();
+                    resumenActual.Disponible?.Start();
                 }
 
                 resumenActual.Actualizado = DateTime.Now.ToString("dd/MM/yyyy HH:mm");

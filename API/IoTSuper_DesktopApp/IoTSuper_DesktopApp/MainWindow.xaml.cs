@@ -63,7 +63,7 @@ namespace IoTSuper_DesktopApp
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Sesion.conectarAMqtt();
+            bool exito = await RClone.RClone.BajarImagenesDelServidorAsync();
 
             Sesion._centros = await CentroService.ObtenerCentros(Sesion.LoginData.IdCliente);
 
@@ -78,6 +78,8 @@ namespace IoTSuper_DesktopApp
             }
 
             cargarTablaResumen();
+
+            Sesion.conectarAMqtt();
 
             Navegacion.IrA(new ResumenViewControl());
         }

@@ -75,6 +75,26 @@ namespace IoTSuper_API.Controllers
             }
         }
 
+        [HttpPost("{topic}")]
+        public async Task<ActionResult> SumarUnoVisualizacion(string topic)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _componenteService.SumarUnoVisualizacionAsync(topic);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Ok();
+            }
+        }
+
         [HttpDelete("{idComponente}")]
         public async Task<ActionResult> EliminarComponente(int idComponente)
         {

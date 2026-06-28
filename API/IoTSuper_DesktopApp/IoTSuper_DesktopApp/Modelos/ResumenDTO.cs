@@ -1,9 +1,11 @@
-﻿using System;
+﻿using IoTSuper_DesktopApp.Config;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace IoTSuper_DesktopApp.Modelos
 {
@@ -17,6 +19,21 @@ namespace IoTSuper_DesktopApp.Modelos
         public string Tipo { get; set; }
         public string Centro { get; set; }
         public string Seccion { get; set; }
+
+        public DispatcherTimer? Disponible { get; set; } = new DispatcherTimer();
+
+        public ResumenDTO()
+        {
+            Disponible = new DispatcherTimer();
+            Disponible.Interval = TimeSpan.FromSeconds(30);
+            Disponible.Tick += (s, e) =>
+            {
+                Estado = "Error";
+                EstadoColor = new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44));
+            };
+
+            Disponible.Start();
+        }
 
         private string _actualizado { get; set; }
         public string Actualizado

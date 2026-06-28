@@ -1,12 +1,15 @@
 using IoTSuper_API.Data;
+using IoTSuper_API.DTO;
 using IoTSuper_API.Security;
 using IoTSuper_API.Services;
 using IoTSuper_API.Services.Interface;
+using IoTSuper_API.Services.Worker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using AutenticacionBasica = IoTSuper_API.Security.AutenticacionBasica;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 var connectionString = builder.Configuration.GetConnectionString("MariaDb");
 
@@ -24,6 +27,12 @@ builder.Services.AddSingleton<Crypto>(sp =>
     return new Crypto(vector, clave);
 });
 
+builder.Services.Configure<ConfiguracionEmail>(
+    builder.Configuration.GetSection("ConfiguracionEmail")
+);
+
+builder.Services.AddHostedService<EventoWorker>();
+
 builder.Services.AddScoped<IContrasenaService, ContrasenaService>();
 builder.Services.AddScoped<ICentroService, CentroService>();
 builder.Services.AddScoped<ISeccionService, SeccionService>();
@@ -39,6 +48,13 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDBContext>();
+    db.Database.Migrate(); // Aplica migraciones pendientes al iniciar
+}
+
 
 if (app.Environment.IsDevelopment())
 {

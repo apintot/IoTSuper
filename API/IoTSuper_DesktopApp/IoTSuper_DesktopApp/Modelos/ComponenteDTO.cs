@@ -1,6 +1,10 @@
-﻿using System;
+﻿using IoTSuper_DesktopApp.Config;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace IoTSuper_DesktopApp.Modelos
 {
