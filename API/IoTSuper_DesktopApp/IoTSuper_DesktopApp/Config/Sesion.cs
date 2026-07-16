@@ -1,6 +1,7 @@
 ﻿using IoTSuper_DesktopApp.Controladores.Componentes;
 using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Modelos;
+using IoTSuper_DesktopApp.Seguridad;
 using Microsoft.AspNetCore.Http;
 using MQTTnet;
 using MQTTnet.Extensions.TopicTemplate;
@@ -36,13 +37,15 @@ namespace IoTSuper_DesktopApp.Config
 
         public static async Task Subscribe_Topic()
         {
+            Crypto crypto = new Crypto();
+
             MqttClientFactory mqttFactory = new MqttClientFactory();
 
-            MqttTopicTemplate topicToConnect = new(Mqtt.topic);
+            MqttTopicTemplate topicToConnect = new(crypto.Desencriptar(Mqtt.topic));
 
             IMqttClient mqttClient = mqttFactory.CreateMqttClient();
 
-            MqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder().WithTcpServer(Mqtt.broker, 1883).Build();
+            MqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder().WithTcpServer(crypto.Desencriptar(Mqtt.broker), 1883).Build();
 
             await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
 
@@ -68,10 +71,12 @@ namespace IoTSuper_DesktopApp.Config
         public static async Task conectarAMqtt()
         {
             MqttClientFactory mqttFactory = new MqttClientFactory();
+            
+            Crypto crypto = new Crypto();
 
             MqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                    .WithTcpServer(Mqtt.broker, 8883)
-                    .WithCredentials(Mqtt.usuario, Mqtt.contrasena)
+                    .WithTcpServer(crypto.Desencriptar(Mqtt.broker), 8883)
+                    .WithCredentials(crypto.Desencriptar(Mqtt.usuario), crypto.Desencriptar(Mqtt.contrasena))
                     .WithTlsOptions(o => o
                     .UseTls()
                         .WithSslProtocols(System.Security.Authentication.SslProtocols.Tls12))
@@ -203,8 +208,9 @@ namespace IoTSuper_DesktopApp.Config
 
         public static async void publicarMensajeMqtt(string topic, string payload)
         {
+            Crypto crypto = new Crypto();
             await mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
-                .WithTopic(Mqtt.topic + "/" + topic)
+                .WithTopic(crypto.Desencriptar(Mqtt.topic) + "/" + topic)
                 .WithPayload(payload)
                 .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
                 .Build());
