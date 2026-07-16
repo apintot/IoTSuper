@@ -6,6 +6,7 @@ using IoTSuper_DesktopApp.Servicios.Componente;
 using IoTSuper_DesktopApp.Vistas.Administrador;
 using IoTSuper_DesktopApp.Vistas.Cliente;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +26,7 @@ namespace IoTSuper_DesktopApp
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private UserControl _vistaActual;
+        
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -46,7 +48,6 @@ namespace IoTSuper_DesktopApp
         public MainWindow()
         {
             InitializeComponent();
-
 
             DataContext = this;
 
@@ -83,6 +84,8 @@ namespace IoTSuper_DesktopApp
             Sesion.conectarAMqtt();
 
             Navegacion.IrA(new ResumenViewControl());
+            Sesion._stopwatch.Stop();
+            Debug.WriteLine("Programa cargado en: " + Sesion._stopwatch.ElapsedMilliseconds + " ms");
         }
 
         private void cargarTablaResumen()

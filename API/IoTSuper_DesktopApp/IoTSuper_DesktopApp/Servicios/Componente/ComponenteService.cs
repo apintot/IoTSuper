@@ -45,5 +45,15 @@ namespace IoTSuper_DesktopApp.Servicios.Componente
             }
             catch (Exception ex) { return new ErrorDTO(); }
         }
+
+        internal static async Task<ComponenteDTO> ObtenerComponente(int idComponente)
+        {
+            Modelos.Cliente request = new Modelos.Cliente() { };
+            try
+            {
+                return await APIService.GetAsync<ComponenteDTO>(Sesion.ApiConfigFolder.EndPointComponente + $"/Componente/{idComponente}") ?? null;
+            }
+            catch (Exception ex) { return null; }
+        }
     }
 }

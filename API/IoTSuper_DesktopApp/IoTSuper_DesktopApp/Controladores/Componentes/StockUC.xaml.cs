@@ -151,10 +151,18 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
             if (data.Stock is null) { data.Stock = new StockDTO(); }
 
-            data.Stock.Peso_Unidad = String.IsNullOrEmpty(txbPeso.Text) ? 0 : double.Parse(txbPeso.Text);
-            data.Stock.Stock_Maximo = String.IsNullOrEmpty(txbStcMax.Text) ? 0 : int.Parse(txbStcMax.Text);
-            data.Stock.Stock_Minimo = String.IsNullOrEmpty(txbStcMin.Text) ? 0 : int.Parse(txbStcMin.Text);
-            data.Stock.EmailEmergencia = String.IsNullOrEmpty(txbEmail.Text) ? String.Empty : txbEmail.Text;
+            try
+            {
+                data.Stock.Peso_Unidad = String.IsNullOrEmpty(txbPeso.Text) ? 0 : double.Parse(txbPeso.Text);
+                data.Stock.Stock_Maximo = String.IsNullOrEmpty(txbStcMax.Text) ? 0 : int.Parse(txbStcMax.Text);
+                data.Stock.Stock_Minimo = String.IsNullOrEmpty(txbStcMin.Text) ? 0 : int.Parse(txbStcMin.Text);
+                data.Stock.EmailEmergencia = String.IsNullOrEmpty(txbEmail.Text) ? String.Empty : txbEmail.Text;
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message, "Error creando componente", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
             if (esNuevo)
             {
@@ -165,6 +173,11 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
                 data.IdComponente = int.Parse(respuesta.Errors["Id"][0]);
 
                 int indiceSeccion = Sesion._centros[Sesion.centroSelecionado]._secciones.FindIndex(s => s.IdSeccion == Sesion.seccionSelecionado);
+
+                if(Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes is null)
+                {
+                    Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes = new List<ComponenteDTO>();
+                }
 
                 Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Add(data);
 

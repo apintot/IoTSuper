@@ -157,8 +157,17 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
                 data.IdComponente = int.Parse(respuesta.Errors["Id"][0]);
 
-                //int indiceCentro = Sesion._centros.FindIndex(c => c.IdCentro == Sesion.centroSelecionado);
+                if(Sesion._centros[Sesion.centroSelecionado]._secciones is null)
+                {
+                    Sesion._centros[Sesion.centroSelecionado]._secciones = new List<SeccionDTO>();
+                }
+
                 int indiceSeccion = Sesion._centros[Sesion.centroSelecionado]._secciones.FindIndex(s => s.IdSeccion == data.IdSeccion);
+
+                if(Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes is null)
+                {
+                    Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes = new List<ComponenteDTO>();
+                }
 
                 Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Add(data);
 

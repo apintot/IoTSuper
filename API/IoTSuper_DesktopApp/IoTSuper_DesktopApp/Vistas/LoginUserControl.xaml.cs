@@ -35,6 +35,7 @@ namespace IoTSuper_DesktopApp.Modelos
         {
             try
             {
+                Sesion._stopwatch.Start();
                 txbError.Visibility = Visibility.Collapsed;
 
                 Crypto crypto = new Crypto();

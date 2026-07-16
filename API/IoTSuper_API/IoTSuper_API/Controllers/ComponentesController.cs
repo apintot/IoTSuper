@@ -39,6 +39,26 @@ namespace IoTSuper_API.Controllers
             }
         }
 
+        [HttpGet("Componente/{id}")]
+        public async Task<ActionResult> GetComponente(int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                ComponenteDTO respuesta = await _componenteService.GetComponenteAsync(id);
+
+                return Ok(respuesta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Ocurrió un error al obtener los componentes." } } } });
+            }
+        }
+
         [HttpPut]
         public async Task<ActionResult> ActualizarComponente(ComponenteDTO componenteDTO)
         {

@@ -2,6 +2,7 @@
 using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Modelos;
 using IoTSuper_DesktopApp.Seguridad;
+using IoTSuper_DesktopApp.Servicios.Componente;
 using Microsoft.AspNetCore.Http;
 using MQTTnet;
 using MQTTnet.Extensions.TopicTemplate;
@@ -9,6 +10,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,6 +24,8 @@ namespace IoTSuper_DesktopApp.Config
         public static ApiConfigFolder ApiConfigFolder = new ApiConfigFolder();
         public static LoginResponse LoginData = new LoginResponse();
         public static readonly string msiName = Assembly.GetExecutingAssembly().GetName().Name;
+
+        public static Stopwatch _stopwatch = new Stopwatch();
 
         public static event Action OnComponenteActualizado;
 
@@ -136,7 +140,7 @@ namespace IoTSuper_DesktopApp.Config
 
             if (resumenActual == null) { return; }
 
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(async () =>
             {
                 if (componenteActual.Stock != null)
                 {
@@ -187,7 +191,8 @@ namespace IoTSuper_DesktopApp.Config
                     if(mensaje.Equals("VISTO"))
                     {
                         resumenActual.Estado = "OK";
-                        //TODO: get componenete y acualizarlo
+                        componenteActual = await ComponenteService.ObtenerComponente(componenteActual.IdComponente) ?? componenteActual;
+                        resumenActual.UltimoDato = componenteActual.Etiqueta?.Visualizaciones.ToString() ?? 0.ToString();
                     }
 
                     resumenActual.EstadoColor = resumenActual.Estado switch

@@ -8,6 +8,7 @@ namespace IoTSuper_API.Services.Interface
         Task<int> CrearComponenteAsync(ComponenteDTO componenteDTO);
         Task EliminarComponenteAsync(int idComponente);
         Task<List<ComponenteDTO>> GetComponentesAsync(int seccion);
+        Task<ComponenteDTO> GetComponenteAsync(int idComponente);
         Task SumarUnoVisualizacionAsync(string topic);
     }
 }

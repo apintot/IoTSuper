@@ -118,6 +118,57 @@ namespace IoTSuper_API.Services
                     .SetProperty(p => p.Habilitado, false));
         }
 
+        public async Task<ComponenteDTO> GetComponenteAsync(int idComponente)
+        {
+            ComponenteDTO componente = await _context.Componentes
+                .Where(c => c.IdComponente == idComponente && c.Habilitado == true)
+                .Select(c => new ComponenteDTO
+                {
+                    IdComponente = c.IdComponente,
+                    IdSeccion = c.IdSeccion,
+                    Nombre = c.Nombre,
+                    Topic = c.Topic,
+                    PosicionX = c.PosicionX,
+                    PosicionY = c.PosicionY,
+                    Termometro = _context.Termometros
+                        .Where(t => t.IdComponente == c.IdComponente)
+                        .Select(t => new TermometroDTO
+                        {
+                            IdTermometro = t.IdTermometro,
+                            Temperatura_Maxima = t.Temperatura_Maxima,
+                            Temperatura_Minima = t.Temperatura_Minima,
+                            EmailEmergencia = t.EmailEmergencia
+                        })
+                        .FirstOrDefault(),
+                    Stock = _context.Stocks
+                        .Where(s => s.IdComponente == c.IdComponente)
+                        .Select(s => new StockDTO
+                        {
+                            IdStock = s.IdStock,
+                            Stock_Maximo = s.Stock_Maximo,
+                            Stock_Minimo = s.Stock_Minimo,
+                            Peso_Unidad = s.Peso_Unidad,
+                            EmailEmergencia = s.EmailEmergencia
+                        })
+                        .FirstOrDefault(),
+                    Etiqueta = _context.Etiquetas
+                        .Where(e => e.IdComponente == c.IdComponente)
+                        .Select(e => new EtiquetaDTO
+                        {
+                            IdEtiqueta = e.IdEtiqueta,
+                            Frase1 = e.Frase1,
+                            Frase2 = e.Frase2,
+                            Frase3 = e.Frase3,
+                            Frase4 = e.Frase4,
+                            Visualizaciones = e.Visualizaciones
+                        })
+                        .FirstOrDefault()
+                })
+                .FirstOrDefaultAsync();
+
+            return componente ?? throw new Exception("No se encontró un componente con el ID proporcionado.");
+        }
+
         public async Task<List<ComponenteDTO>> GetComponentesAsync(int seccion)
         {
             List<ComponenteDTO> componentes = await _context.Componentes

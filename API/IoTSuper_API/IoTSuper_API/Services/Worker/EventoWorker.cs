@@ -160,7 +160,7 @@ namespace IoTSuper_API.Services.Worker
 
         private async Task<bool> EventoRecienteExisteAsync(int idComponente, string tipoEvento, AppDBContext _context)
         {
-            return await _context.Eventos.AnyAsync(e => e.IdComponente == idComponente && e.TipoEvento == tipoEvento && e.FechaEvento >= DateTime.UtcNow.AddHours(-24));
+            return await _context.Eventos.AnyAsync(e => e.IdComponente == idComponente && e.FechaEvento >= DateTime.UtcNow.AddHours(-24));
         }
 
         public async Task EnviarCorreoAsync(EventoDTO evento, AppDBContext _context)
