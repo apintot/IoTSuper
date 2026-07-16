@@ -96,6 +96,7 @@ namespace IoTSuper_DesktopApp.Controladores
             try
             {
                 await SeccionService.EliminarSeccion(_seccion.IdSeccion);
+                Sesion._centros[Sesion.centroSelecionado]._secciones.RemoveAll(s => s.IdSeccion == _seccion.IdSeccion);
                 Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro));
             }
             catch (Exception ex)

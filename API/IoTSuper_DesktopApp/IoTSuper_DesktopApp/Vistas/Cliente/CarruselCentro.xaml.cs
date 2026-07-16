@@ -2,6 +2,7 @@
 using IoTSuper_DesktopApp.Controladores;
 using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Servicios.Centro;
+using OtpNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -111,6 +112,28 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
         {
             _indiceCarusel = (_indiceCarusel + 1) % Sesion._centros.Count;
             ActualizarCarrusel();
+        }
+
+        private void BuscarCentroView_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _indiceCarusel = Sesion._centros.IndexOf(Sesion._centros.Find(c => c.Nombre.ToLower().Contains(txtBusqueda.Texto.ToLower())));
+
+                int total = Sesion._centros.Count;
+
+                int izq = (_indiceCarusel - 1 + total) % total;
+                int centro = _indiceCarusel;
+                int der = (_indiceCarusel + 1) % total;
+
+                _tarjetaIzquierda?.ActualizarCentro(Sesion._centros[izq]);
+                _tarjetaCentro?.ActualizarCentro(Sesion._centros[centro]);
+                _tarjetaDerecha?.ActualizarCentro(Sesion._centros[der]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se encontró ningún centro que coincida con la búsqueda.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

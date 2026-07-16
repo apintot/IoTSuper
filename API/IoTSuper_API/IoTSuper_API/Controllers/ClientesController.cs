@@ -85,14 +85,16 @@ namespace IoTSuper_API.Controllers
 
             if (await _context.Clientes.AnyAsync(c => c.Login == cliente.Login))
             {
-                return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } });
+                return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error cliente ya existe" } } } });
             }
 
             if (string.IsNullOrWhiteSpace(cliente.Nombre)) { return BadRequest(new { mensaje = "El nombre es obligatorio." }); }
 
+            //cliente.Contrasena = _crypto.Encriptar(cliente.Contrasena);
+
             if (!_contrasenaService.EsContrasenaSegura(_crypto.Desencriptar(cliente.Contrasena)))
             {
-                return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } });
+                return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error contrasena" } } } });
             }
 
             Cliente nuevoCliente = new Cliente
@@ -111,7 +113,7 @@ namespace IoTSuper_API.Controllers
                 _context.Clientes.Add(nuevoCliente);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) { return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } }); }
+            catch (Exception ex) { return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al crear cliente" } } } }); }
 
             return Ok();
         }

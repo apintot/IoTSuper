@@ -38,7 +38,7 @@ namespace IoTSuper_DesktopApp.Modelos
 
                 Crypto crypto = new Crypto();
 
-                LoginResponse response = await LoginService.IniciarSesionAsync(camUser.Texto, crypto.Encriptar(camPass.Contrasena));
+                LoginResponse response = await LoginService.IniciarSesionAsync(camUser.Texto, camPass.Contrasena);
 
                 if(response.IdCliente == 0) { txbError.Text = "Usuario o contraseña incorrectos"; txbError.Visibility = Visibility.Visible; return; }
 

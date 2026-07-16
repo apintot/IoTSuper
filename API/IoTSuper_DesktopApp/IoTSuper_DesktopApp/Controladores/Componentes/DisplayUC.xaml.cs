@@ -111,10 +111,9 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
             this.Visibility = Visibility.Collapsed;
 
-            int indiceCentro = Sesion._centros.FindIndex(c => c.IdCentro == Sesion.centroSelecionado);
-            int indiceSeccion = Sesion._centros[indiceCentro]._secciones.FindIndex(s => s.IdSeccion == Sesion.seccionSelecionado);
+            int indiceSeccion = Sesion._centros[Sesion.centroSelecionado]._secciones.FindIndex(s => s.IdSeccion == data.IdSeccion);
 
-            Sesion._centros[indiceCentro]._secciones[indiceSeccion]._componentes.Remove(data);
+            Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Remove(data);
             Sesion.Componentes.Remove(Sesion.Componentes.Where(c => c.IdComponente == data.IdComponente).First());
         }
 
@@ -158,14 +157,16 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
                 data.IdComponente = int.Parse(respuesta.Errors["Id"][0]);
 
-                int indiceCentro = Sesion._centros.FindIndex(c => c.IdCentro == Sesion.centroSelecionado);
-                int indiceSeccion = Sesion._centros[indiceCentro]._secciones.FindIndex(s => s.IdSeccion == Sesion.seccionSelecionado);
+                //int indiceCentro = Sesion._centros.FindIndex(c => c.IdCentro == Sesion.centroSelecionado);
+                int indiceSeccion = Sesion._centros[Sesion.centroSelecionado]._secciones.FindIndex(s => s.IdSeccion == data.IdSeccion);
 
-                Sesion._centros[indiceCentro]._secciones[indiceSeccion]._componentes.Add(data);
+                Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Add(data);
 
-                Sesion.Componentes.Add(ComponenteToResumen.ConvierteAResumenDTO(data, Sesion._centros[indiceCentro].Nombre, Sesion._centros[indiceCentro]._secciones[indiceSeccion].Nombre));
+                Sesion.Componentes.Add(ComponenteToResumen.ConvierteAResumenDTO(data, Sesion._centros[Sesion.centroSelecionado].Nombre, Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion].Nombre));
 
                  txbNombre.IsEnabled = false;
+
+                esNuevo = false;
             }
             else
             {
@@ -176,7 +177,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
             imgBorrar.IsHitTestVisible = true;
             imgBorrar.Opacity = 1;
 
-            Sesion.publicarMensajeMqtt($"LCD/OUTPUT/{data.Topic}", $"{data.Etiqueta.Frase1}|{data.Etiqueta.Frase2}|{data.Etiqueta.Frase3}|{data.Etiqueta.Frase4}|");
+            Sesion.publicarMensajeMqtt($"LCD/{data.Topic}/OUTPUT", $"{data.Etiqueta.Frase1}|{data.Etiqueta.Frase2}|{data.Etiqueta.Frase3}|{data.Etiqueta.Frase4}|");
 
             grdSecundaryLCD.Visibility = Visibility.Collapsed;
         }

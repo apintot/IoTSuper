@@ -53,8 +53,8 @@ namespace IoTSuper_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _centroService.CrearCentroAsync(centroDTO);
-                return Ok(new ErrorDTO() { Status = 200 });
+                int idCentro = await _centroService.CrearCentroAsync(centroDTO);
+                return Ok(new ErrorDTO() { Status = 200, Errors = new Dictionary<string, List<string>> { { "IdCentro", new List<string> { idCentro.ToString() } } } });
             }
             catch (Exception ex)
             {

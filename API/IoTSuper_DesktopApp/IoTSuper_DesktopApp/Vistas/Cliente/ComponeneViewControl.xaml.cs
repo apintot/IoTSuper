@@ -1,4 +1,5 @@
-﻿using IoTSuper_DesktopApp.Controladores.Componentes;
+﻿using IoTSuper_DesktopApp.Config;
+using IoTSuper_DesktopApp.Controladores.Componentes;
 using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Modelos;
 using IoTSuper_DesktopApp.Servicios.Componente;
@@ -39,8 +40,6 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private double final;
         private double posicionInicialElemento;
-
-
 
         private Point puntoDePartidaRaton;
 
@@ -283,7 +282,6 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
                         crearTermometro(posicionMouse);
                         break;
                 }
-                //StaticDataSession.guardarDatosDelCentro(_seccion);
             }
 
             arrastrandoElemento = false;
@@ -417,20 +415,39 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private async void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            LogLocal.logear($"Seleccionado imagen");
-            OpenFileDialog fotoSeccion = new OpenFileDialog();
-            fotoSeccion.Filter = "Imágenes (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
-
-            if (fotoSeccion.ShowDialog() == true)
+            OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
             {
-                ImagenMovible.Source = new BitmapImage(new Uri(fotoSeccion.FileName));
+                Title = "Seleccionar imagen",
+                Filter = "Imágenes|*.jpg;*.jpeg;*.png;*.bmp;*.gif",
+                Multiselect = false
+            };
 
-                _seccion.Imagen = fotoSeccion.FileName;
+            if (dialog.ShowDialog() != true) return;
 
-                ErrorDTO respuesta = await SeccionService.ActualizarSeccion(_seccion);
+            string origen = dialog.FileName;
+            string nombreArchivo = System.IO.Path.GetFileName(origen);
 
-                if (respuesta == null || respuesta.Status != 200) { return; }//popup
+            System.IO.Directory.CreateDirectory(Rutas.ImagesFolder);
+
+            string destino = System.IO.Path.Combine(Rutas.ImagesFolder, nombreArchivo);
+
+            if (System.IO.File.Exists(destino))
+            {
+                string nombre = System.IO.Path.GetFileNameWithoutExtension(origen);
+                string extension = System.IO.Path.GetExtension(origen);
+                destino = System.IO.Path.Combine(Rutas.ImagesFolder, $"{nombre}_{DateTime.Now:yyyyMMddHHmmss}{extension}");
             }
+
+            System.IO.File.Copy(origen, destino);
+            
+            ImagenMovible.Source = new BitmapImage(new Uri(dialog.FileName));
+            _seccion.Imagen = dialog.FileName;
+
+            ErrorDTO respuesta = await SeccionService.ActualizarSeccion(_seccion);
+
+            if (respuesta == null || respuesta.Status != 200) { return; }//popup
+
+            RClone.RClone.SubirImagenesAlServidorAsync();
         }
 
         #endregion

@@ -55,12 +55,6 @@ namespace IoTSuper_DesktopApp.Config
 
         private static Task MqttClient_ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs e)
         {
-            /* Nuevo_mensaje?.Invoke(e.ApplicationMessage.Topic,
-                                                e.ApplicationMessage.ConvertPayloadToString()/*Encoding.UTF8.GetString(e.ApplicationMessage.Payload),
-                                                e.ApplicationMessage.QualityOfServiceLevel.ToString(),
-                                                e.ApplicationMessage.Retain,
-                                                e.ClientId);*/
-
             LogLocal.logear($"Topic:{e.ApplicationMessage.Topic}, Payload:{Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
             return Task.CompletedTask;
         }
@@ -85,6 +79,22 @@ namespace IoTSuper_DesktopApp.Config
                     .Build();
 
             mqttClient = mqttFactory.CreateMqttClient();
+
+            mqttClient.DisconnectedAsync += async e =>
+            {
+                LogLocal.logear("Desconectado de MQTT, intentando reconectar...");
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                try
+                {
+                    await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
+                    await subscribirseAMiTopic();
+                    LogLocal.logear("Reconectado a MQTT.");
+                }
+                catch (Exception ex)
+                {
+                    LogLocal.logear($"Error al reconectar a MQTT: {ex.Message}");
+                }
+            };
 
             mqttClient.ApplicationMessageReceivedAsync += e =>
             {
@@ -148,7 +158,7 @@ namespace IoTSuper_DesktopApp.Config
                 }
                 else if (componenteActual.Termometro != null)
                 {
-                    componenteActual.Termometro.Temperatura_Actual = double.Parse(mensaje);
+                    componenteActual.Termometro.Temperatura_Actual = double.TryParse(mensaje.Replace('.', ','), out double result) ? result : 0;
                     resumenActual.UltimoDato = $"{componenteActual.Termometro.Temperatura_Actual} °C";
                     resumenActual.Estado = componenteActual.Termometro.Temperatura_Maxima >= componenteActual.Termometro.Temperatura_Actual && componenteActual.Termometro.Temperatura_Actual >= componenteActual.Termometro.Temperatura_Minima ? "OK" : "Alerta!";
 
@@ -164,9 +174,16 @@ namespace IoTSuper_DesktopApp.Config
                 }
                 else if (componenteActual.Etiqueta != null)
                 {
-                    componenteActual.Etiqueta.Visualizaciones = int.Parse(mensaje);
-                    resumenActual.UltimoDato = $"{componenteActual.Etiqueta.Visualizaciones} visualizaciones";
-                    resumenActual.Estado =  "OK";
+                    if(mensaje.Equals("PING"))
+                    {
+                        resumenActual.Estado =  "OK";
+                    }
+
+                    if(mensaje.Equals("VISTO"))
+                    {
+                        resumenActual.Estado = "OK";
+                        //TODO: get componenete y acualizarlo
+                    }
 
                     resumenActual.EstadoColor = resumenActual.Estado switch
                     {

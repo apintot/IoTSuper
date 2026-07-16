@@ -5,6 +5,7 @@ using IoTSuper_API.Services;
 using IoTSuper_API.Services.Interface;
 using IoTSuper_API.Services.Worker;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using AutenticacionBasica = IoTSuper_API.Security.AutenticacionBasica;
 
@@ -30,6 +31,10 @@ builder.Services.AddSingleton<Crypto>(sp =>
 builder.Services.Configure<ConfiguracionEmail>(
     builder.Configuration.GetSection("ConfiguracionEmail")
 );
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"/var/api/keys"))
+    .SetApplicationName("IoTSuperAPI");
 
 builder.Services.AddHostedService<EventoWorker>();
 

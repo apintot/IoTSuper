@@ -35,24 +35,36 @@ namespace IoTSuper_API.Controllers
         {
             if(!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            //loginRequest.Contrasena = _crypto.Encriptar(loginRequest.Contrasena);
 
-             Cliente? cliente = await _context.Clientes.Where(c => c.Login == loginRequest.Usuario && c.Habilitado).FirstOrDefaultAsync();
-
-            //if (cliente == null || !_contrasenaService.VerificarContrasena(cliente.Contrasena, _crypto.Desencriptar(loginRequest.Contrasena))) 
-            //{
-            //    return Unauthorized();
-            //}
-
-            LoginResponse loginResponse = new LoginResponse
+            try
             {
-                IdCliente = cliente.IdCliente,
-                EsAdmin = cliente.EsAdmin,
-                TOTP = cliente.Totp,
-                ultimoAcceso = cliente.UltimoAcceso ?? DateTime.Now
-            };
+                Cliente? cliente = await _context.Clientes.Where(c => c.Login == loginRequest.Usuario && c.Habilitado).FirstOrDefaultAsync();
 
-            return Ok(loginResponse);
+                if (cliente == null || !_contrasenaService.VerificarContrasena(cliente.Contrasena, loginRequest.Contrasena/*_crypto.Desencriptar(loginRequest.Contrasena)*/))
+                {
+                    return Unauthorized();
+                }
+
+                LoginResponse loginResponse = new LoginResponse
+                {
+                    IdCliente = cliente.IdCliente,
+                    EsAdmin = cliente.EsAdmin,
+                    TOTP = cliente.Totp,
+                    ultimoAcceso = cliente.UltimoAcceso ?? DateTime.Now
+                };
+
+                return Ok(loginResponse);
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(
+                   StatusCodes.Status500InternalServerError,
+                   new
+                   {
+                       mensaje = "Error procesando el inicio de sesión",
+                       detalle = ex.Message // Solo temporalmente durante desarrollo
+                    });
+            }
         }
 
         [HttpPut("{id}")]

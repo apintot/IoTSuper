@@ -1,5 +1,6 @@
 ﻿using IoTSuper_API.DTO;
 using IoTSuper_API.DTO.Seccion;
+using IoTSuper_API.Models;
 using IoTSuper_API.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,8 +53,8 @@ namespace IoTSuper_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                await _seccionService.CrearSeccionAsync(seccionDTO);
-                return Ok(new ErrorDTO() { Title="Seccion creada correctamente"});
+                int idSeccion = await _seccionService.CrearSeccionAsync(seccionDTO);
+                return Ok(new ErrorDTO() { Status = 200, Errors = new Dictionary<string, List<string>> { { "IdSeccion", new List<string> { idSeccion.ToString() } } } });
             }
             catch (Exception ex)
             {

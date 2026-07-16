@@ -7,7 +7,7 @@ namespace IoTSuper_API.Services.Interface
     public interface ICentroService
     {
         Task ActualizarCentroAsync(CentroDTO centroDTO);
-        Task CrearCentroAsync(CentroDTO centroDTO);
+        Task<int> CrearCentroAsync(CentroDTO centroDTO);
         Task EliminarCentroAsync(int id);
         Task<List<CentroDTO>> ObtenerCentrosAsync(int id);
 

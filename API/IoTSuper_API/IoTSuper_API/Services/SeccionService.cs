@@ -30,7 +30,7 @@ namespace IoTSuper_API.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task CrearSeccionAsync(SeccionDTO seccionDTO)
+        public async Task<int> CrearSeccionAsync(SeccionDTO seccionDTO)
         {
             Seccion seccion = new Seccion
             {
@@ -43,6 +43,8 @@ namespace IoTSuper_API.Services
 
             await _context.Secciones.AddAsync(seccion);
             await _context.SaveChangesAsync();
+
+            return seccion.IdSeccion;
         }
 
         public async Task EliminarSeccionAsync(int id)

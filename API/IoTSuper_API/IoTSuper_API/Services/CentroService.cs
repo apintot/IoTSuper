@@ -44,7 +44,7 @@ namespace IoTSuper_API.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task CrearCentroAsync(CentroDTO centroDTO)
+        public async Task<int> CrearCentroAsync(CentroDTO centroDTO)
         {
             Localizacion localizacion = new Localizacion()
             {
@@ -72,6 +72,8 @@ namespace IoTSuper_API.Services
 
             await _context.Centros.AddAsync(nuevoCentro);
             await _context.SaveChangesAsync();
+
+            return nuevoCentro.IdCentro;
         }
 
         public async Task EliminarCentroAsync(int id)

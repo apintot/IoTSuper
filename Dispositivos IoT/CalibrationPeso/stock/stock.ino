@@ -91,7 +91,7 @@ void conectandoMQTT()
 
 void setup() 
 {
-Serial.begin(57600);
+  Serial.begin(57600);
   Serial.println("Starting...");
 
   celda.begin(HX711_ot, HX711_sck);		// inicializa objeto con los pines a utilizar

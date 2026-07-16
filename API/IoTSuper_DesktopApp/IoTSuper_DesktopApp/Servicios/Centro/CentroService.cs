@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.Pkcs;
 using System.Text;
+using System.Text.Json;
 
 namespace IoTSuper_DesktopApp.Servicios.Centro
 {
@@ -31,13 +32,13 @@ namespace IoTSuper_DesktopApp.Servicios.Centro
             catch (Exception ex) { throw new Exception("Error al eliminar el centro: " + ex.Message); }
         }
 
-        public static async Task<List<PaisesDTO>> ObtenerPaises()
+        public static async Task<PaisesDTO> ObtenerPaises()
         {
                 try
                 {
-                    return await APIService.GetAsync<List<PaisesDTO>>(Sesion.ApiConfigFolder.EndPointPaises, false) ?? new List<PaisesDTO>();
+                    return await APIService.GetAsync<PaisesDTO>(Sesion.ApiConfigFolder.EndPointPaises, false) ?? new PaisesDTO();
                 }
-                catch (Exception ex) { return new List<PaisesDTO>(); }
+                catch (Exception ex) { return new PaisesDTO(); }
         }
 
         public static async Task<ProvinciaDTO> ObtenerProvincia(string pais)
@@ -60,6 +61,13 @@ namespace IoTSuper_DesktopApp.Servicios.Centro
 
         public static async Task<ErrorDTO> GuardarCentro(CentroDTO centro)
         {
+            var json = JsonSerializer.Serialize(centro, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            Console.WriteLine(json);
+
             try
             {
                 return await APIService.PostAsync<ErrorDTO>(Sesion.ApiConfigFolder.EndPointCentro, centro) ?? new ErrorDTO { Status = 500 };

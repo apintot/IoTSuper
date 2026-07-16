@@ -60,7 +60,7 @@ namespace IoTSuper_DesktopApp.Servicios.API
             try
             {
                 Crypto crypto = new Crypto();
-                using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+                using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
                 string url = Sesion.ApiConfigFolder.API + endpoint;
 
@@ -90,7 +90,7 @@ namespace IoTSuper_DesktopApp.Servicios.API
             try
             {
                 Crypto crypto = new Crypto();
-                using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+                using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
                 string url = string.Empty;
 
                 if (esMiApi)

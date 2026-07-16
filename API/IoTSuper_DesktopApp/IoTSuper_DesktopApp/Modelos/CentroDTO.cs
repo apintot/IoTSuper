@@ -16,7 +16,7 @@ namespace IoTSuper_DesktopApp.Modelos
 
         public string Nombre { get; set; }
 
-        public string Imagen { get; set; }
+        public string? Imagen { get; set; } = string.Empty;
 
         public string Cif { get; set; }
 
@@ -29,7 +29,7 @@ namespace IoTSuper_DesktopApp.Modelos
         public LocalizacionDTO Localizacion { get; set; } = new LocalizacionDTO();
 
 
-        public List<Modelos.SeccionDTO> _secciones;
+        public List<Modelos.SeccionDTO>? _secciones;
 
         public int numeroComponentes = 0;
     }

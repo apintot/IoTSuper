@@ -164,12 +164,11 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
                 data.IdComponente = int.Parse(respuesta.Errors["Id"][0]);
 
-                int indiceCentro = Sesion._centros.FindIndex(c => c.IdCentro == Sesion.centroSelecionado);
-                int indiceSeccion = Sesion._centros[indiceCentro]._secciones.FindIndex(s => s.IdSeccion == Sesion.seccionSelecionado);
+                int indiceSeccion = Sesion._centros[Sesion.centroSelecionado]._secciones.FindIndex(s => s.IdSeccion == Sesion.seccionSelecionado);
 
-                Sesion._centros[indiceCentro]._secciones[indiceSeccion]._componentes.Add(data);
+                Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Add(data);
 
-                Sesion.Componentes.Add(ComponenteToResumen.ConvierteAResumenDTO(data, Sesion._centros[indiceCentro].Nombre, Sesion._centros[indiceCentro]._secciones[indiceSeccion].Nombre));
+                Sesion.Componentes.Add(ComponenteToResumen.ConvierteAResumenDTO(data, Sesion._centros[Sesion.centroSelecionado].Nombre, Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion].Nombre));
 
                 txbNombre.IsEnabled = false;
             }

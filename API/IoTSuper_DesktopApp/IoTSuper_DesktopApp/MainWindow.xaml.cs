@@ -27,6 +27,7 @@ namespace IoTSuper_DesktopApp
         private UserControl _vistaActual;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
         private void OnPropertyChanged(string nombre)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nombre));

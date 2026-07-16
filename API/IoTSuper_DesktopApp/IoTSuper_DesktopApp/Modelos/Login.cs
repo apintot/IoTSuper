@@ -38,7 +38,8 @@ namespace IoTSuper_DesktopApp.Modelos
         {
             APIUsuario = Crypto.Encriptar("IoTSuperUser");
             APIcontrasena = Crypto.Encriptar("RjP&y3WT6gbH0$!7R#8w");
-            API = "http://localhost:5188";
+            //API = "http://localhost:5188";
+            API = "https://iotsuper.duckdns.org";
             EndPointLogin = "/IoTSuper/Login";
             EndPointActualizarTOTP = "/IoTSuper/ActualizarTOTP";
             EndPointCliente = "/IoTSuper/Clientes";
@@ -46,7 +47,7 @@ namespace IoTSuper_DesktopApp.Modelos
             EndPointSecciones = "/IoTSuper/Seccion";
             EndPointTipologia = "/IoTSuper/Tipologia";
             EndPointComponente = "/IoTSuper/Componentes";
-            EndPointPaises = "https://restcountries.com/v3.1/region/europe?fields=name";
+            EndPointPaises = "https://countriesnow.space/api/v0.1/countries/";
             EndPointProvincias = "https://countriesnow.space/api/v0.1/countries/states";
         }
     }

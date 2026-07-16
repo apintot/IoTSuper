@@ -46,12 +46,6 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
         {
             if (_secciones == null) { btnDerecha.Visibility = Visibility.Collapsed; btnIzquierda.Visibility = Visibility.Collapsed; return; }
 
-            if (_secciones.Count <= 0)
-            {
-                Navegacion.IrA(new CarruselCentro());
-                return;
-            }
-
             if (_secciones.Count == 1)
             {
                 _tarjetaCentro = new TarjetaSeccion(_secciones[0]);
@@ -124,6 +118,25 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
         {
             _indiceCarusel = (_indiceCarusel + 1) % _secciones.Count;
             ActualizarCarrusel();
+        }
+
+        private void BuscarSeccionView_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _indiceCarusel = _secciones.IndexOf(_secciones.Find(s => s.Nombre.ToLower().Contains(txtBusqueda.Texto.ToLower())));
+
+                int total = _secciones.Count;
+
+                int izq = (_indiceCarusel - 1 + total) % total;
+                int centro = _indiceCarusel;
+                int der = (_indiceCarusel + 1) % total;
+
+                _tarjetaIzquierda?.ActualizarSeccion(_secciones[izq]);
+                _tarjetaCentro?.ActualizarSeccion(_secciones[centro]);
+                _tarjetaDerecha?.ActualizarSeccion(_secciones[der]);
+            }
+            catch (Exception ex) { MessageBox.Show("No se encontró ninguna sección que coincida con la búsqueda.", "Información", MessageBoxButton.OK, MessageBoxImage.Information); }
         }
     }
 }

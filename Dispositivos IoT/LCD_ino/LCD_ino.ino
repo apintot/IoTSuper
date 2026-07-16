@@ -122,62 +122,63 @@ void iniciarMqtt()
 
 void callback(char* topic, byte* payload, unsigned int length) 
 {
-  char fila1[20], fila2[20], fila3[20], fila4[20]; 
-  int j = 0, end = 0;
+  char fila1[21], fila2[21], fila3[21], fila4[21];
+  int j = 0;
+  int i, end;
 
-  for (int i = 0; i < 20 && (char)payload[j] != '|'; i++, j++) 
+  end = 0;
+  for (i = 0; i < 20 && j < length && (char)payload[j] != '|'; i++, j++)
   {
-    end = i+1;
     fila1[i] = (char)payload[j];
+    end = i + 1;
   }
-
-  j++;
   fila1[end] = '\0';
+  if (j < length) j++;
 
-  for (int i = 0; i < 20 && (char)payload[j] != '|'; i++, j++) 
+  end = 0;
+  for (i = 0; i < 20 && j < length && (char)payload[j] != '|'; i++, j++)
   {
-    end = i+1;
     fila2[i] = (char)payload[j];
+    end = i + 1;
   }
-
-  j++;
   fila2[end] = '\0';
+  if (j < length) j++;
 
-  for (int i = 0; i < 20 && (char)payload[j] != '|'; i++, j++) 
+  end = 0;
+  for (i = 0; i < 20 && j < length && (char)payload[j] != '|'; i++, j++)
   {
-    end = i+1;
     fila3[i] = (char)payload[j];
+    end = i + 1;
   }
-
-  j++;
   fila3[end] = '\0';
+  if (j < length) j++;
 
-  for (int i = 0; i < 20 && (char)payload[j] != '|'; i++, j++) 
+  end = 0;
+  for (i = 0; i < 20 && j < length && (char)payload[j] != '|'; i++, j++)
   {
-    end = i+1;
     fila4[i] = (char)payload[j];
+    end = i + 1;
   }
-
   fila4[end] = '\0';
 
   lcd.clear();
 
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print(fila1);
 
-  lcd.setCursor(0,1);
+  lcd.setCursor(0, 1);
   lcd.print(fila2);
 
-  lcd.setCursor(0,2);
+  lcd.setCursor(0, 2);
   lcd.print(fila3);
 
-  lcd.setCursor(0,3);
+  lcd.setCursor(0, 3);
   lcd.print(fila4);
 }
 
 void hacerPing(const String& payload)
 {
-  String fullTopic = topic + "/PING";
+  String fullTopic = topic;
   client.publish(fullTopic.c_str(), payload.c_str());
 }
 
@@ -203,8 +204,10 @@ void miSensorTask(void *pvParameters)//puntero generico para pasar datos
     tiempo = pulseIn(gpioEcho, HIGH, 3000);
     distancia = (tiempo * 0.034) / 2; // en centimetros
 
-    if(distancia <= 150 && reactivarUltraSonido >= 60)
+    if(distancia <= 15 && distancia != 0.00 && reactivarUltraSonido >= 60)
     {
+      Serial.println(distancia);
+      Serial.println(reactivarUltraSonido);
       hacerPing("VISTO");
       reactivarUltraSonido = 0;
     }
@@ -217,6 +220,9 @@ void miSensorTask(void *pvParameters)//puntero generico para pasar datos
 
 void setup() 
 {
+  Serial.begin(57600);
+  Serial.println("Starting...");
+
   uint64_t chipID = ESP.getEfuseMac();
   chipIDStr =  String((uint32_t)(chipID >> 32), HEX) + String((uint32_t)chipID, HEX);
   topic = "IoTSuper/LCD/" + chipIDStr;
@@ -231,7 +237,8 @@ void setup()
   iniciarMqtt();
 
   client.setCallback(callback);
-  client.subscribe(topic.c_str());
+  String topicOutput = topic + "/OUTPUT";
+  client.subscribe(topicOutput.c_str());
 
   pinMode(gpioEcho, INPUT);
   pinMode(gpioTrig, OUTPUT);

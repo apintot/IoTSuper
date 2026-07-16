@@ -75,7 +75,13 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             ErrorDTO errores = await SeccionService.GuardarSeccion(_seccion);
 
-            if (errores != null && errores.Status == 200) { Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); }
+            if (errores != null && errores.Status == 200) 
+            {
+                int posicion = Sesion._centros.FindIndex(c => c.IdCentro == _seccion.IdCentro);
+                _seccion.IdSeccion = int.Parse(errores.Errors.Values.FirstOrDefault()?.FirstOrDefault());
+                Sesion._centros[posicion]?._secciones?.Add(_seccion); 
+                Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); 
+            }
 
             MostrarErrores(errores);
         }

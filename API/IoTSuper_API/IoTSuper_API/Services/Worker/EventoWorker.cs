@@ -30,13 +30,14 @@ namespace IoTSuper_API.Services.Worker
             MqttClientFactory mqttFactory = new MqttClientFactory();
 
             MqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                    .WithTcpServer("iotsuper.duckdns.org", 8883)
+                    //.WithTcpServer("iotsuper.duckdns.org", 8883)
+                    .WithTcpServer("localhost", 8883)
                     .WithCredentials("iotsuper", "iotsupermqtt")
                     .WithTlsOptions(o => o
-                        .UseTls()
-                        .WithCertificateValidationHandler(_ => true))
-                    .WithCleanSession()
-                    .Build();
+                    .UseTls()
+                    .WithCertificateValidationHandler(_ => true))
+                .WithCleanSession()
+                .Build();
 
             mqttClient = mqttFactory.CreateMqttClient();
 
@@ -49,6 +50,20 @@ namespace IoTSuper_API.Services.Worker
             await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
 
             await subscribirseAMiTopic();
+
+            mqttClient.DisconnectedAsync += async d =>
+            {
+                try
+                {
+                    await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
+                    await subscribirseAMiTopic();
+                    Console.WriteLine("Reconectado correctamente.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fallo al reconectar: {ex.Message}");
+                }
+            };
 
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }
@@ -69,7 +84,7 @@ namespace IoTSuper_API.Services.Worker
 
             if (topic.Contains("OUTPUT")) { return; }
 
-            topic = topic.Split('/').Last();
+            topic = topic.Split('/')[2];
 
             Componente componente = await _context.Componentes.Where(c => c.Topic == topic).FirstOrDefaultAsync();
 
@@ -119,6 +134,10 @@ namespace IoTSuper_API.Services.Worker
                 }
                 else
                 {
+                    Etiqueta etiqueta = await _context.Etiquetas.Where(t => t.IdComponente == componente.IdComponente).FirstOrDefaultAsync();
+
+                    if (mensaje.Equals("VISTO")) { etiqueta.Visualizaciones += 1; _context.Etiquetas.Update(etiqueta); await _context.SaveChangesAsync(); }
+
                     return;
                 }
             }
@@ -143,6 +162,7 @@ namespace IoTSuper_API.Services.Worker
         {
             return await _context.Eventos.AnyAsync(e => e.IdComponente == idComponente && e.TipoEvento == tipoEvento && e.FechaEvento >= DateTime.UtcNow.AddHours(-24));
         }
+
         public async Task EnviarCorreoAsync(EventoDTO evento, AppDBContext _context)
         {
             SmtpClient smtp = new SmtpClient("smtp.gmail.com")

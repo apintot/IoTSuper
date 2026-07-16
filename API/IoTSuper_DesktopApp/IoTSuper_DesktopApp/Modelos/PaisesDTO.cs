@@ -6,12 +6,18 @@ namespace IoTSuper_DesktopApp.Modelos
 {
     public class PaisesDTO
     {
-        public Name name { get; set; }
+        public bool error { get; set; }
+        public string msg { get; set; }
+        public InfoPaises[] data { get; set; }
 
-        public class Name
+        public class InfoPaises
         {
-            public string common { get; set; }
-            public string official { get; set; }
+            public string iso2 { get; set; }
+            public string iso3 { get; set; }
+            public string country { get; set; }
+            public string[] cities { get; set; }
         }
     }
 }
+
+

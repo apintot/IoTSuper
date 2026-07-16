@@ -36,9 +36,17 @@ namespace IoTSuper_DesktopApp.Controladores
             txbNumeroSecciones.Text = _centro._secciones?.Count.ToString();
             _centro.numeroComponentes = 0;
 
-            foreach (SeccionDTO seccion in _centro._secciones)
+            if (!(_centro._secciones is null))
             {
-                _centro.numeroComponentes += seccion._componentes.Count;
+                foreach (SeccionDTO seccion in _centro._secciones)
+                {
+                    if (seccion._componentes is null) continue;
+                    _centro.numeroComponentes += seccion._componentes.Count;
+                }
+            }
+            else
+            {
+                txbNumeroSecciones.Text = 0.ToString();
             }
 
             txbNumeroSensores.Text = _centro.numeroComponentes.ToString();
@@ -74,8 +82,8 @@ namespace IoTSuper_DesktopApp.Controladores
 
         private void VerSecciones_Click(object sender, RoutedEventArgs e)
         {
-            if(_centro._secciones == null || _centro._secciones.Count == 0) { return; }
-            Sesion.centroSelecionado = _centro.IdCentro;
+            //if(_centro._secciones == null || _centro._secciones.Count == 0) { Navegacion.IrA(new FormularioCentroControl()); }
+            Sesion.centroSelecionado = Sesion._centros.FindIndex(x => x.IdCentro == _centro.IdCentro);
             Navegacion.IrA(new CarruselSeccion(_centro._secciones, _centro.IdCentro));
         }
 

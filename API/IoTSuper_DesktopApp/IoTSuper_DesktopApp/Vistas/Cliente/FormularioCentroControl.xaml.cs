@@ -16,7 +16,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static IoTSuper_DesktopApp.Modelos.PaisesDTO;
 using static QRCoder.SvgQRCode;
+using static System.Collections.Specialized.BitVector32;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IoTSuper_DesktopApp.Vistas.Cliente
@@ -26,7 +28,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
     /// </summary>
     public partial class FormularioCentroControl : UserControl
     {
-        private List<PaisesDTO> _paises;
+        private PaisesDTO _paises;
 
         private Dictionary<int, string> _tipologias;
 
@@ -60,9 +62,9 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
         {
             _paises = await CentroService.ObtenerPaises();
 
-            foreach (PaisesDTO paisDTO in _paises)
+            foreach (InfoPaises paisDTO in _paises.data)
             {
-                cmbPais.Items.Add(paisDTO.name.common);
+                cmbPais.Items.Add(paisDTO.country);
             }
 
             _tipologias = await CentroService.ObtenerTipologias();
@@ -127,7 +129,12 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             ErrorDTO errores = await CentroService.GuardarCentro(_centro);
 
-            if (errores != null && errores.Status == 200) { Navegacion.IrA(new CarruselCentro()); }
+            if (errores != null && errores.Status == 200) 
+            {
+                _centro.IdCentro = int.Parse(errores.Errors.Values.FirstOrDefault()?.FirstOrDefault());
+                Sesion._centros.Add(_centro);
+                Navegacion.IrA(new CarruselCentro()); 
+            }
 
             MostrarErrores(errores);
 
