@@ -35,12 +35,11 @@ namespace IoTSuper_API.Controllers
         {
             if(!ModelState.IsValid) { return BadRequest(ModelState); }
 
-
             try
             {
                 Cliente? cliente = await _context.Clientes.Where(c => c.Login == loginRequest.Usuario && c.Habilitado).FirstOrDefaultAsync();
 
-                if (cliente == null || !_contrasenaService.VerificarContrasena(cliente.Contrasena, loginRequest.Contrasena/*_crypto.Desencriptar(loginRequest.Contrasena)*/))
+                if (cliente == null || !_contrasenaService.VerificarContrasena(cliente.Contrasena, loginRequest.Contrasena))
                 {
                     return Unauthorized();
                 }

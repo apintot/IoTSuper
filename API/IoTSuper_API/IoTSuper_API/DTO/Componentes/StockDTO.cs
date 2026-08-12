@@ -18,7 +18,5 @@ namespace IoTSuper_API.DTO.Componentes
         public double Peso_Unidad { get; set; }
 
         public string EmailEmergencia { get; set; } = string.Empty;
-
-        public string TelefonoEmergencia { get; set; } = string.Empty;
     }
 }

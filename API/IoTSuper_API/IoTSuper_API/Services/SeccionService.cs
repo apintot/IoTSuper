@@ -49,6 +49,10 @@ namespace IoTSuper_API.Services
 
         public async Task EliminarSeccionAsync(int id)
         {
+            await _context.Componentes
+                .Where(c => c.IdSeccion == id)
+                .ExecuteUpdateAsync(setters => setters.SetProperty(c => c.Habilitado, false));
+
             await _context.Secciones
                 .Where(s => s.IdSeccion == id)
                 .ExecuteUpdateAsync(s => s

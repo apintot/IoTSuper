@@ -30,12 +30,12 @@ namespace IoTSuper_API.Services.Worker
             MqttClientFactory mqttFactory = new MqttClientFactory();
 
             MqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                    //.WithTcpServer("iotsuper.duckdns.org", 8883)
-                    .WithTcpServer("localhost", 8883)
+                    .WithTcpServer("iotsuper.duckdns.org", 8883)
+                    //.WithTcpServer("localhost", 8883)
                     .WithCredentials("iotsuper", "iotsupermqtt")
                     .WithTlsOptions(o => o
                     .UseTls()
-                    .WithCertificateValidationHandler(_ => true))
+                        .WithCertificateValidationHandler(_ => true))
                 .WithCleanSession()
                 .Build();
 
@@ -120,7 +120,7 @@ namespace IoTSuper_API.Services.Worker
 
                 if (termometro != null)
                 {
-                    double temperatura = double.TryParse(mensaje.Replace('.', ','), out double result) ? result : 0;
+                    double temperatura = double.TryParse(mensaje, out double result) ? result : 0;
                     bool fueraRango = temperatura < termometro.Temperatura_Minima || temperatura > termometro.Temperatura_Maxima;
                     if (fueraRango)
                     {

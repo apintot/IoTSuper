@@ -31,6 +31,6 @@ namespace IoTSuper_DesktopApp.Modelos
 
         public List<Modelos.SeccionDTO>? _secciones;
 
-        public int numeroComponentes = 0;
+        //public int numeroComponentes = 0;
     }
 }

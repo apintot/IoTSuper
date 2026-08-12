@@ -42,6 +42,7 @@ builder.Services.AddScoped<IContrasenaService, ContrasenaService>();
 builder.Services.AddScoped<ICentroService, CentroService>();
 builder.Services.AddScoped<ISeccionService, SeccionService>();
 builder.Services.AddScoped<IComponenteService, ComponenteService>();
+builder.Services.AddScoped<IEventoService, EventoService>();
 
 builder.Services.AddAuthorization();
 

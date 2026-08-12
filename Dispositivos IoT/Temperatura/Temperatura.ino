@@ -100,7 +100,7 @@ void setup()
   }
   Serial.println(" conectado!");
 
-  // Sincronizar hora (necesario para validar certificados TLS)
+  // Sincronizar hora necesario para validar certificados TLS
   configTime(0, 0, "pool.ntp.org", "time.nist.gov");
   Serial.print("Sincronizando hora");
   struct tm timeinfo;

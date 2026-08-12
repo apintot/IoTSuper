@@ -107,7 +107,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
         {
             ErrorDTO respuesta = await ComponenteService.EliminarComponente(data.IdComponente);
 
-            if (respuesta == null || respuesta.Status != 200) { return; }//popup
+            if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al eliminar el componente: {respuesta.Errors.First().Value}"); return; }//popup
 
             this.Visibility = Visibility.Collapsed;
 
@@ -153,7 +153,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
             {
                 ErrorDTO respuesta = await ComponenteService.CrearComponente(data);
 
-                if (respuesta == null || respuesta.Status != 200) { return; }//popup
+                if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al crear el componente: {respuesta.Errors.First().Value.First()}"); return; }//popup
 
                 data.IdComponente = int.Parse(respuesta.Errors["Id"][0]);
 
@@ -171,16 +171,18 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
                 Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Add(data);
 
+                //Sesion._centros[Sesion.centroSelecionado].numeroComponentes++;
+
                 Sesion.Componentes.Add(ComponenteToResumen.ConvierteAResumenDTO(data, Sesion._centros[Sesion.centroSelecionado].Nombre, Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion].Nombre));
 
-                 txbNombre.IsEnabled = false;
+                txbNombre.IsEnabled = false;
 
                 esNuevo = false;
             }
             else
             {
                 ErrorDTO respuesta = await ComponenteService.ActualizarComponente(data);
-                if(respuesta == null || respuesta.Status != 200) { return; }//popup
+                if(respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al actualizar el componente: {respuesta.Errors.First().Value}"); return; }//popup
             }
 
             imgBorrar.IsHitTestVisible = true;

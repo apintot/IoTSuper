@@ -5,7 +5,7 @@ namespace IoTSuper_API.Services.Interface
 {
     public interface IEventoService
     {
-        Task EnviarCorreoAsync(EventoDTO evento);
         Task CrearEventoAsync(EventoDTO evento);
+        Task<List<EventoDTO>> ObtenerEventosAsync(int idUsuario);
     }
 }

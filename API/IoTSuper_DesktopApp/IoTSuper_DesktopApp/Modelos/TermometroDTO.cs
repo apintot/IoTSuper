@@ -13,7 +13,5 @@
         public double Temperatura_Minima { get; set; }
 
         public string EmailEmergencia { get; set; }
-
-        public string TelefonoEmergencia { get; set; }
     }
 }

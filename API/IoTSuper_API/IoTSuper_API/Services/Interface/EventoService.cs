@@ -1,6 +1,8 @@
 ﻿using IoTSuper_API.Data;
 using IoTSuper_API.DTO.Evento;
 using IoTSuper_API.Models;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Mail;
 
@@ -29,29 +31,28 @@ namespace IoTSuper_API.Services.Interface
             await _context.SaveChangesAsync();
         }
 
-        public async Task EnviarCorreoAsync(EventoDTO evento)
+        public async Task<List<EventoDTO>> ObtenerEventosAsync(int idUsuario)
         {
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com")
-            {
-                Port = 587,
-                Credentials = new NetworkCredential("tuemail@gmail.com", "tupassword"),
-                EnableSsl = true,
-            };
+            List<EventoDTO> eventosDTO = await _context.Eventos
+                .Where(e => _context.Componentes
+                    .Where(c => _context.Secciones
+                        .Where(s => _context.Centros
+                            .Where(ce => ce.IdCliente == idUsuario)
+                            .Select(ce => ce.IdCentro)
+                            .Contains(s.IdCentro))
+                        .Select(s => s.IdSeccion)
+                        .Contains(c.IdSeccion))
+                    .Select(c => c.IdComponente)
+                    .Contains(e.IdComponente))
+                .Select(e => new EventoDTO
+                {
+                    IdComponente = e.IdComponente,
+                    TipoEvento = e.TipoEvento,
+                    FechaEvento = e.FechaEvento
+                })
+                .ToListAsync();
 
-            MailMessage mail = new MailMessage
-            {
-                From = new MailAddress("tuemail@gmail.com"),
-                Subject = "ADVERTENCIA!",
-                Body = $"Se ha detectado un error critico: {evento.TipoEvento}.",
-                IsBodyHtml = true
-            };
-
-            string email = _context.Stocks.Where(c => c.IdComponente == evento.IdComponente).Select(c => c.EmailEmergencia).FirstOrDefault() ??
-                           _context.Termometros.Where(c => c.IdComponente == evento.IdComponente).Select(c => c.EmailEmergencia).FirstOrDefault() ??
-                           throw new Exception("No se encontró un correo electrónico de emergencia para el componente especificado.");
-
-            mail.To.Add(email);
-            smtp.Send(mail);
+            return eventosDTO;
         }
     }
 }

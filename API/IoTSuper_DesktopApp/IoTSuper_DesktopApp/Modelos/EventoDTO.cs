@@ -6,8 +6,8 @@ namespace IoTSuper_DesktopApp.Modelos
 {
     public class EventoDTO
     {
-        public int IdComponente { get; set; }
-        public string TipoEvento { get; set; }
-        public DateTime FechaEvento { get; set; }
+        public int idComponente { get; set; }
+        public string tipoEvento { get; set; }
+        public DateTime fechaEvento { get; set; }
     }
 }

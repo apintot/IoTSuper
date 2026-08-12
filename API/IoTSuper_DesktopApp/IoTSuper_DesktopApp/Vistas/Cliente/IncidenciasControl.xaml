@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="IoTSuper_DesktopApp.Vistas.Cliente.IncidenciasControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IoTSuper_DesktopApp.Vistas.Cliente"
+             mc:Ignorable="d">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Background="Transparent">
+        <Border CornerRadius="15" Background="White" Padding="10" Margin="10" BorderThickness="5">
+            <Border.Effect>
+                <DropShadowEffect Color="{StaticResource scbSombra}" BlurRadius="10" ShadowDepth="2" Opacity="1"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource stlTitulo}" Grid.Row="0" Text="Lista de eventos"/>
+
+                <TextBlock Style="{StaticResource stlTitulo}" Grid.Row="1" Text="" />
+
+                <DataGrid x:Name="dgEventos" 
+                    BorderBrush="White"
+                    Grid.Row="2"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    HeadersVisibility="Column"
+                    GridLinesVisibility="None"
+                    RowHeight="45"
+                    BorderThickness="1"
+                    Background="Transparent"
+                    AlternatingRowBackground="LightGray"
+                    RowBackground="White"
+                    IsHitTestVisible="True"
+                    IsManipulationEnabled="False"
+                    AlternationCount="2">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="IdComponente" IsReadOnly="True"
+                        HeaderStyle="{StaticResource stlTablaHeader}"
+                        ElementStyle="{StaticResource stlTablaText}"
+                        Binding="{Binding idComponente}"
+                        Width="*"/>
+
+                        <DataGridTextColumn Header="Tipo de Evento" IsReadOnly="True"
+                        HeaderStyle="{StaticResource stlTablaHeader}"
+                        ElementStyle="{StaticResource stlTablaText}"
+                        Binding="{Binding tipoEvento}"
+                        Width="*"/>
+
+                        <DataGridTextColumn Header="Fecha del Evento" IsReadOnly="True"
+                        HeaderStyle="{StaticResource stlTablaHeader}"
+                        ElementStyle="{StaticResource stlTablaText}"
+                        Binding="{Binding fechaEvento}"
+                        Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

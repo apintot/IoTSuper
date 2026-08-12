@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -112,7 +113,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
         {
             ErrorDTO respuesta = await ComponenteService.EliminarComponente(data.IdComponente);
 
-            if (respuesta == null || respuesta.Status != 200) { return; }//popup
+            if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al eliminar el componente: {respuesta.Errors.First().Value}"); return; }//popup
 
             this.Visibility = Visibility.Collapsed;
 
@@ -150,15 +151,39 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
             if (data.Termometro is null) { data.Termometro = new TermometroDTO(); }
 
-            data.Termometro.EmailEmergencia = String.IsNullOrEmpty(txbEmail.Text) ? "" : txbEmail.Text;
-            data.Termometro.Temperatura_Maxima = String.IsNullOrEmpty(txbTempMax.Text) ? 0 : int.Parse(txbTempMax.Text);
-            data.Termometro.Temperatura_Minima = String.IsNullOrEmpty(txbTempMin.Text) ? 0 : int.Parse(txbTempMin.Text);
+            try
+            {
+                data.Termometro.EmailEmergencia = String.IsNullOrEmpty(txbEmail.Text) || !EmailChecker.IsValidEmail(txbEmail.Text)
+                    ? throw new Exception("Correo electrónico no válido") : txbEmail.Text;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            bool tempMaxValida = int.TryParse(txbTempMax.Text, out int tempMax);
+            bool tempMinValida = int.TryParse(txbTempMin.Text, out int tempMin);
+
+            if (!String.IsNullOrEmpty(txbTempMax.Text) && !tempMaxValida)
+            {
+                MessageBox.Show("La temperatura máxima no es un número válido.", "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!String.IsNullOrEmpty(txbTempMin.Text) && !tempMinValida)
+            {
+                MessageBox.Show("La temperatura mínima no es un número válido.", "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            data.Termometro.Temperatura_Maxima = tempMax;
+            data.Termometro.Temperatura_Minima = tempMin;
 
             if (esNuevo)
             {
                 ErrorDTO respuesta = await ComponenteService.CrearComponente(data);
 
-                if (respuesta == null || respuesta.Status != 200) { return; }//popup
+                if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al crear el componente: {respuesta.Errors.First().Value}"); return; }//popup
 
                 data.IdComponente = int.Parse(respuesta.Errors["Id"][0]);
 
@@ -172,6 +197,8 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
                 Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Add(data);
 
+                //Sesion._centros[Sesion.centroSelecionado].numeroComponentes++;
+
                 Sesion.Componentes.Add(ComponenteToResumen.ConvierteAResumenDTO(data, Sesion._centros[Sesion.centroSelecionado].Nombre, Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion].Nombre));
 
                 txbNombre.IsEnabled = false;
@@ -179,7 +206,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
             else
             {
                 ErrorDTO respuesta = await ComponenteService.ActualizarComponente(data);
-                if (respuesta == null || respuesta.Status != 200) { return; }//popup
+                if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al actualizar el componente: {respuesta.Errors.First().Value}"); return; }//popup
             }
 
             imgBorrar.IsHitTestVisible = true;

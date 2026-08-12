@@ -56,10 +56,27 @@ namespace IoTSuper_DesktopApp
             if (Sesion.LoginData.EsAdmin)
             {
                 Navegacion.IrA(new AdminInicio());
+                ocultarVistas();
             }
             else
             {
                 this.Loaded += MainWindow_Loaded;
+                this.IsHitTestVisible = false;
+            }
+        }
+
+        private void ocultarVistas()
+        {
+            foreach(UIElement elemento in this.VistasGrid.Children)
+            {
+                if (elemento is not StackPanel stackPanel) continue;
+                foreach (StackPanel hijo in stackPanel.Children)
+                {
+                    if(hijo.Tag?.ToString() == "1")
+                    {
+                        hijo.Visibility = Visibility.Collapsed;
+                    }
+                }
             }
         }
 
@@ -86,6 +103,7 @@ namespace IoTSuper_DesktopApp
             Navegacion.IrA(new ResumenViewControl());
             Sesion._stopwatch.Stop();
             Debug.WriteLine("Programa cargado en: " + Sesion._stopwatch.ElapsedMilliseconds + " ms");
+            this.IsHitTestVisible = true;
         }
 
         private void cargarTablaResumen()
@@ -125,6 +143,11 @@ namespace IoTSuper_DesktopApp
             {
                 Navegacion.IrA(new ResumenViewControl());
             }
+        }
+
+        private void Incidencias_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Navegacion.IrA(new IncidenciasControl());
         }
     }
 }

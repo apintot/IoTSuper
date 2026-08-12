@@ -83,7 +83,7 @@ namespace IoTSuper_DesktopApp.Config
                     .WithCredentials(crypto.Desencriptar(Mqtt.usuario), crypto.Desencriptar(Mqtt.contrasena))
                     .WithTlsOptions(o => o
                     .UseTls()
-                        .WithSslProtocols(System.Security.Authentication.SslProtocols.Tls12))
+                        .WithSslProtocols(System.Security.Authentication.SslProtocols.Tls13))
                         .WithCleanSession()
                     .Build();
 
@@ -131,10 +131,14 @@ namespace IoTSuper_DesktopApp.Config
             if (topic.Contains("OUTPUT")) { return; }
 
             topic = topic.Split('/').Last();
+            ComponenteDTO componenteActual;
+            try
+            {
+                componenteActual = _centros.SelectMany(c => c._secciones).SelectMany(s => s._componentes).FirstOrDefault(c => c.Topic == topic);
+            }
+            catch  { return; }
 
-            ComponenteDTO componenteActual = _centros.SelectMany(c => c._secciones).SelectMany(s => s._componentes).FirstOrDefault(c=> c.Topic == topic);
-
-            if(componenteActual == null) { return; }
+            if (componenteActual == null) { return; }
 
             ResumenDTO resumenActual = Componentes.FirstOrDefault(c => c.IdComponente == componenteActual.IdComponente);
 

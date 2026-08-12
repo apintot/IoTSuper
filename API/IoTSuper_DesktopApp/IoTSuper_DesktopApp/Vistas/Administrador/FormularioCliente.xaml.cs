@@ -55,12 +55,12 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
         private async void CrearCliente_ClickAsync(object sender, RoutedEventArgs e)
         {
             Modelos.Cliente clienteNuevo = new Modelos.Cliente();
-            Crypto crypto = new Crypto();
 
             clienteNuevo.Nombre = camNombre.Texto;
             clienteNuevo.Apellido = camApellido.Texto;
             clienteNuevo.Empresa = camEmpresa.Texto;
             clienteNuevo.Login = camLogin.Texto;
+            clienteNuevo.Contrasena = camContrasena.Texto;
 
             if(string.IsNullOrEmpty(camContrasena.Texto) || camContrasena.Texto.Length < 12)
             {
@@ -68,8 +68,6 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
                 txbErrorContrasena.Visibility = Visibility.Visible;
                 return;
             }
-
-            clienteNuevo.Contrasena = crypto.Encriptar(camContrasena.Texto);
 
             ActualizarClienteResponse errores = await ClienteService.CrearCliente(clienteNuevo);
 

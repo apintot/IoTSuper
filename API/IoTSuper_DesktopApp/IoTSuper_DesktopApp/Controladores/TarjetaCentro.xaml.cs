@@ -34,14 +34,14 @@ namespace IoTSuper_DesktopApp.Controladores
         {
             _centro._secciones = Sesion._centros.Where(c => c.IdCentro == _centro.IdCentro).FirstOrDefault()?._secciones;
             txbNumeroSecciones.Text = _centro._secciones?.Count.ToString();
-            _centro.numeroComponentes = 0;
+            //_centro.numeroComponentes = 0;
 
             if (!(_centro._secciones is null))
             {
                 foreach (SeccionDTO seccion in _centro._secciones)
                 {
                     if (seccion._componentes is null) continue;
-                    _centro.numeroComponentes += seccion._componentes.Count;
+                    //_centro.numeroComponentes += seccion._componentes.Count;
                 }
             }
             else
@@ -49,7 +49,7 @@ namespace IoTSuper_DesktopApp.Controladores
                 txbNumeroSecciones.Text = 0.ToString();
             }
 
-            txbNumeroSensores.Text = _centro.numeroComponentes.ToString();
+            //txbNumeroSensores.Text = _centro.numeroComponentes.ToString();
         }
 
         public async void ActualizarCentro(CentroDTO centro)
@@ -58,7 +58,7 @@ namespace IoTSuper_DesktopApp.Controladores
 
             txbTituloCentro.Text = centro.Nombre;
 
-            txbNumeroSensores.Text = _centro.numeroComponentes.ToString();
+            txbNumeroSensores.Text = _centro._secciones?.Sum(s => s._componentes?.Count ?? 0).ToString();
 
             if (string.IsNullOrWhiteSpace(centro.Imagen))
             {

@@ -90,9 +90,8 @@ namespace IoTSuper_API.Controllers
 
             if (string.IsNullOrWhiteSpace(cliente.Nombre)) { return BadRequest(new { mensaje = "El nombre es obligatorio." }); }
 
-            //cliente.Contrasena = _crypto.Encriptar(cliente.Contrasena);
 
-            if (!_contrasenaService.EsContrasenaSegura(_crypto.Desencriptar(cliente.Contrasena)))
+            if (!_contrasenaService.EsContrasenaSegura(cliente.Contrasena))
             {
                 return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error contrasena" } } } });
             }
@@ -105,7 +104,7 @@ namespace IoTSuper_API.Controllers
                 EsAdmin = false,
                 Empresa = cliente.Empresa,
                 Login = cliente.Login,
-                Contrasena = _contrasenaService.hashContrasena(_crypto.Desencriptar(cliente.Contrasena))
+                Contrasena = _contrasenaService.hashContrasena(cliente.Contrasena)
             };
 
             try
@@ -137,17 +136,16 @@ namespace IoTSuper_API.Controllers
             clienteExistente.Apellido = cliente.Apellido;
             clienteExistente.Empresa = cliente.Empresa;
             clienteExistente.Login = cliente.Login;
+            clienteExistente.Contrasena = cliente.Contrasena;
 
-            string contrasena = _crypto.Desencriptar(cliente.Contrasena);
-
-            if (!string.IsNullOrWhiteSpace(contrasena))
+            if (!string.IsNullOrWhiteSpace(clienteExistente.Contrasena))
             {
-                if (!_contrasenaService.EsContrasenaSegura(contrasena))
+                if (!_contrasenaService.EsContrasenaSegura(clienteExistente.Contrasena))
                 {
                     return BadRequest(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar cliente" } } } });
                 }
 
-                clienteExistente.Contrasena = _contrasenaService.hashContrasena(contrasena);
+                clienteExistente.Contrasena = _contrasenaService.hashContrasena(clienteExistente.Contrasena);
             }
 
             try

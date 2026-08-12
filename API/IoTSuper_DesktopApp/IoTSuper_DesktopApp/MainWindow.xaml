@@ -24,7 +24,7 @@
                 <Border Style="{StaticResource stlLineaDecorativa}"/>
             </Grid>
 
-            <Grid Grid.Row="1">
+            <Grid x:Name="VistasGrid" Grid.Row="1">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Tag="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,0">
                         <Border Style="{StaticResource stlBoton}" MouseLeftButtonUp="Inicio_MouseLeftButtonUp">
@@ -45,7 +45,7 @@
                     </StackPanel>
 
                     <StackPanel Tag="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,35,0,0">
-                        <Border Style="{StaticResource stlBoton}">
+                        <Border Style="{StaticResource stlBoton}" MouseLeftButtonUp="Incidencias_MouseLeftButtonUp">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
                                 <Image Source="{StaticResource IIncidencia}" Width="25" Margin="0,0,10,0"/>
                                 <TextBlock Text="Incidencias" Style="{StaticResource stlSubtitulo}" Foreground="{StaticResource scbFondo}"/>

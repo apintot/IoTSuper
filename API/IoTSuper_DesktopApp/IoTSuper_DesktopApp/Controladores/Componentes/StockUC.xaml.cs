@@ -113,7 +113,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
         {
             ErrorDTO respuesta = await ComponenteService.EliminarComponente(data.IdComponente);
 
-            if (respuesta == null || respuesta.Status != 200) { return; }//popup
+            if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al eliminar el componente: {respuesta.Errors.First().Value}"); return; }//popup
 
             this.Visibility = Visibility.Collapsed;
 
@@ -153,22 +153,54 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
             try
             {
-                data.Stock.Peso_Unidad = String.IsNullOrEmpty(txbPeso.Text) ? 0 : double.Parse(txbPeso.Text);
-                data.Stock.Stock_Maximo = String.IsNullOrEmpty(txbStcMax.Text) ? 0 : int.Parse(txbStcMax.Text);
-                data.Stock.Stock_Minimo = String.IsNullOrEmpty(txbStcMin.Text) ? 0 : int.Parse(txbStcMin.Text);
-                data.Stock.EmailEmergencia = String.IsNullOrEmpty(txbEmail.Text) ? String.Empty : txbEmail.Text;
+                data.Stock.EmailEmergencia = String.IsNullOrEmpty(txbEmail.Text) || !EmailChecker.IsValidEmail(txbEmail.Text)
+                    ? throw new Exception("Correo electrónico no válido") : txbEmail.Text;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error creando componente", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(ex.Message, "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            bool pesoUnidadValido = double.TryParse(txbPeso.Text, out double pesoUnidad);
+            bool stockMaximoValido = int.TryParse(txbStcMax.Text, out int stockMaximo);
+            bool stockMinimoValido = int.TryParse(txbStcMin.Text, out int stockMinimo);
+
+            if(!pesoUnidadValido)
+            {
+                MessageBox.Show("El peso por unidad no es un número válido.", "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            if(!stockMaximoValido)
+            {
+                MessageBox.Show("El stock máximo no es un número válido.", "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if(!stockMinimoValido)
+            {
+                MessageBox.Show("El stock mínimo no es un número válido.", "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning); return;
+            }
+
+            if (!stockMaximoValido) 
+            { 
+                MessageBox.Show("El stock máximo no es un número válido.", "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning); return;  
+            }
+
+            if (!stockMinimoValido)
+            {
+                MessageBox.Show("El stock minimo no es un número válido.", "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning); return;
+            }
+
+            data.Stock.Peso_Unidad = pesoUnidad;
+            data.Stock.Stock_Minimo = stockMinimo;
+            data.Stock.Stock_Maximo = stockMaximo;
 
             if (esNuevo)
             {
                 ErrorDTO respuesta = await ComponenteService.CrearComponente(data);
 
-                if (respuesta == null || respuesta.Status != 200) { return; }//popup
+                if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al crear el componente: {respuesta?.Errors.First().Value}"); return; }//popup
 
                 data.IdComponente = int.Parse(respuesta.Errors["Id"][0]);
 
@@ -181,6 +213,8 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
 
                 Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion]._componentes.Add(data);
 
+                //Sesion._centros[Sesion.centroSelecionado].numeroComponentes++;
+
                 Sesion.Componentes.Add(ComponenteToResumen.ConvierteAResumenDTO(data, Sesion._centros[Sesion.centroSelecionado].Nombre, Sesion._centros[Sesion.centroSelecionado]._secciones[indiceSeccion].Nombre));
 
                 txbNombre.IsEnabled = false;
@@ -188,7 +222,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
             else
             {
                 ErrorDTO respuesta = await ComponenteService.ActualizarComponente(data);
-                if (respuesta == null || respuesta.Status != 200) { return; }//popup
+                if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al actualizar el componente: {respuesta.Errors.First().Value}"); return; }//popup
             }
 
             imgBorrar.IsHitTestVisible = true;

@@ -78,14 +78,25 @@ namespace IoTSuper_API.Services
 
         public async Task EliminarCentroAsync(int id)
         {
-            Centro centro = await _context.Centros.FirstOrDefaultAsync(c => c.IdCentro == id);
+            await _context.Centros
+                .Where(s => s.IdCentro == id)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(p => p.Habilitado, false));
 
-            if (centro != null)
-            {
-                centro.Habilitado = false;
-                _context.Centros.Update(centro);
-                _context.SaveChanges();
-            }
+            List<int> secciones = await _context.Secciones
+                .Where(s => s.IdCentro == id)
+                .Select(s => s.IdSeccion)
+                .ToListAsync();
+
+            await _context.Componentes
+            .Where(c => secciones.Contains(c.IdSeccion))
+            .ExecuteUpdateAsync(setters => setters.SetProperty(c => c.Habilitado, false));
+
+            await _context.Secciones
+                .Where(s => secciones.Contains(s.IdSeccion))
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(p => p.Habilitado, false)
+                    .SetProperty(p => p.UpdateAt, DateTime.UtcNow));
         }
 
         public async Task<List<CentroDTO>> ObtenerCentrosAsync(int id)

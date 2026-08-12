@@ -31,13 +31,26 @@ namespace IoTSuper_API.Controllers
                 }
 
                 await _eventoService.CrearEventoAsync(eventoDTO);
-                await _eventoService.EnviarCorreoAsync(eventoDTO);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Ocurrió al enviar el email." } } } });
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { ex.Message } } } });
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> ObtenerEventos(int idUsuario)
+        {
+            try
+            {
+                List<EventoDTO> eventos = await _eventoService.ObtenerEventosAsync(idUsuario);
+                return Ok(eventos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { ex.Message } } } });
             }
         }
     }

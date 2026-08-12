@@ -79,6 +79,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             {
                 int posicion = Sesion._centros.FindIndex(c => c.IdCentro == _seccion.IdCentro);
                 _seccion.IdSeccion = int.Parse(errores.Errors.Values.FirstOrDefault()?.FirstOrDefault());
+                Sesion._centros[posicion]?._secciones = new List<SeccionDTO>();
                 Sesion._centros[posicion]?._secciones?.Add(_seccion); 
                 Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); 
             }
