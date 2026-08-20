@@ -1,4 +1,5 @@
-﻿using IoTSuper_DesktopApp.Servicios.Eventos;
+﻿using IoTSuper_DesktopApp.Helpers;
+using IoTSuper_DesktopApp.Servicios.Eventos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,7 +29,16 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private async void IncidenciasControl_Loaded(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Cargando incidencias recientes.");
             dgEventos.ItemsSource = await EventosServices.obtenerEventosRecientes();
+            if (dgEventos.ItemsSource != null || dgEventos.Items.Count > 0)
+            {
+                LogLocal.logear($"Incidencias recientes cargadas correctamente.");
+            }
+            else
+            {
+                LogLocal.logear($"Error al cargar incidencias recientes o ninguna excepcion aun.");
+            }
         }
     }
 }

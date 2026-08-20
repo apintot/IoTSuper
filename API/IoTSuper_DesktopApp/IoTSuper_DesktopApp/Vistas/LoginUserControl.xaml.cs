@@ -1,4 +1,5 @@
 ﻿using IoTSuper_DesktopApp.Config;
+using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Seguridad;
 using IoTSuper_DesktopApp.Servicios;
 using IoTSuper_DesktopApp.Servicios.API;
@@ -29,6 +30,7 @@ namespace IoTSuper_DesktopApp.Modelos
         public LoginUserControl()
         {
             InitializeComponent();
+            LogLocal.logear($"Iniciando aplicacion!");
         }
 
         private async void Login_ClickAsync(object sender, RoutedEventArgs e)
@@ -38,16 +40,19 @@ namespace IoTSuper_DesktopApp.Modelos
                 Sesion._stopwatch.Start();
                 txbError.Visibility = Visibility.Collapsed;
 
-                Crypto crypto = new Crypto();
+                LogLocal.logear($"Haciendo Login el Usuario: {camUser.Texto}");
+
+                LogLocal.logear($"Haciendo login...");
 
                 LoginResponse response = await LoginService.IniciarSesionAsync(camUser.Texto, camPass.Contrasena);
 
-                if(response.IdCliente == 0) { txbError.Text = "Usuario o contraseña incorrectos"; txbError.Visibility = Visibility.Visible; return; }
+                if(response.IdCliente == 0) { txbError.Text = "Usuario o contraseña incorrectos"; LogLocal.logear($"{txbError.Text}"); txbError.Visibility = Visibility.Visible; return; }
 
                 Sesion.LoginData = response;
 
                 if((DateTime.Now - response.ultimoAcceso).TotalDays > 1)
                 {
+                    LogLocal.logear($"Mostrando TOTP...");
                     MostrarTOTP(string.IsNullOrEmpty(response.TOTP));
                 }
                 else
@@ -60,6 +65,8 @@ namespace IoTSuper_DesktopApp.Modelos
 
         private void MostrarApp()
         {
+            LogLocal.logear($"Mostrando app.");
+
             MainWindow mainWindow = new MainWindow();
             this.Close();
             mainWindow.Show();
@@ -99,11 +106,14 @@ namespace IoTSuper_DesktopApp.Modelos
 
                 if (totp.VerifyTotp(camTOPT.Texto, out long tiempoRestante))
                 {
+                    LogLocal.logear($"TOTP verificado correctamente.");
+
                     await LoginService.ActualizarTOTP(Sesion.LoginData.TOTP);
                     MostrarApp();
                 }
                 else
                 {
+                    LogLocal.logear($"TOTP incorrecto.");
                     camTOPT.Background = new SolidColorBrush(Colors.Red);
                 }
             }

@@ -128,6 +128,8 @@ namespace IoTSuper_DesktopApp.Config
         {
             string mensaje = Encoding.UTF8.GetString(payload.ToArray());
 
+            LogLocal.logear($"Mensaje recibido en el topic {topic}: {mensaje}");
+
             if (topic.Contains("OUTPUT")) { return; }
 
             topic = topic.Split('/').Last();
@@ -160,11 +162,13 @@ namespace IoTSuper_DesktopApp.Config
 
                     resumenActual.EstadoColor = resumenActual.Estado switch
                     {
-                        "OK" => new SolidColorBrush(Colors.Green),
+                        "OK" => new SolidColorBrush(Color.FromRgb(0x10, 0xB9, 0x81)),
                         "Vacío" => new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44)),
                         "Error" => new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44)),
                         "Agotandose" => new SolidColorBrush(Color.FromRgb(0xFB, 0xBF, 0x24))
                     };
+
+                    LogLocal.logear($"Componente {componenteActual.Nombre} actualizado: {resumenActual.UltimoDato}, Estado: {resumenActual.Estado}");
 
                     resumenActual.Disponible?.Stop();
                     resumenActual.Disponible?.Start();
@@ -181,6 +185,8 @@ namespace IoTSuper_DesktopApp.Config
                         "Error" => new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44)),
                         "Alerta!" => new SolidColorBrush(Color.FromRgb(0x25, 0x63, 0xEB))
                     };
+
+                    LogLocal.logear($"Componente {componenteActual.Nombre} actualizado: {resumenActual.UltimoDato}, Estado: {resumenActual.Estado}");
 
                     resumenActual.Disponible?.Stop();
                     resumenActual.Disponible?.Start();
@@ -205,6 +211,8 @@ namespace IoTSuper_DesktopApp.Config
                         "Error" => new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44))
                     };
 
+                    LogLocal.logear($"Componente {componenteActual.Nombre} actualizado: {resumenActual.UltimoDato}, Estado: {resumenActual.Estado}");
+
                     resumenActual.Disponible?.Stop();
                     resumenActual.Disponible?.Start();
                 }
@@ -223,6 +231,8 @@ namespace IoTSuper_DesktopApp.Config
                 .WithPayload(payload)
                 .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
                 .Build());
+
+            LogLocal.logear($"Mensaje publicado en el topic {topic}: {payload}");
         }
 
         #endregion

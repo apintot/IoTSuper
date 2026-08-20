@@ -47,20 +47,24 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private void FormularioSeccionControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(_seccion.IdSeccion != 0)
+            LogLocal.logear($"FormularioSeccionControl cargado para la sección {_seccion.Nombre}.");
+            if (_seccion.IdSeccion != 0)
             {
+                LogLocal.logear($"Cargando sección {_seccion.Nombre} para edición.");
                 camNombre.Texto = _seccion.Nombre;
                 btnCrearSeccion.Visibility = Visibility.Collapsed;
                 btnEditarSeccion.Visibility = Visibility.Visible;
             }
             else
             {
+                LogLocal.logear($"Cargando sección {_seccion.Nombre} para creación.");
                 btnCrearSeccion.Visibility = Visibility.Visible;
                 btnEditarSeccion.Visibility = Visibility.Collapsed;
             }
 
             if (!string.IsNullOrEmpty(_seccion.Imagen))
             {
+                LogLocal.logear($"Cargando imagen de la sección {_seccion.Nombre}.");
                 imgCentro.Source = new BitmapImage(new Uri(_seccion.Imagen));
                 imgCentro.Stretch = Stretch.UniformToFill;
                 imgCentro.Width = double.NaN;
@@ -70,6 +74,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private async void btnCrearSeccion_Click(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Creando sección {_seccion.Nombre}.");
             _seccion.Nombre = camNombre.Texto;
             _seccion.IdCentro = _idCentro;
 
@@ -77,9 +82,15 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             if (errores != null && errores.Status == 200) 
             {
+                LogLocal.logear($"Sección {_seccion.Nombre} creada correctamente.");
                 int posicion = Sesion._centros.FindIndex(c => c.IdCentro == _seccion.IdCentro);
                 _seccion.IdSeccion = int.Parse(errores.Errors.Values.FirstOrDefault()?.FirstOrDefault());
-                Sesion._centros[posicion]?._secciones = new List<SeccionDTO>();
+
+                if(Sesion._centros[posicion]?._secciones is null)
+                {
+                    Sesion._centros[posicion]?._secciones = new List<SeccionDTO>();
+                }
+
                 Sesion._centros[posicion]?._secciones?.Add(_seccion); 
                 Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); 
             }
@@ -89,11 +100,12 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private async void btnEditarSeccion_Click(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Actualizando sección {_seccion.Nombre}.");
             _seccion.Nombre = camNombre.Texto;
 
             ErrorDTO errores = await SeccionService.ActualizarSeccion(_seccion);
 
-            if (errores != null && errores.Status == 200) { Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); }
+            if (errores != null && errores.Status == 200) { LogLocal.logear($"Sección {_seccion.Nombre} actualizada correctamente."); Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro)); }
 
             MostrarErrores(errores);
         }
@@ -104,15 +116,16 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             {
                 if (error.Key.Equals("Nombre"))
                 {
+                    LogLocal.logear($"Error al actualizar la sección {_seccion.Nombre}: {string.Join(Environment.NewLine, error.Value)}");
                     txbErrorNombre.Text = string.Join(Environment.NewLine, error.Value);
                     txbErrorNombre.Visibility = Visibility.Visible;
                 }
-
             }
         }
 
         private void Border_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            LogLocal.logear($"Seleccionando imagen para la sección {_seccion.Nombre}.");
             OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Seleccionar imagen",
@@ -144,6 +157,8 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             imgCentro.Stretch = Stretch.UniformToFill;
             imgCentro.Width = double.NaN;
             imgCentro.Height = double.NaN;
+
+            LogLocal.logear($"Imagen de la sección {_seccion.Nombre} actualizada correctamente.");
 
             RClone.RClone.SubirImagenesAlServidorAsync();
         }

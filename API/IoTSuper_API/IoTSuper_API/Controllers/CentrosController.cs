@@ -12,10 +12,12 @@ namespace IoTSuper_API.Controllers
     public class CentrosController : Controller
     {
         private readonly ICentroService _centroService;
+        private readonly ILogService _logger;
 
-        public CentrosController(ICentroService centroService)
+        public CentrosController(ICentroService centroService, ILogService logger)
         {
             _centroService = centroService;
+            _logger = logger;
         }
 
         [HttpGet("{id}")]
@@ -23,8 +25,11 @@ namespace IoTSuper_API.Controllers
         {
             try
             {
+                await _logger.LogAsync($"Obteniendo centros para el cliente con ID: {id}");
+
                 if (!ModelState.IsValid)
                 {
+                    await _logger.LogAsync($"Modelo inválido al obtener centros para el cliente con ID: {id}");
                     return BadRequest(ModelState);
                 }
 
@@ -32,6 +37,7 @@ namespace IoTSuper_API.Controllers
 
                 if (centros == null || centros.Count == 0)
                 {
+                    await _logger.LogAsync($"No se encontraron centros para el cliente con ID: {id}");
                     return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al encontrar centro" } } } });
                 }
 
@@ -39,6 +45,7 @@ namespace IoTSuper_API.Controllers
             }
             catch (Exception ex)
             {
+                await _logger.LogAsync($"Error al obtener centros para el cliente con ID: {id} {ex.Message}");
                 return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al obtener el centro" } } } });
             }
         }
@@ -48,16 +55,22 @@ namespace IoTSuper_API.Controllers
         {
             try
             {
+                await _logger.LogAsync($"Creando un nuevo centro para el cliente con ID: {centroDTO.IdCliente}");
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
                 int idCentro = await _centroService.CrearCentroAsync(centroDTO);
+
+                await _logger.LogAsync($"Centro creado con éxito con ID: {idCentro} para el cliente con ID: {centroDTO.IdCliente}");
+
                 return Ok(new ErrorDTO() { Status = 200, Errors = new Dictionary<string, List<string>> { { "IdCentro", new List<string> { idCentro.ToString() } } } });
             }
             catch (Exception ex)
             {
+                await _logger.LogAsync($"Error al crear centro para el cliente con ID: {centroDTO.IdCliente} {ex.Message}");
                 return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al crear centro" } } } });
             }
         }
@@ -67,16 +80,21 @@ namespace IoTSuper_API.Controllers
         {
             try
             {
+                await _logger.LogAsync($"Actualizando centro con ID: {centroDTO.IdCentro} para el cliente con ID: {centroDTO.IdCliente}"); 
                 if (!ModelState.IsValid)
                 {
+                    await _logger.LogAsync($"Modelo inválido al actualizar centro con ID: {centroDTO.IdCentro} para el cliente con ID: {centroDTO.IdCliente}");
                     return BadRequest(ModelState);
                 }
 
                 await _centroService.ActualizarCentroAsync(centroDTO);
+
+                await _logger.LogAsync($"Centro con ID: {centroDTO.IdCentro} actualizado con éxito para el cliente con ID: {centroDTO.IdCliente}");
                 return Ok(new ErrorDTO() { Status = 200 });
             }
             catch (Exception ex)
             {
+                await _logger.LogAsync($"Error al actualizar centro con ID: {centroDTO.IdCentro} para el cliente con ID: {centroDTO.IdCliente} {ex.Message}");
                 return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al actualizar centro" } } } });
             }
         }
@@ -88,14 +106,18 @@ namespace IoTSuper_API.Controllers
             {
                 if (!ModelState.IsValid)
                 {
+                    await _logger.LogAsync($"Modelo inválido al eliminar centro con ID: {id}");
                     return BadRequest(ModelState);
                 }
 
                 await _centroService.EliminarCentroAsync(id);
+
+                await _logger.LogAsync($"Centro con ID: {id} eliminado con éxito");
                 return Ok(new ErrorDTO() { Status = 200 });
             }
             catch (Exception ex)
             {
+                await _logger.LogAsync($"Error al eliminar centro con ID: {id} {ex.Message}");
                 return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error al eliminar centro" } } } });
             }
         }

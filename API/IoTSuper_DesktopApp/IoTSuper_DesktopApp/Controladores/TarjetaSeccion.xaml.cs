@@ -35,11 +35,14 @@ namespace IoTSuper_DesktopApp.Controladores
             ActualizarSeccion(seccion);
             _seccion = seccion;
 
+            LogLocal.logear($"Actualizando tarjeta de la sección {_seccion.Nombre}");
+
             this.Loaded += TarjetaSeccion_Loaded;
         }
 
         private async void TarjetaSeccion_Loaded(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Cargando componentes de la sección {_seccion.Nombre}");
             componentes = await ComponenteService.ObtenerComponentesSeccion(_seccion.IdSeccion);
             txbNumeroSensores.Text = componentes.Count().ToString();
             _seccion.NumComponentes = componentes.Count();
@@ -47,6 +50,7 @@ namespace IoTSuper_DesktopApp.Controladores
 
         public async void ActualizarSeccion(SeccionDTO seccion)
         {
+            LogLocal.logear($"Actualizando tarjeta de la sección {seccion.Nombre}");
             _seccion = seccion;
 
             txbTituloSeccion.Text = _seccion.Nombre;
@@ -69,12 +73,14 @@ namespace IoTSuper_DesktopApp.Controladores
 
         private void VerSecciones_Click(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Mostrando componentes de la sección {_seccion.Nombre}");
             Sesion.seccionSelecionado = this._seccion.IdSeccion;
             Navegacion.IrA(new ComponeneViewControl(this._seccion));
         }
 
         private void OtrasOpciones_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            LogLocal.logear($"Mostrando/Ocultando opciones de la sección {_seccion.Nombre}");
             stkOpciones.Opacity = stkOpciones.Opacity == 0 ? 1 : 0;
             stkOpciones.Visibility = stkOpciones.Opacity == 1 ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -83,10 +89,12 @@ namespace IoTSuper_DesktopApp.Controladores
         {
             try
             {
+                LogLocal.logear($"Editando sección {_seccion.Nombre}    ");
                 Navegacion.IrA(new FormularioSeccionControl(_seccion));
             }
             catch (Exception ex)
             {
+                LogLocal.logear($"Error al editar sección {_seccion.Nombre}: {ex.Message}");
                 MessageBox.Show(ex.Message, "Error al Editar seccion", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -95,12 +103,14 @@ namespace IoTSuper_DesktopApp.Controladores
         {
             try
             {
+                LogLocal.logear($"Eliminando sección {_seccion.Nombre}...");
                 await SeccionService.EliminarSeccion(_seccion.IdSeccion);
                 Sesion._centros[Sesion.centroSelecionado]._secciones.RemoveAll(s => s.IdSeccion == _seccion.IdSeccion);
                 Navegacion.IrA(new CarruselSeccion(await CentroService.ObtenerSeccionesCentro(_seccion.IdCentro), _seccion.IdCentro));
             }
             catch (Exception ex)
             {
+                LogLocal.logear($"Error al eliminar sección {_seccion.Nombre}: {ex.Message}");
                 MessageBox.Show(ex.Message, "Error al Eliminar seccion", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

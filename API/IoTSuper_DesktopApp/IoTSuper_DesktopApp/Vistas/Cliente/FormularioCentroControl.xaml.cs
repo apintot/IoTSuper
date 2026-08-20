@@ -62,10 +62,14 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
         {
             _paises = await CentroService.ObtenerPaises();
 
-            foreach (InfoPaises paisDTO in _paises.data)
+            if(_paises.data == null) { cmbPais.Items.Add("Spain"); }
+            else
             {
-                cmbPais.Items.Add(paisDTO.country);
-            }
+                foreach (InfoPaises paisDTO in _paises.data)
+                {
+                    cmbPais.Items.Add(paisDTO.country);
+                }
+            }    
 
             _tipologias = await CentroService.ObtenerTipologias();
 

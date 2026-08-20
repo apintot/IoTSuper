@@ -2,6 +2,7 @@
 using IoTSuper_DesktopApp.Helpers;
 using IoTSuper_DesktopApp.Modelos;
 using IoTSuper_DesktopApp.Servicios.Componente;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -107,7 +108,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
         {
             ErrorDTO respuesta = await ComponenteService.EliminarComponente(data.IdComponente);
 
-            if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al eliminar el componente: {respuesta.Errors.First().Value}"); return; }//popup
+            if (respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al eliminar el componente: {respuesta.Errors.First().Value.First()}"); return; }//popup
 
             this.Visibility = Visibility.Collapsed;
 
@@ -182,7 +183,7 @@ namespace IoTSuper_DesktopApp.Controladores.Componentes
             else
             {
                 ErrorDTO respuesta = await ComponenteService.ActualizarComponente(data);
-                if(respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al actualizar el componente: {respuesta.Errors.First().Value}"); return; }//popup
+                if(respuesta == null || respuesta.Status != 200) { MessageBox.Show($"Error al actualizar el componente: {respuesta.Errors.First().Value.First()}"); return; }//popup
             }
 
             imgBorrar.IsHitTestVisible = true;

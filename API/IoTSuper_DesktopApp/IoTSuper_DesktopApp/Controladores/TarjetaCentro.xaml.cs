@@ -34,7 +34,8 @@ namespace IoTSuper_DesktopApp.Controladores
         {
             _centro._secciones = Sesion._centros.Where(c => c.IdCentro == _centro.IdCentro).FirstOrDefault()?._secciones;
             txbNumeroSecciones.Text = _centro._secciones?.Count.ToString();
-            //_centro.numeroComponentes = 0;
+
+            LogLocal.logear($"Cargando {_centro._secciones?.Count ?? 0} secciones.");
 
             if (!(_centro._secciones is null))
             {
@@ -56,6 +57,8 @@ namespace IoTSuper_DesktopApp.Controladores
         {
             _centro = centro;
 
+            LogLocal.logear($"Actualizando tarjeta del centro {_centro.Nombre}");
+
             txbTituloCentro.Text = centro.Nombre;
 
             txbNumeroSensores.Text = _centro._secciones?.Sum(s => s._componentes?.Count ?? 0).ToString();
@@ -75,13 +78,14 @@ namespace IoTSuper_DesktopApp.Controladores
 
             _centro._secciones = centro._secciones;
 
-            if (_centro._secciones == null) { txbNumeroSecciones.Text = "0"; return; }
+            if (_centro._secciones == null) { LogLocal.logear($"El centro {_centro.Nombre} no tiene secciones."); txbNumeroSecciones.Text = "0"; return; }
 
             txbNumeroSecciones.Text = _centro._secciones.Count.ToString();
         }
 
         private void VerSecciones_Click(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Mostrando secciones del centro {_centro.Nombre}");
             //if(_centro._secciones == null || _centro._secciones.Count == 0) { Navegacion.IrA(new FormularioCentroControl()); }
             Sesion.centroSelecionado = Sesion._centros.FindIndex(x => x.IdCentro == _centro.IdCentro);
             Navegacion.IrA(new CarruselSeccion(_centro._secciones, _centro.IdCentro));
@@ -89,6 +93,7 @@ namespace IoTSuper_DesktopApp.Controladores
 
         private void OtrasOpciones_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            LogLocal.logear($"Mostrando/Ocultando opciones del centro {_centro.Nombre}");
             stkOpciones.Opacity = stkOpciones.Opacity == 0 ? 1 : 0;
             stkOpciones.Visibility = stkOpciones.Opacity == 1 ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -97,10 +102,12 @@ namespace IoTSuper_DesktopApp.Controladores
         {
             try
             {
+                LogLocal.logear($"Editando centro {_centro.Nombre}");
                 Navegacion.IrA(new FormularioCentroControl(_centro));
             }
             catch (Exception ex)
             {
+                LogLocal.logear($"Error al editar centro {_centro.Nombre}: {ex.Message}");
                 MessageBox.Show(ex.Message, "Error al Editar centro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -109,12 +116,14 @@ namespace IoTSuper_DesktopApp.Controladores
         {
             try
             {
+                LogLocal.logear($"Eliminando centro {_centro.Nombre}");
                 await CentroService.EliminarCentro(this._centro.IdCentro);
                 Sesion._centros.Remove(this._centro);
                 Navegacion.IrA(new CarruselCentro());
             }
             catch (Exception ex) 
             {
+                LogLocal.logear($"Error al eliminar centro {_centro.Nombre}: {ex.Message}");
                 MessageBox.Show(ex.Message, "Error al Eliminar centro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

@@ -193,15 +193,11 @@ void miSensorTask(void *pvParameters)//puntero generico para pasar datos
 {
   while(true)
   {
-    digitalWrite(gpioTrig, LOW);
-    delay(2);
-
     digitalWrite(gpioTrig, HIGH);
-    delay(20);
-
+    delay(10);
     digitalWrite(gpioTrig, LOW);
 
-    tiempo = pulseIn(gpioEcho, HIGH, 3000);
+    tiempo = pulseIn(gpioEcho, HIGH, 12000);
     distancia = (tiempo * 0.034) / 2; // en centimetros
 
     if(distancia <= 15 && distancia != 0.00 && reactivarUltraSonido >= 60)

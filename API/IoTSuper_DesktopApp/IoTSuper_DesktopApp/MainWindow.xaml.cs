@@ -55,11 +55,15 @@ namespace IoTSuper_DesktopApp
 
             if (Sesion.LoginData.EsAdmin)
             {
+                LogLocal.logear($"Admin! {Sesion.LoginData.IdCliente}");
+
                 Navegacion.IrA(new AdminInicio());
                 ocultarVistas();
             }
             else
             {
+                LogLocal.logear($"Cliente! {Sesion.LoginData.IdCliente}");
+
                 this.Loaded += MainWindow_Loaded;
                 this.IsHitTestVisible = false;
             }
@@ -67,7 +71,9 @@ namespace IoTSuper_DesktopApp
 
         private void ocultarVistas()
         {
-            foreach(UIElement elemento in this.VistasGrid.Children)
+            LogLocal.logear($"Ocultando vistas...");
+
+            foreach (UIElement elemento in this.VistasGrid.Children)
             {
                 if (elemento is not StackPanel stackPanel) continue;
                 foreach (StackPanel hijo in stackPanel.Children)
@@ -84,7 +90,9 @@ namespace IoTSuper_DesktopApp
         {
             bool exito = await RClone.RClone.BajarImagenesDelServidorAsync();
 
+            LogLocal.logear($"Cargando centros...");
             Sesion._centros = await CentroService.ObtenerCentros(Sesion.LoginData.IdCliente);
+            LogLocal.logear($"Se obtuvieron {Sesion._centros.Count} centros.");
 
             foreach(CentroDTO centro in Sesion._centros)
             {
@@ -110,7 +118,9 @@ namespace IoTSuper_DesktopApp
         {
             List<ResumenDTO> resumenDTOs = Sesion._centros.SelectMany(c => c._secciones.SelectMany(s => s._componentes.Select(x => ComponenteToResumen.ConvierteAResumenDTO(x, c.Nombre, s.Nombre)))).ToList();
 
-            foreach(ResumenDTO resumenDTO in resumenDTOs)
+            LogLocal.logear($"Cargando {resumenDTOs.Count} elementos de resumen.");
+
+            foreach (ResumenDTO resumenDTO in resumenDTOs)
             {
                 Sesion.Componentes.Add(resumenDTO);
             }
@@ -123,18 +133,24 @@ namespace IoTSuper_DesktopApp
 
         private void VerCentros_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if(VistaActual is not CarruselCentro)
+            LogLocal.logear($"Mostrando carrusel de centros.");
+
+            if (VistaActual is not CarruselCentro)
                 Navegacion.IrA(new CarruselCentro());
         }
 
         private void CrearCentro_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if(VistaActual is not FormularioCentroControl)
+            LogLocal.logear($"Navegando a crear centro...");
+
+            if (VistaActual is not FormularioCentroControl)
                 Navegacion.IrA(new FormularioCentroControl());
         }
 
         private void Inicio_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            LogLocal.logear($"Navegando a Inicio...");
+
             if (Sesion.LoginData.EsAdmin)
             {
                 Navegacion.IrA(new AdminInicio());
@@ -147,6 +163,7 @@ namespace IoTSuper_DesktopApp
 
         private void Incidencias_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            LogLocal.logear($"Navegando a Incidencias...");
             Navegacion.IrA(new IncidenciasControl());
         }
     }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IoTSuper_API.Models
 {
-    [Index(nameof(Topic), IsUnique = true)]
+    [Index(nameof(Topic), IsUnique = false)]
     public class Componente
     {
         [Key]

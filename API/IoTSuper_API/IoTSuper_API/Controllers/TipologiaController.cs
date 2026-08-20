@@ -14,11 +14,13 @@ namespace IoTSuper_API.Controllers
     {
         private readonly AppDBContext _context;
         private readonly IContrasenaService _contrasenaService;
+        private readonly ILogService _logger;
 
-        public TipologiaController(AppDBContext context, IContrasenaService contrasenaService)
+        public TipologiaController(AppDBContext context, IContrasenaService contrasenaService, ILogService logger)
         {
             _context = context;
             _contrasenaService = contrasenaService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -26,18 +28,22 @@ namespace IoTSuper_API.Controllers
         {
             try
             {
+                await _logger.LogAsync("Obteniendo tipologias de la base de datos.");
                 Dictionary<int, string> tipologias = await _context.Tipologias.ToDictionaryAsync(t => t.IdTipologia, t => t.TipoTienda);
 
                 if (tipologias == null || tipologias.Count == 0)
                 {
+                    await _logger.LogAsync("No se encontraron tipologías en la base de datos.");
                     return NotFound(new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "No se encontraron tipologías." } } } });
                     
                 }
 
+                await _logger.LogAsync($"Se encontraron {tipologias.Count} tipologías en la base de datos.");
                 return Ok(tipologias);
             }
             catch (Exception ex)
             {
+                await _logger.LogAsync($"Ocurrió un error al obtener las tipologías: {ex.Message}");
                 return StatusCode(500, new ErrorDTO() { Status = 500, Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Ocurrió un error al obtener las tipologias." } } } });
             }
         }

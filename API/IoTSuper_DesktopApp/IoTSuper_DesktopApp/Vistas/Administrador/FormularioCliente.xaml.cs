@@ -112,8 +112,7 @@ namespace IoTSuper_DesktopApp.Vistas.Administrador
         {
             if (_cliente != null)
             {
-                Crypto crypto = new Crypto();
-                _cliente.Contrasena = crypto.Encriptar(_cliente.Contrasena);
+                _cliente.Contrasena = camContrasena.Texto;
 
                 _cliente.Nombre = camNombre.Texto;
                 _cliente.Apellido = camApellido.Texto;

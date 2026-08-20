@@ -29,5 +29,7 @@ namespace IoTSuper_API.Data
         public DbSet<Etiqueta> Etiquetas { get; set; }
 
         public DbSet<Stock> Stocks { get; set; }
+
+        public DbSet<Log> Logs { get; set; }
     }
 }

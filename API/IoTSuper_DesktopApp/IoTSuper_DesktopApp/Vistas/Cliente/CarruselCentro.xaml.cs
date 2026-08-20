@@ -37,10 +37,13 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private async void CarruselCentro_Loaded(object sender, RoutedEventArgs e)
         {
-            if(Sesion._centros == null || Sesion._centros.Count == 0) { btnDerecha.Visibility = Visibility.Collapsed; btnIzquierda.Visibility = Visibility.Collapsed; return; }
+            LogLocal.logear($"Cargando carrusel de centros...");
+            if (Sesion._centros == null || Sesion._centros.Count == 0) { btnDerecha.Visibility = Visibility.Collapsed; btnIzquierda.Visibility = Visibility.Collapsed; return; }
+            LogLocal.logear($"");
 
-            if(Sesion._centros.Count == 1)
+            if (Sesion._centros.Count == 1)
             {
+                LogLocal.logear($"Mostrando un solo centro en el carrusel.");
                 _tarjetaCentro = new TarjetaCentro(Sesion._centros[0]);
 
                 ContenedorCarusel.Children.Add(_tarjetaCentro);
@@ -48,6 +51,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             if(Sesion._centros.Count == 2)
             {
+                LogLocal.logear($"Mostrando 2 centros en el carrusel.");
                 _tarjetaIzquierda = new TarjetaCentro(Sesion._centros[0]);
                 _tarjetaCentro = new TarjetaCentro(Sesion._centros[1]);
 
@@ -63,6 +67,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             if (Sesion._centros.Count > 2)
             {
+                LogLocal.logear($"Mostrando {Sesion._centros.Count} centros en el carrusel.");
                 _tarjetaIzquierda = new TarjetaCentro(Sesion._centros[0]);
                 _tarjetaCentro = new TarjetaCentro(Sesion._centros[1]);
                 _tarjetaDerecha = new TarjetaCentro(Sesion._centros[2]);
@@ -99,23 +104,27 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
         private void CrearCentroView_Click(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Creando un nuevo centro...");
             Navegacion.IrA(new FormularioCentroControl());
         }
 
         private void btnDerecha_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            LogLocal.logear($"Moviendo carrusel a la derecha...");
             _indiceCarusel = (_indiceCarusel - 1 + Sesion._centros.Count) % Sesion._centros.Count;
             ActualizarCarrusel();
         }
 
         private void btnIzquierda_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            LogLocal.logear($"Moviendo carrusel a la izquierda...");
             _indiceCarusel = (_indiceCarusel + 1) % Sesion._centros.Count;
             ActualizarCarrusel();
         }
 
         private void BuscarCentroView_Click(object sender, RoutedEventArgs e)
         {
+            LogLocal.logear($"Buscando centro con el texto: {txtBusqueda.Texto}");
             try
             {
                 _indiceCarusel = Sesion._centros.IndexOf(Sesion._centros.Find(c => c.Nombre.ToLower().Contains(txtBusqueda.Texto.ToLower())));
@@ -132,6 +141,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             }
             catch (Exception ex)
             {
+                LogLocal.logear($"No se encontró ningún centro que coincida con la búsqueda.");
                 MessageBox.Show("No se encontró ningún centro que coincida con la búsqueda.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

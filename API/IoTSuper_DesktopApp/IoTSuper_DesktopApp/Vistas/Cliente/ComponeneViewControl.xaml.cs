@@ -159,6 +159,18 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
                     lcd.data.PosicionX = Canvas.GetLeft(lcd);
                 }
 
+                foreach (StockUC stk in ImagenCanvas.Children.OfType<StockUC>())
+                {
+                    Canvas.SetLeft(stk, Canvas.GetLeft(stk) + movimiento);
+                    stk.data.PosicionX = Canvas.GetLeft(stk);
+                }
+
+                foreach (TemperaturaUC tmp in ImagenCanvas.Children.OfType<TemperaturaUC>())
+                {
+                    Canvas.SetLeft(tmp, Canvas.GetLeft(tmp) + movimiento);
+                    tmp.data.PosicionX = Canvas.GetLeft(tmp);
+                }
+
                 puntoDePartidaRaton = posicionActualRaton;
             }
             else
@@ -263,6 +275,8 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
         {
             if (arrastrandoElemento)
             {
+                LogLocal.logear($"Soltando elemento {tipoIoTSeleccionado} en la posición del canvas.");
+
                 Debug.WriteLine("ImagenMovible_Drop");
                 e.Effects = DragDropEffects.None;
                 Console.Write("Suelto");
@@ -445,7 +459,9 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             ErrorDTO respuesta = await SeccionService.ActualizarSeccion(_seccion);
 
-            if (respuesta == null || respuesta.Status != 200) { return; }//popup
+            if (respuesta == null || respuesta.Status != 200) { LogLocal.logear($"Error al actualizar la sección {_seccion.Nombre}."); return; }//popup
+
+            LogLocal.logear($"Sección {_seccion.Nombre} actualizada correctamente.");
 
             RClone.RClone.SubirImagenesAlServidorAsync();
         }
