@@ -4,17 +4,20 @@ using IoTSuper_DesktopApp.RClone;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 
 namespace IoTSuper_DesktopApp.RClone
 {
     public static class RClone
     {
+        private static readonly string rutaLocal = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "IoTSuper", "Imagenes");
+        
         public static async Task<bool> SubirImagenesAlServidorAsync()
         {
             LogLocal.logear($"Subiendo imágenes al servidor...");
 
-            string subida = $"sync \"C:\\Users\\Pc\\AppData\\Roaming\\IoTSuper\\Imagenes\" \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" --progress";
+            string subida = $"sync \"{rutaLocal}\" \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" --progress";
 
             return await ejecutarComandoRclone(subida);
         }
@@ -23,7 +26,9 @@ namespace IoTSuper_DesktopApp.RClone
         {
             LogLocal.logear($"Bajando imágenes del servidor...");
 
-            string bajada = $"sync \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" \"C:\\Users\\Pc\\AppData\\Roaming\\IoTSuper\\Imagenes\" --progress";
+            Directory.CreateDirectory(rutaLocal);
+
+            string bajada = $"sync \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" \"{rutaLocal}\" --progress";
 
             return await ejecutarComandoRclone(bajada);
         }
