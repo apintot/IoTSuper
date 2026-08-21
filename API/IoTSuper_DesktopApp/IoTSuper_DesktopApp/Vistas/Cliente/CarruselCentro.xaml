@@ -8,9 +8,9 @@
              mc:Ignorable="d">
     <Grid Grid.Row="1" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="40,0,0,0">

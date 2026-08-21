@@ -61,7 +61,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             if (!string.IsNullOrEmpty(_seccion.Imagen))
             {
-                ImagenMovible.Source = new BitmapImage(new Uri(_seccion.Imagen));
+                ImagenMovible.Source = new BitmapImage(new Uri(Rutas.ImagesFolder + "\\" + _seccion.Imagen));
             }
 
             if(_seccion.NumComponentes == 0) { return; }

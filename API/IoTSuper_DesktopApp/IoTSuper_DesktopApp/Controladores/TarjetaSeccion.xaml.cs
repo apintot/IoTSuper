@@ -7,6 +7,7 @@ using IoTSuper_DesktopApp.Servicios.Seccion;
 using IoTSuper_DesktopApp.Vistas.Cliente;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -65,7 +66,14 @@ namespace IoTSuper_DesktopApp.Controladores
             }
             else
             {
-                ImgSeccion.Source = new BitmapImage(new Uri(_seccion.Imagen));
+                if (File.Exists(Rutas.ImagesFolder + "\\" + _seccion.Imagen))
+                {
+                    ImgSeccion.Source = new BitmapImage(new Uri(Rutas.ImagesFolder + "\\" + _seccion.Imagen));
+                }
+                else
+                {
+                    ImgSeccion.Source = new BitmapImage(new Uri(_seccion.Imagen));
+                }
                 ImgSeccion.Stretch = Stretch.UniformToFill;
                 ImgSeccion.Height = double.NaN;
             }

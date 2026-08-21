@@ -17,7 +17,7 @@ namespace IoTSuper_DesktopApp.RClone
         {
             LogLocal.logear($"Subiendo imágenes al servidor...");
 
-            string subida = $"sync \"{rutaLocal}\" \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" --progress";
+            string subida = $"copy \"{rutaLocal}\" \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" --progress";
 
             return await ejecutarComandoRclone(subida);
         }
@@ -28,7 +28,7 @@ namespace IoTSuper_DesktopApp.RClone
 
             Directory.CreateDirectory(rutaLocal);
 
-            string bajada = $"sync \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" \"{rutaLocal}\" --progress";
+            string bajada = $"copy \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" \"{rutaLocal}\" --progress";
 
             return await ejecutarComandoRclone(bajada);
         }
@@ -43,7 +43,7 @@ namespace IoTSuper_DesktopApp.RClone
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = $"{Rutas.RClone}\\rclone",
+                    FileName = $"{Rutas.RClone}\\rclone.exe",
                     Arguments = accion,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -53,6 +53,9 @@ namespace IoTSuper_DesktopApp.RClone
                 EnableRaisingEvents = true
             };
 
+            proceso.OutputDataReceived += (s, e) => { if (e.Data != null) LogLocal.logear(e.Data); };
+            proceso.ErrorDataReceived += (s, e) => { if (e.Data != null) LogLocal.logear($"RCLONE: {e.Data}"); };
+
             proceso.Exited += (s, e) =>
             {
                 tcs.SetResult(proceso.ExitCode == 0);
@@ -60,6 +63,9 @@ namespace IoTSuper_DesktopApp.RClone
             };
 
             proceso.Start();
+            proceso.BeginOutputReadLine();
+            proceso.BeginErrorReadLine();
+
             return await tcs.Task;
         }
     }

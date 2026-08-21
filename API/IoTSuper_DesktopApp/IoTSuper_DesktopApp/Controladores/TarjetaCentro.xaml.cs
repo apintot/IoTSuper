@@ -4,6 +4,7 @@ using IoTSuper_DesktopApp.Modelos;
 using IoTSuper_DesktopApp.Servicios.Centro;
 using IoTSuper_DesktopApp.Servicios.Componente;
 using IoTSuper_DesktopApp.Vistas.Cliente;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -71,7 +72,14 @@ namespace IoTSuper_DesktopApp.Controladores
             }
             else
             {
-                ImgCentro.Source = new BitmapImage(new Uri(centro.Imagen));
+                if(File.Exists(Rutas.ImagesFolder + "\\" + centro.Imagen))
+                {
+                    ImgCentro.Source = new BitmapImage(new Uri(Rutas.ImagesFolder + "\\" + centro.Imagen));
+                } 
+                else
+                {
+                    ImgCentro.Source = new BitmapImage(new Uri(centro.Imagen));
+                }
                 ImgCentro.Stretch = Stretch.UniformToFill;
                 ImgCentro.Height = double.NaN;
             }
