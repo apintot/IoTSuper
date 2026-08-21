@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IoTSuper_DesktopApp"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen" Title="IoTSuper" WindowState="Maximized">
-    <Grid Background="{StaticResource scbFondo}">
+        WindowStartupLocation="CenterScreen" Title="IoTSuper" WindowState="Maximized"
+        Background="{StaticResource scbFondo}">
+    <Viewbox Stretch="UniformToFill">
+        <Grid x:Name="GridRaiz" Background="{StaticResource scbFondo}" Width="1920" Height="1117">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
@@ -73,4 +75,5 @@
 
         <ContentControl Content="{Binding VistaActual}" Grid.Column="1"/>
     </Grid>
+    </Viewbox>
 </Window>
