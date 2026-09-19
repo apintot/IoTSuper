@@ -34,7 +34,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             Application.Current.Dispatcher.Invoke(() =>
             {
                 txbOk.Text = Sesion.Componentes.Count(c => c.Estado == "OK").ToString();
-                txbEnError.Text = Sesion.Componentes.Count(c => c.Estado == "Error").ToString();
+                txbEnError.Text = Sesion.Componentes.Count(c => c.Estado == "Error" || c.Estado == "Vacío").ToString();
                 txbAlerta.Text = Sesion.Componentes.Count(c => c.Estado == "Alerta!").ToString();
                 txbMinimo.Text = Sesion.Componentes.Count(c => c.Estado == "Agotandose").ToString();
             });

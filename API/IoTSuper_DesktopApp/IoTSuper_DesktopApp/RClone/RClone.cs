@@ -17,7 +17,7 @@ namespace IoTSuper_DesktopApp.RClone
         {
             LogLocal.logear($"Subiendo imágenes al servidor...");
 
-            string subida = $"copy \"{rutaLocal}\" \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" --progress";
+            string subida = $"copy \"{rutaLocal}\" \":sftp,port=222,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" --progress";
 
             return await ejecutarComandoRclone(subida);
         }
@@ -28,7 +28,7 @@ namespace IoTSuper_DesktopApp.RClone
 
             Directory.CreateDirectory(rutaLocal);
 
-            string bajada = $"copy \":sftp,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" \"{rutaLocal}\" --progress";
+            string bajada = $"copy \":sftp,port=222,host={RCloneConfig.dominio},user={RCloneConfig.usuario},pass={RCloneConfig.contrasena}:/home/iotsuper/imagenes/{Sesion.LoginData.IdCliente}\" \"{rutaLocal}\" --progress";
 
             return await ejecutarComandoRclone(bajada);
         }

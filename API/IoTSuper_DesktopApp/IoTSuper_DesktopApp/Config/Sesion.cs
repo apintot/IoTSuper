@@ -78,9 +78,13 @@ namespace IoTSuper_DesktopApp.Config
             
             Crypto crypto = new Crypto();
 
+            string tcpServer = crypto.Desencriptar(Mqtt.broker);
+            string usuario = crypto.Desencriptar(Mqtt.usuario);
+            string contrasena = crypto.Desencriptar(Mqtt.contrasena);
+
             MqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                    .WithTcpServer(crypto.Desencriptar(Mqtt.broker), 8883)
-                    .WithCredentials(crypto.Desencriptar(Mqtt.usuario), crypto.Desencriptar(Mqtt.contrasena))
+                    .WithTcpServer(tcpServer, 8883)
+                    .WithCredentials(usuario, contrasena)
                     .WithTlsOptions(o => o
                     .UseTls()
                         .WithSslProtocols(System.Security.Authentication.SslProtocols.Tls13))
@@ -156,7 +160,7 @@ namespace IoTSuper_DesktopApp.Config
 
                     componenteActual.Stock.Stock_Actual = unidades;
                     resumenActual.UltimoDato = $"{componenteActual.Stock.Stock_Actual} uds";
-                    resumenActual.Estado = componenteActual.Stock.Stock_Actual > 0 ? "OK" : "Vacío";
+                    resumenActual.Estado = componenteActual.Stock.Stock_Actual > 0 ? "Ok" : "Vacío";
 
                     if(resumenActual.Estado.Equals("Ok")) { resumenActual.Estado = componenteActual.Stock.Stock_Actual > componenteActual.Stock.Stock_Minimo ? "OK" : "Agotandose"; }
 

@@ -91,7 +91,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
                 if (!string.IsNullOrEmpty(_centro.Imagen))
                 {
-                    imgCentro.Source = new BitmapImage(new Uri(_centro.Imagen));
+                    imgCentro.Source = new BitmapImage(new Uri(Rutas.ImagesFolder + "\\" + _centro.Imagen));
                     imgCentro.Stretch = Stretch.UniformToFill;
                     imgCentro.Width = double.NaN;
                     imgCentro.Height = double.NaN;
@@ -243,7 +243,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
 
             System.IO.File.Copy(origen, destino);
 
-            _centro.Imagen = destino;
+            _centro.Imagen = nombreArchivo;
 
             imgCentro.Source = new BitmapImage(new Uri(destino));
             imgCentro.Stretch = Stretch.UniformToFill;

@@ -65,7 +65,7 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             if (!string.IsNullOrEmpty(_seccion.Imagen))
             {
                 LogLocal.logear($"Cargando imagen de la sección {_seccion.Nombre}.");
-                imgCentro.Source = new BitmapImage(new Uri(_seccion.Imagen));
+                imgCentro.Source = new BitmapImage(new Uri(Rutas.ImagesFolder + "\\" + _seccion.Imagen));
                 imgCentro.Stretch = Stretch.UniformToFill;
                 imgCentro.Width = double.NaN;
                 imgCentro.Height = double.NaN;
@@ -146,12 +146,13 @@ namespace IoTSuper_DesktopApp.Vistas.Cliente
             {
                 string nombre = System.IO.Path.GetFileNameWithoutExtension(origen);
                 string extension = System.IO.Path.GetExtension(origen);
-                destino = System.IO.Path.Combine(Rutas.ImagesFolder, $"{nombre}_{DateTime.Now:yyyyMMddHHmmss}{extension}");
+            }
+            else
+            {
+                System.IO.File.Copy(origen, destino);
             }
 
-            System.IO.File.Copy(origen, destino);
-
-            _seccion.Imagen = destino;
+            _seccion.Imagen = nombreArchivo;
 
             imgCentro.Source = new BitmapImage(new Uri(destino));
             imgCentro.Stretch = Stretch.UniformToFill;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using System.Diagnostics;
 using System.Text;
 
 namespace IoTSuper_DesktopApp.Seguridad
@@ -23,8 +24,27 @@ namespace IoTSuper_DesktopApp.Seguridad
 
         public string Desencriptar(string texto)
         {
-            string _texto = seguridad.protector.Unprotect(texto);
-            return Encoding.UTF8.GetString(Convert.FromBase64String(_texto));
+            try
+            {
+                string _texto = seguridad.protector.Unprotect(texto);
+                return Encoding.UTF8.GetString(Convert.FromBase64String(_texto));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("===== ERROR AL DESENCRIPTAR =====");
+                Debug.WriteLine($"Fecha: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                Debug.WriteLine($"Tipo: {ex.GetType().FullName}");
+                Debug.WriteLine($"Mensaje: {ex.Message}");
+                Debug.WriteLine($"StackTrace:\n{ex.StackTrace}");
+                Debug.WriteLine($"Exception completa:\n{ex}");
+                Debug.WriteLine("=================================");
+
+                System.Diagnostics.Debug.WriteLine("===== ERROR AL DESENCRIPTAR =====");
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                System.Diagnostics.Debug.WriteLine("=================================");
+
+                return string.Empty;
+            }
         }
     }
 
